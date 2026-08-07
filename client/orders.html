@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>My Orders - WAYNE LOGS</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:#f5f8fc;
+    color:#1f2937;
+}
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    position:fixed;
+    top:0;
+    left:0;
+    width:250px;
+    height:100vh;
+    background:#fff;
+    border-right:1px solid #e8edf3;
+    padding:24px 18px;
+    z-index:2000;
+    transition:.3s;
+}
+
+.brand{
+    padding:0 12px 28px;
+}
+
+.brand h2{
+    color:#0785df;
+    font-size:25px;
+}
+
+.brand p{
+    color:#8995a6;
+    font-size:11px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+}
+
+.menu-title{
+    font-size:11px;
+    color:#9aa4b2;
+    font-weight:bold;
+    padding:10px 12px;
+    text-transform:uppercase;
+}
+
+.menu a{
+    display:flex;
+    align-items:center;
+    gap:13px;
+    padding:13px 14px;
+    margin-bottom:5px;
+    border-radius:10px;
+    color:#556276;
+    font-size:14px;
+}
+
+.menu a:hover,
+.menu a.active{
+    background:#eaf6ff;
+    color:#0785df;
+}
+
+/* MAIN */
+
+.main{
+    margin-left:250px;
+    min-height:100vh;
+}
+
+.topbar{
+    height:78px;
+    background:#fff;
+    border-bottom:1px solid #edf0f4;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 30px;
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
+
+.mobile-toggle{
+    display:none;
+    border:none;
+    background:none;
+    font-size:22px;
+    cursor:pointer;
+}
+
+.page-title h1{
+    font-size:21px;
+}
+
+.page-title p{
+    color:#8a95a4;
+    font-size:12px;
+    margin-top:3px;
+}
+
+.top-actions{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.icon-btn{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    border:1px solid #e5e9ef;
+    background:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.avatar{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:#0785df;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+}
+
+/* CONTENT */
+
+.content{
+    max-width:1200px;
+    margin:auto;
+    padding:30px;
+}
+
+.hero{
+    background:linear-gradient(135deg,#067fd7,#0aa0f4);
+    color:white;
+    border-radius:20px;
+    padding:28px;
+    box-shadow:0 20px 45px rgba(7,133,223,.18);
+    margin-bottom:24px;
+}
+
+.hero h1{
+    font-size:27px;
+    margin-bottom:8px;
+}
+
+.hero p{
+    font-size:14px;
+    opacity:.9;
+}
+
+/* STATS */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin-bottom:22px;
+}
+
+.stat-card{
+    background:white;
+    border:1px solid #edf0f4;
+    border-radius:16px;
+    padding:20px;
+}
+
+.stat-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.stat-card small{
+    color:#8792a1;
+}
+
+.stat-icon{
+    width:42px;
+    height:42px;
+    border-radius:12px;
+    background:#eaf6ff;
+    color:#0785df;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.stat-card h2{
+    margin-top:12px;
+    font-size:25px;
+}
+
+/* TOOLS */
+
+.tools{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-bottom:18px;
+}
+
+.search{
+    flex:1;
+    min-width:220px;
+    position:relative;
+}
+
+.search i{
+    position:absolute;
+    top:50%;
+    left:15px;
+    transform:translateY(-50%);
+    color:#8c97a5;
+}
+
+.search input{
+    width:100%;
+    height:46px;
+    border:1px solid #dfe6ee;
+    background:white;
+    border-radius:11px;
+    padding:0 15px 0 42px;
+    outline:none;
+}
+
+.search input:focus{
+    border-color:#0785df;
+    box-shadow:0 0 0 4px rgba(7,133,223,.08);
+}
+
+.filter{
+    height:46px;
+    border:1px solid #dfe6ee;
+    background:white;
+    border-radius:11px;
+    padding:0 15px;
+    outline:none;
+}
+
+/* ORDERS */
+
+.orders-card{
+    background:#fff;
+    border:1px solid #edf0f4;
+    border-radius:18px;
+    overflow:hidden;
+}
+
+.orders-head{
+    padding:20px;
+    border-bottom:1px solid #edf0f4;
+}
+
+.orders-head h2{
+    font-size:19px;
+}
+
+.order-row{
+    display:grid;
+    grid-template-columns:1fr 2fr 1fr 1fr 1fr;
+    gap:15px;
+    align-items:center;
+    padding:17px 20px;
+    border-bottom:1px solid #f0f2f5;
+    font-size:13px;
+}
+
+.order-row:last-child{
+    border-bottom:none;
+}
+
+.order-header{
+    background:#fafbfd;
+    color:#657184;
+    font-weight:bold;
+}
+
+.order-id{
+    color:#0785df;
+    font-weight:bold;
+}
+
+.price{
+    font-weight:bold;
+}
+
+.status{
+    display:inline-block;
+    padding:6px 10px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:bold;
+}
+
+.pending{
+    background:#fff5dc;
+    color:#9a6b00;
+}
+
+.success{
+    background:#eaf8ef;
+    color:#14834b;
+}
+
+.failed{
+    background:#fff0f0;
+    color:#c62828;
+}
+
+.empty{
+    text-align:center;
+    padding:55px 20px;
+    color:#8792a1;
+}
+
+.empty i{
+    font-size:45px;
+    color:#c9d1dc;
+    margin-bottom:15px;
+}
+
+.empty h3{
+    color:#4b586a;
+    margin-bottom:7px;
+}
+
+.empty a{
+    display:inline-block;
+    margin-top:17px;
+    background:#0785df;
+    color:white;
+    padding:11px 18px;
+    border-radius:9px;
+    font-weight:bold;
+}
+
+/* OVERLAY */
+
+.overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(17,24,39,.4);
+    z-index:1500;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:900px){
+
+    .sidebar{
+        transform:translateX(-100%);
+    }
+
+    .sidebar.active{
+        transform:translateX(0);
+    }
+
+    .overlay.active{
+        display:block;
+    }
+
+    .main{
+        margin-left:0;
+    }
+
+    .mobile-toggle{
+        display:block;
+    }
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:700px){
+
+    .order-row{
+        grid-template-columns:1fr 1.5fr 1fr;
+    }
+
+    .hide-mobile{
+        display:none;
+    }
+}
+
+@media(max-width:520px){
+
+    .content{
+        padding:20px 14px;
+    }
+
+    .topbar{
+        padding:0 15px;
+    }
+
+    .page-title p{
+        display:none;
+    }
+
+    .order-row{
+        padding:14px 12px;
+        gap:7px;
+        font-size:11px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="overlay" id="overlay"></div>
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="brand">
+        <h2>WAYNE LOGS</h2>
+        <p>Marketplace</p>
+    </div>
+
+    <div class="menu">
+
+        <div class="menu-title">Menu</div>
+
+        <a href="dashboard.html">
+            <i class="fa-solid fa-house"></i>
+            Dashboard
+        </a>
+
+        <a href="wallet.html">
+            <i class="fa-solid fa-wallet"></i>
+            Wallet
+        </a>
+
+        <a href="airtime.html">
+            <i class="fa-solid fa-phone"></i>
+            Airtime
+        </a>
+
+        <a href="data.html">
+            <i class="fa-solid fa-wifi"></i>
+            Data
+        </a>
+
+        <a href="electricity.html">
+            <i class="fa-solid fa-bolt"></i>
+            Electricity
+        </a>
+
+        <a href="cable.html">
+            <i class="fa-solid fa-tv"></i>
+            Cable TV
+        </a>
+
+        <a href="marketplace.html">
+            <i class="fa-solid fa-store"></i>
+            Marketplace
+        </a>
+
+        <a href="orders.html" class="active">
+            <i class="fa-solid fa-box"></i>
+            My Orders
+        </a>
+
+        <div class="menu-title">Account</div>
+
+        <a href="profile.html">
+            <i class="fa-solid fa-user"></i>
+            Profile
+        </a>
+
+        <a href="referrals.html">
+            <i class="fa-solid fa-users"></i>
+            Referrals
+        </a>
+
+        <a href="notifications.html">
+            <i class="fa-solid fa-bell"></i>
+            Notifications
+        </a>
+
+        <a href="settings.html">
+            <i class="fa-solid fa-gear"></i>
+            Settings
+        </a>
+
+        <a href="login.html">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            Logout
+        </a>
+
+    </div>
+
+</aside>
+
+
+<main class="main">
+
+    <div class="topbar">
+
+        <button class="mobile-toggle" id="mobileToggle">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <div class="page-title">
+            <h1>My Orders</h1>
+            <p>View your WAYNE LOGS marketplace purchases.</p>
+        </div>
+
+        <div class="top-actions">
+
+            <a href="notifications.html" class="icon-btn">
+                <i class="fa-regular fa-bell"></i>
+            </a>
+
+            <div class="avatar">W</div>
+
+        </div>
+
+    </div>
+
+
+    <section class="content">
+
+        <div class="hero">
+
+            <h1>
+                <i class="fa-solid fa-box-open"></i>
+                Order History
+            </h1>
+
+            <p>
+                View and track your marketplace orders.
+            </p>
+
+        </div>
+
+
+        <div class="stats">
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+                    <small>Total Orders</small>
+
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-box"></i>
+                    </div>
+                </div>
+
+                <h2 id="totalOrders">0</h2>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+                    <small>Total Spent</small>
+
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-naira-sign"></i>
+                    </div>
+                </div>
+
+                <h2 id="totalSpent">₦0</h2>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+                    <small>Pending</small>
+
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-clock"></i>
+                    </div>
+                </div>
+
+                <h2 id="pendingOrders">0</h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="tools">
+
+            <div class="search">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search orders...">
+
+            </div>
+
+
+            <select class="filter" id="statusFilter">
+
+                <option value="all">
+                    All Status
+                </option>
+
+                <option value="Pending">
+                    Pending
+                </option>
+
+                <option value="Completed">
+                    Completed
+                </option>
+
+                <option value="Failed">
+                    Failed
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="orders-card">
+
+            <div class="orders-head">
+                <h2>Orders</h2>
+            </div>
+
+
+            <div class="order-row order-header">
+
+                <div>Order ID</div>
+
+                <div>Product</div>
+
+                <div>Amount</div>
+
+                <div class="hide-mobile">
+                    Payment
+                </div>
+
+                <div class="hide-mobile">
+                    Status
+                </div>
+
+            </div>
+
+
+            <div id="ordersContainer"></div>
+
+
+            <div class="empty" id="emptyState">
+
+                <i class="fa-solid fa-box-open"></i>
+
+                <h3>No orders yet</h3>
+
+                <p>
+                    Your marketplace orders will appear here.
+                </p>
+
+                <a href="marketplace.html">
+                    Browse Marketplace
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<script>
+
+/* MOBILE SIDEBAR */
+
+const sidebar =
+    document.getElementById("sidebar");
+
+const mobileToggle =
+    document.getElementById("mobileToggle");
+
+const overlay =
+    document.getElementById("overlay");
+
+
+mobileToggle.addEventListener("click", function(){
+
+    sidebar.classList.add("active");
+    overlay.classList.add("active");
+
+});
+
+
+overlay.addEventListener("click", function(){
+
+    sidebar.classList.remove("active");
+    overlay.classList.remove("active");
+
+});
+
+
+/* LOAD ORDERS */
+
+let orders =
+    JSON.parse(
+        localStorage.getItem("wayneOrders")
+    ) || [];
+
+
+const ordersContainer =
+    document.getElementById("ordersContainer");
+
+const emptyState =
+    document.getElementById("emptyState");
+
+const totalOrders =
+    document.getElementById("totalOrders");
+
+const totalSpent =
+    document.getElementById("totalSpent");
+
+const pendingOrders =
+    document.getElementById("pendingOrders");
+
+const searchInput =
+    document.getElementById("searchInput");
+
+const statusFilter =
+    document.getElementById("statusFilter");
+
+
+function updateStats(){
+
+    totalOrders.textContent =
+        orders.length;
+
+
+    const spent =
+        orders.reduce(
+            function(total, order){
+
+                return total +
+                    Number(order.price || 0);
+
+            },
+            0
+        );
+
+
+    totalSpent.textContent =
+        "₦" + spent.toLocaleString();
+
+
+    const pending =
+        orders.filter(
+            function(order){
+
+                return order.status === "Pending";
+
+            }
+        ).length;
+
+
+    pendingOrders.textContent =
+        pending;
+
+}
+
+
+function renderOrders(){
+
+    const search =
+        searchInput.value
+        .toLowerCase()
+        .trim();
+
+
+    const filter =
+        statusFilter.value;
+
+
+    const filteredOrders =
+        orders.filter(
+            function(order){
+
+                const product =
+                    String(order.product || "")
+                    .toLowerCase();
+
+
+                const id =
+                    String(order.id || "")
+                    .toLowerCase();
+
+
+                const matchesSearch =
+                    product.includes(search) ||
+                    id.includes(search);
+
+
+                const matchesStatus =
+                    filter === "all" ||
+                    order.status === filter;
+
+
+                return (
+                    matchesSearch &&
+                    matchesStatus
+                );
+
+            }
+        );
+
+
+    ordersContainer.innerHTML = "";
+
+
+    if(filteredOrders.length === 0){
+
+        emptyState.style.display =
+            "block";
+
+        return;
+
+    }
+
+
+    emptyState.style.display =
+        "none";
+
+
+    filteredOrders
+    .slice()
+    .reverse()
+    .forEach(function(order){
+
+        let statusClass =
+            "pending";
+
+
+        if(order.status === "Completed"){
+            statusClass = "success";
+        }
+
+
+        if(order.status === "Failed"){
+            statusClass = "failed";
+        }
+
+
+        const row =
+            document.createElement("div");
+
+
+        row.className =
+            "order-row";
+
+
+        row.innerHTML = `
+
+            <div class="order-id">
+                ${order.id}
+            </div>
+
+            <div>
+                ${order.product}
+            </div>
+
+            <div class="price">
+                ₦${Number(order.price).toLocaleString()}
+            </div>
+
+            <div class="hide-mobile">
+                ${order.payment || "Wallet"}
+            </div>
+
+            <div class="hide-mobile">
+
+                <span class="status ${statusClass}">
+                    ${order.status || "Pending"}
+                </span>
+
+            </div>
+
+        `;
+
+
+        ordersContainer.appendChild(row);
+
+    });
+
+}
+
+
+searchInput.addEventListener(
+    "input",
+    renderOrders
+);
+
+
+statusFilter.addEventListener(
+    "change",
+    renderOrders
+);
+
+
+updateStats();
+
+renderOrders();
+
+</script>
+
+</body>
+</html>

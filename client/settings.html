@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Settings - WAYNE LOGS</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:#f5f8fc;
+    color:#1f2937;
+    transition:.3s;
+}
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar{
+    position:fixed;
+    top:0;
+    left:0;
+    width:250px;
+    height:100vh;
+    background:#fff;
+    border-right:1px solid #e8edf3;
+    padding:24px 18px;
+    z-index:2000;
+    transition:.3s;
+}
+
+.brand{
+    padding:0 12px 28px;
+}
+
+.brand h2{
+    color:#0785df;
+    font-size:25px;
+}
+
+.brand p{
+    color:#8995a6;
+    font-size:11px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+}
+
+.menu-title{
+    font-size:11px;
+    color:#9aa4b2;
+    font-weight:bold;
+    padding:10px 12px;
+    text-transform:uppercase;
+}
+
+.menu a{
+    display:flex;
+    align-items:center;
+    gap:13px;
+    padding:13px 14px;
+    margin-bottom:5px;
+    border-radius:10px;
+    color:#556276;
+    font-size:14px;
+}
+
+.menu a:hover,
+.menu a.active{
+    background:#eaf6ff;
+    color:#0785df;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.main{
+    margin-left:250px;
+    min-height:100vh;
+}
+
+.topbar{
+    height:78px;
+    background:#fff;
+    border-bottom:1px solid #edf0f4;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 30px;
+    position:sticky;
+    top:0;
+    z-index:1000;
+    transition:.3s;
+}
+
+.mobile-toggle{
+    display:none;
+    border:none;
+    background:none;
+    font-size:22px;
+    cursor:pointer;
+    color:inherit;
+}
+
+.page-title h1{
+    font-size:21px;
+}
+
+.page-title p{
+    color:#8a95a4;
+    font-size:12px;
+    margin-top:3px;
+}
+
+.top-actions{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.icon-btn{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    border:1px solid #e5e9ef;
+    background:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.avatar{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:#0785df;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-weight:bold;
+}
+
+/* =========================
+   CONTENT
+========================= */
+
+.content{
+    padding:30px;
+    max-width:1100px;
+    margin:auto;
+}
+
+.hero{
+    background:linear-gradient(135deg,#067fd7,#0aa0f4);
+    border-radius:22px;
+    padding:30px;
+    color:white;
+    margin-bottom:24px;
+    box-shadow:0 20px 45px rgba(7,133,223,.18);
+}
+
+.hero h1{
+    font-size:28px;
+    margin-bottom:8px;
+}
+
+.hero p{
+    opacity:.9;
+    font-size:14px;
+}
+
+.settings-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
+
+.card{
+    background:#fff;
+    border:1px solid #edf0f4;
+    border-radius:18px;
+    padding:25px;
+    transition:.3s;
+}
+
+.card h2{
+    font-size:19px;
+    margin-bottom:6px;
+}
+
+.muted{
+    color:#8893a3;
+    font-size:13px;
+    margin-bottom:22px;
+}
+
+.setting-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:18px;
+    padding:16px 0;
+    border-bottom:1px solid #edf0f4;
+}
+
+.setting-row:last-child{
+    border-bottom:none;
+}
+
+.setting-info{
+    display:flex;
+    align-items:center;
+    gap:13px;
+}
+
+.setting-icon{
+    width:42px;
+    height:42px;
+    min-width:42px;
+    border-radius:12px;
+    background:#eaf6ff;
+    color:#0785df;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.setting-text strong{
+    display:block;
+    font-size:14px;
+    margin-bottom:4px;
+}
+
+.setting-text span{
+    font-size:12px;
+    color:#8995a6;
+}
+
+/* SWITCH */
+
+.switch{
+    position:relative;
+    width:48px;
+    height:26px;
+    flex-shrink:0;
+}
+
+.switch input{
+    opacity:0;
+    width:0;
+    height:0;
+}
+
+.slider{
+    position:absolute;
+    cursor:pointer;
+    inset:0;
+    background:#cfd7e2;
+    border-radius:30px;
+    transition:.3s;
+}
+
+.slider:before{
+    content:"";
+    position:absolute;
+    width:20px;
+    height:20px;
+    left:3px;
+    top:3px;
+    background:white;
+    border-radius:50%;
+    transition:.3s;
+}
+
+.switch input:checked + .slider{
+    background:#0785df;
+}
+
+.switch input:checked + .slider:before{
+    transform:translateX(22px);
+}
+
+/* FORM */
+
+.form-group{
+    margin-bottom:17px;
+}
+
+.form-group label{
+    display:block;
+    font-size:13px;
+    font-weight:600;
+    margin-bottom:8px;
+}
+
+.form-group input,
+.form-group select{
+    width:100%;
+    height:50px;
+    border:1px solid #dfe6ee;
+    background:#f9fbfd;
+    border-radius:11px;
+    padding:0 15px;
+    outline:none;
+    font-size:14px;
+}
+
+.form-group input:focus,
+.form-group select:focus{
+    border-color:#0785df;
+    box-shadow:0 0 0 4px rgba(7,133,223,.09);
+    background:#fff;
+}
+
+.save-btn{
+    width:100%;
+    height:50px;
+    border:none;
+    border-radius:11px;
+    background:#0785df;
+    color:white;
+    cursor:pointer;
+    font-weight:bold;
+    font-size:14px;
+}
+
+.save-btn:hover{
+    background:#006fc0;
+}
+
+.danger-btn{
+    width:100%;
+    height:48px;
+    border:1px solid #e4a4a4;
+    background:#fff5f5;
+    color:#c62828;
+    border-radius:11px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.message{
+    display:none;
+    margin-bottom:18px;
+    padding:12px 14px;
+    border-radius:10px;
+    background:#e9f7ef;
+    color:#18794e;
+    font-size:13px;
+}
+
+.overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(17,24,39,.4);
+    z-index:1500;
+}
+
+/* =========================
+   DARK MODE
+========================= */
+
+body.dark{
+    background:#111827;
+    color:#f4f7fb;
+}
+
+body.dark .sidebar,
+body.dark .topbar,
+body.dark .card{
+    background:#182231;
+    border-color:#283547;
+}
+
+body.dark .menu a{
+    color:#c4ceda;
+}
+
+body.dark .menu a:hover,
+body.dark .menu a.active{
+    background:#123452;
+    color:#58b9ff;
+}
+
+body.dark .menu-title,
+body.dark .brand p,
+body.dark .page-title p,
+body.dark .muted,
+body.dark .setting-text span{
+    color:#93a0b2;
+}
+
+body.dark .setting-row{
+    border-color:#2a3849;
+}
+
+body.dark .form-group input,
+body.dark .form-group select{
+    background:#111a27;
+    color:white;
+    border-color:#344256;
+}
+
+body.dark .icon-btn{
+    background:#182231;
+    color:white;
+    border-color:#344256;
+}
+
+body.dark .setting-icon{
+    background:#123452;
+    color:#58b9ff;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:900px){
+
+    .sidebar{
+        transform:translateX(-100%);
+    }
+
+    .sidebar.active{
+        transform:translateX(0);
+    }
+
+    .overlay.active{
+        display:block;
+    }
+
+    .main{
+        margin-left:0;
+    }
+
+    .mobile-toggle{
+        display:block;
+    }
+
+    .settings-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+@media(max-width:550px){
+
+    .content{
+        padding:20px 14px;
+    }
+
+    .topbar{
+        padding:0 15px;
+    }
+
+    .page-title p{
+        display:none;
+    }
+
+    .setting-row{
+        align-items:flex-start;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="overlay" id="overlay"></div>
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="brand">
+        <h2>WAYNE LOGS</h2>
+        <p>Marketplace</p>
+    </div>
+
+    <div class="menu">
+
+        <div class="menu-title">Menu</div>
+
+        <a href="dashboard.html">
+            <i class="fa-solid fa-house"></i>
+            Dashboard
+        </a>
+
+        <a href="wallet.html">
+            <i class="fa-solid fa-wallet"></i>
+            Wallet
+        </a>
+
+        <a href="airtime.html">
+            <i class="fa-solid fa-phone"></i>
+            Airtime
+        </a>
+
+        <a href="data.html">
+            <i class="fa-solid fa-wifi"></i>
+            Data
+        </a>
+
+        <a href="electricity.html">
+            <i class="fa-solid fa-bolt"></i>
+            Electricity
+        </a>
+
+        <a href="cable.html">
+            <i class="fa-solid fa-tv"></i>
+            Cable TV
+        </a>
+
+        <a href="marketplace.html">
+            <i class="fa-solid fa-store"></i>
+            Marketplace
+        </a>
+
+        <a href="orders.html">
+            <i class="fa-solid fa-box"></i>
+            My Orders
+        </a>
+
+        <div class="menu-title">Account</div>
+
+        <a href="profile.html">
+            <i class="fa-solid fa-user"></i>
+            Profile
+        </a>
+
+        <a href="referrals.html">
+            <i class="fa-solid fa-users"></i>
+            Referrals
+        </a>
+
+        <a href="notifications.html">
+            <i class="fa-solid fa-bell"></i>
+            Notifications
+        </a>
+
+        <a href="settings.html" class="active">
+            <i class="fa-solid fa-gear"></i>
+            Settings
+        </a>
+
+        <a href="login.html">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            Logout
+        </a>
+
+    </div>
+
+</aside>
+
+
+<main class="main">
+
+    <div class="topbar">
+
+        <button class="mobile-toggle" id="mobileToggle">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <div class="page-title">
+            <h1>Settings</h1>
+            <p>Manage your WAYNE LOGS preferences.</p>
+        </div>
+
+        <div class="top-actions">
+
+            <a href="notifications.html" class="icon-btn">
+                <i class="fa-regular fa-bell"></i>
+            </a>
+
+            <div class="avatar">
+                W
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <section class="content">
+
+        <div class="hero">
+
+            <h1>
+                <i class="fa-solid fa-gear"></i>
+                Account Settings
+            </h1>
+
+            <p>
+                Control your account preferences, notifications,
+                appearance and security options.
+            </p>
+
+        </div>
+
+
+        <div class="message" id="saveMessage">
+            Settings saved successfully.
+        </div>
+
+
+        <div class="settings-grid">
+
+            <!-- PREFERENCES -->
+
+            <div class="card">
+
+                <h2>Preferences</h2>
+
+                <p class="muted">
+                    Customize your WAYNE LOGS experience.
+                </p>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-info">
+
+                        <div class="setting-icon">
+                            <i class="fa-solid fa-moon"></i>
+                        </div>
+
+                        <div class="setting-text">
+                            <strong>Dark Mode</strong>
+                            <span>Use a dark website appearance.</span>
+                        </div>
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            id="darkMode">
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-info">
+
+                        <div class="setting-icon">
+                            <i class="fa-solid fa-envelope"></i>
+                        </div>
+
+                        <div class="setting-text">
+                            <strong>Email Notifications</strong>
+                            <span>Receive important updates by email.</span>
+                        </div>
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            id="emailNotifications"
+                            checked>
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-info">
+
+                        <div class="setting-icon">
+                            <i class="fa-solid fa-bell"></i>
+                        </div>
+
+                        <div class="setting-text">
+                            <strong>Order Notifications</strong>
+                            <span>Receive updates about your purchases.</span>
+                        </div>
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            id="orderNotifications"
+                            checked>
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-info">
+
+                        <div class="setting-icon">
+                            <i class="fa-solid fa-bullhorn"></i>
+                        </div>
+
+                        <div class="setting-text">
+                            <strong>Promotions</strong>
+                            <span>Receive marketplace offers and news.</span>
+                        </div>
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            id="promotions">
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <!-- GENERAL -->
+
+            <div class="card">
+
+                <h2>General Settings</h2>
+
+                <p class="muted">
+                    Set your currency and account preferences.
+                </p>
+
+
+                <div class="form-group">
+
+                    <label>Currency</label>
+
+                    <select id="currency">
+
+                        <option value="NGN">
+                            Nigerian Naira (₦)
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Language</label>
+
+                    <select id="language">
+
+                        <option value="English">
+                            English
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <button
+                    class="save-btn"
+                    id="saveSettings">
+
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    Save Settings
+
+                </button>
+
+            </div>
+
+
+            <!-- SECURITY -->
+
+            <div class="card">
+
+                <h2>Security</h2>
+
+                <p class="muted">
+                    Password changes are currently a frontend demo.
+                </p>
+
+
+                <form id="passwordForm">
+
+                    <div class="form-group">
+
+                        <label>Current Password</label>
+
+                        <input
+                            type="password"
+                            id="currentPassword"
+                            placeholder="Enter current password">
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>New Password</label>
+
+                        <input
+                            type="password"
+                            id="newPassword"
+                            placeholder="Enter new password">
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>Confirm New Password</label>
+
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            placeholder="Confirm new password">
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="save-btn">
+
+                        <i class="fa-solid fa-lock"></i>
+                        Change Password
+
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <!-- ACCOUNT -->
+
+            <div class="card">
+
+                <h2>Account</h2>
+
+                <p class="muted">
+                    Manage important account actions.
+                </p>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-info">
+
+                        <div class="setting-icon">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+
+                        <div class="setting-text">
+
+                            <strong>Edit Profile</strong>
+
+                            <span>
+                                Change your personal information.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <a
+                        href="profile.html"
+                        style="color:#0785df;font-weight:bold;font-size:13px;">
+
+                        Open
+
+                    </a>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-info">
+
+                        <div class="setting-icon">
+                            <i class="fa-solid fa-box"></i>
+                        </div>
+
+                        <div class="setting-text">
+
+                            <strong>My Orders</strong>
+
+                            <span>
+                                View your marketplace purchases.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <a
+                        href="orders.html"
+                        style="color:#0785df;font-weight:bold;font-size:13px;">
+
+                        Open
+
+                    </a>
+
+                </div>
+
+
+                <div style="margin-top:20px;">
+
+                    <button
+                        class="danger-btn"
+                        id="logoutButton">
+
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        Logout
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<script>
+
+/* =========================
+   MOBILE SIDEBAR
+========================= */
+
+const sidebar =
+    document.getElementById("sidebar");
+
+const mobileToggle =
+    document.getElementById("mobileToggle");
+
+const overlay =
+    document.getElementById("overlay");
+
+
+mobileToggle.addEventListener("click", function(){
+
+    sidebar.classList.add("active");
+    overlay.classList.add("active");
+
+});
+
+
+overlay.addEventListener("click", function(){
+
+    sidebar.classList.remove("active");
+    overlay.classList.remove("active");
+
+});
+
+
+/* =========================
+   SETTINGS
+========================= */
+
+const darkMode =
+    document.getElementById("darkMode");
+
+const emailNotifications =
+    document.getElementById("emailNotifications");
+
+const orderNotifications =
+    document.getElementById("orderNotifications");
+
+const promotions =
+    document.getElementById("promotions");
+
+
+let savedSettings =
+    JSON.parse(
+        localStorage.getItem(
+            "wayneSettings"
+        )
+    );
+
+
+if(savedSettings){
+
+    darkMode.checked =
+        savedSettings.darkMode || false;
+
+    emailNotifications.checked =
+        savedSettings.emailNotifications ?? true;
+
+    orderNotifications.checked =
+        savedSettings.orderNotifications ?? true;
+
+    promotions.checked =
+        savedSettings.promotions || false;
+
+}
+
+
+/* APPLY DARK MODE */
+
+function applyDarkMode(){
+
+    if(darkMode.checked){
+
+        document.body.classList.add(
+            "dark"
+        );
+
+    }else{
+
+        document.body.classList.remove(
+            "dark"
+        );
+
+    }
+
+}
+
+
+applyDarkMode();
+
+
+darkMode.addEventListener(
+    "change",
+    function(){
+
+        applyDarkMode();
+
+        saveSettings();
+
+    }
+);
+
+
+/* SAVE */
+
+function saveSettings(){
+
+    const settings = {
+
+        darkMode:
+            darkMode.checked,
+
+        emailNotifications:
+            emailNotifications.checked,
+
+        orderNotifications:
+            orderNotifications.checked,
+
+        promotions:
+            promotions.checked
+
+    };
+
+
+    localStorage.setItem(
+        "wayneSettings",
+        JSON.stringify(settings)
+    );
+
+}
+
+
+document.getElementById(
+    "saveSettings"
+)
+.addEventListener(
+    "click",
+    function(){
+
+        saveSettings();
+
+
+        const message =
+            document.getElementById(
+                "saveMessage"
+            );
+
+
+        message.style.display =
+            "block";
+
+
+        setTimeout(function(){
+
+            message.style.display =
+                "none";
+
+        },2000);
+
+    }
+);
+
+
+/* =========================
+   PASSWORD DEMO
+========================= */
+
+document.getElementById(
+    "passwordForm"
+)
+.addEventListener(
+    "submit",
+    function(event){
+
+        event.preventDefault();
+
+
+        const currentPassword =
+            document.getElementById(
+                "currentPassword"
+            ).value;
+
+
+        const newPassword =
+            document.getElementById(
+                "newPassword"
+            ).value;
+
+
+        const confirmPassword =
+            document.getElementById(
+                "confirmPassword"
+            ).value;
+
+
+        if(
+            !currentPassword ||
+            !newPassword ||
+            !confirmPassword
+        ){
+
+            alert(
+                "Please fill in all password fields."
+            );
+
+            return;
+
+        }
+
+
+        if(newPassword.length < 6){
+
+            alert(
+                "New password must be at least 6 characters."
+            );
+
+            return;
+
+        }
+
+
+        if(
+            newPassword !==
+            confirmPassword
+        ){
+
+            alert(
+                "New passwords do not match."
+            );
+
+            return;
+
+        }
+
+
+        alert(
+            "Password form is working. Real password changes will be connected to the secure backend later."
+        );
+
+
+        document.getElementById(
+            "passwordForm"
+        ).reset();
+
+    }
+);
+
+
+/* =========================
+   LOGOUT DEMO
+========================= */
+
+document.getElementById(
+    "logoutButton"
+)
+.addEventListener(
+    "click",
+    function(){
+
+        window.location.href =
+            "login.html";
+
+    }
+);
+
+</script>
+
+</body>
+</html>

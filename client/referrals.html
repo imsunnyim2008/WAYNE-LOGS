@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Referrals - WAYNE LOGS</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:#f5f8fc;
+    color:#1f2937;
+}
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    position:fixed;
+    top:0;
+    left:0;
+    width:250px;
+    height:100vh;
+    background:#fff;
+    border-right:1px solid #e8edf3;
+    padding:24px 18px;
+    z-index:2000;
+    transition:.3s;
+}
+
+.brand{
+    padding:0 12px 28px;
+}
+
+.brand h2{
+    color:#0785df;
+    font-size:25px;
+}
+
+.brand p{
+    color:#8995a6;
+    font-size:11px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+}
+
+.menu-title{
+    font-size:11px;
+    color:#9aa4b2;
+    font-weight:bold;
+    padding:10px 12px;
+    text-transform:uppercase;
+}
+
+.menu a{
+    display:flex;
+    align-items:center;
+    gap:13px;
+    padding:13px 14px;
+    margin-bottom:5px;
+    border-radius:10px;
+    color:#556276;
+    font-size:14px;
+}
+
+.menu a:hover,
+.menu a.active{
+    background:#eaf6ff;
+    color:#0785df;
+}
+
+/* MAIN */
+
+.main{
+    margin-left:250px;
+    min-height:100vh;
+}
+
+.topbar{
+    height:78px;
+    background:#fff;
+    border-bottom:1px solid #edf0f4;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 30px;
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
+
+.mobile-toggle{
+    display:none;
+    border:none;
+    background:none;
+    font-size:22px;
+    cursor:pointer;
+}
+
+.page-title h1{
+    font-size:21px;
+}
+
+.page-title p{
+    color:#8a95a4;
+    font-size:12px;
+    margin-top:3px;
+}
+
+.top-actions{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.icon-btn{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    border:1px solid #e5e9ef;
+    background:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.avatar{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:#0785df;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-weight:bold;
+}
+
+/* CONTENT */
+
+.content{
+    padding:30px;
+    max-width:1150px;
+    margin:auto;
+}
+
+/* HERO */
+
+.hero{
+    background:linear-gradient(135deg,#067fd7,#0aa0f4);
+    border-radius:22px;
+    padding:32px;
+    color:white;
+    margin-bottom:24px;
+    box-shadow:0 20px 45px rgba(7,133,223,.18);
+}
+
+.hero h1{
+    font-size:29px;
+    margin-bottom:9px;
+}
+
+.hero p{
+    opacity:.9;
+    font-size:14px;
+    line-height:1.6;
+}
+
+/* STATS */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:16px;
+    margin-bottom:22px;
+}
+
+.stat-card{
+    background:white;
+    border:1px solid #edf0f4;
+    border-radius:17px;
+    padding:22px;
+}
+
+.stat-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.stat-card small{
+    color:#8893a3;
+}
+
+.stat-icon{
+    width:46px;
+    height:46px;
+    border-radius:13px;
+    background:#eaf6ff;
+    color:#0785df;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:19px;
+}
+
+.stat-card h2{
+    margin-top:13px;
+    font-size:27px;
+}
+
+/* GRID */
+
+.grid{
+    display:grid;
+    grid-template-columns:1.2fr .8fr;
+    gap:20px;
+}
+
+.card{
+    background:#fff;
+    border:1px solid #edf0f4;
+    border-radius:18px;
+    padding:25px;
+}
+
+.card h2{
+    font-size:20px;
+    margin-bottom:6px;
+}
+
+.muted{
+    color:#8893a3;
+    font-size:13px;
+    margin-bottom:22px;
+}
+
+/* REFERRAL LINK */
+
+.referral-box{
+    display:flex;
+    gap:10px;
+    margin-bottom:15px;
+}
+
+.referral-box input{
+    flex:1;
+    height:50px;
+    border:1px solid #dfe6ee;
+    background:#f8fafc;
+    border-radius:11px;
+    padding:0 15px;
+    outline:none;
+    min-width:0;
+}
+
+.copy-btn{
+    border:none;
+    background:#0785df;
+    color:white;
+    padding:0 20px;
+    border-radius:11px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.copy-btn:hover{
+    background:#006fc0;
+}
+
+.copy-message{
+    display:none;
+    background:#e9f7ef;
+    color:#18794e;
+    border-radius:10px;
+    padding:11px;
+    font-size:13px;
+    margin-bottom:15px;
+}
+
+/* SHARE BUTTONS */
+
+.share-title{
+    font-size:13px;
+    font-weight:bold;
+    margin:20px 0 11px;
+}
+
+.share-buttons{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+}
+
+.share-btn{
+    border:1px solid #dfe6ee;
+    background:#fff;
+    border-radius:11px;
+    padding:12px 8px;
+    cursor:pointer;
+    font-weight:600;
+    color:#566276;
+}
+
+.share-btn i{
+    margin-right:5px;
+}
+
+.share-btn:hover{
+    border-color:#0785df;
+}
+
+/* HOW IT WORKS */
+
+.step{
+    display:flex;
+    gap:13px;
+    margin-bottom:19px;
+}
+
+.step-number{
+    width:36px;
+    height:36px;
+    min-width:36px;
+    border-radius:50%;
+    background:#eaf6ff;
+    color:#0785df;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+}
+
+.step h3{
+    font-size:14px;
+    margin-bottom:4px;
+}
+
+.step p{
+    color:#8893a3;
+    font-size:12px;
+    line-height:1.5;
+}
+
+/* REFERRAL TABLE */
+
+.referrals{
+    background:#fff;
+    border:1px solid #edf0f4;
+    border-radius:18px;
+    margin-top:22px;
+    overflow:hidden;
+}
+
+.referrals-header{
+    padding:20px;
+    border-bottom:1px solid #edf0f4;
+}
+
+.referrals-header h2{
+    font-size:19px;
+}
+
+.referral-row{
+    display:grid;
+    grid-template-columns:1.5fr 1fr 1fr 1fr;
+    gap:15px;
+    padding:16px 20px;
+    border-bottom:1px solid #f0f2f5;
+    font-size:13px;
+}
+
+.referral-row:last-child{
+    border-bottom:none;
+}
+
+.referral-head{
+    background:#fafbfd;
+    color:#657184;
+    font-weight:bold;
+}
+
+.status{
+    color:#159455;
+    font-weight:bold;
+}
+
+.empty{
+    text-align:center;
+    padding:45px 20px;
+    color:#8792a1;
+}
+
+.empty i{
+    font-size:40px;
+    color:#ccd4de;
+    margin-bottom:13px;
+}
+
+.empty h3{
+    color:#566276;
+    margin-bottom:7px;
+}
+
+/* OVERLAY */
+
+.overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(17,24,39,.4);
+    z-index:1500;
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+    .sidebar{
+        transform:translateX(-100%);
+    }
+
+    .sidebar.active{
+        transform:translateX(0);
+    }
+
+    .overlay.active{
+        display:block;
+    }
+
+    .main{
+        margin-left:0;
+    }
+
+    .mobile-toggle{
+        display:block;
+    }
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+@media(max-width:700px){
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .referral-row{
+        grid-template-columns:1.5fr 1fr;
+    }
+
+    .hide-mobile{
+        display:none;
+    }
+
+}
+
+@media(max-width:550px){
+
+    .content{
+        padding:20px 14px;
+    }
+
+    .topbar{
+        padding:0 15px;
+    }
+
+    .page-title p{
+        display:none;
+    }
+
+    .referral-box{
+        flex-direction:column;
+    }
+
+    .copy-btn{
+        height:48px;
+    }
+
+    .share-buttons{
+        grid-template-columns:1fr;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="overlay" id="overlay"></div>
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="brand">
+        <h2>WAYNE LOGS</h2>
+        <p>Marketplace</p>
+    </div>
+
+    <div class="menu">
+
+        <div class="menu-title">Menu</div>
+
+        <a href="dashboard.html">
+            <i class="fa-solid fa-house"></i>
+            Dashboard
+        </a>
+
+        <a href="wallet.html">
+            <i class="fa-solid fa-wallet"></i>
+            Wallet
+        </a>
+
+        <a href="airtime.html">
+            <i class="fa-solid fa-phone"></i>
+            Airtime
+        </a>
+
+        <a href="data.html">
+            <i class="fa-solid fa-wifi"></i>
+            Data
+        </a>
+
+        <a href="electricity.html">
+            <i class="fa-solid fa-bolt"></i>
+            Electricity
+        </a>
+
+        <a href="cable.html">
+            <i class="fa-solid fa-tv"></i>
+            Cable TV
+        </a>
+
+        <a href="marketplace.html">
+            <i class="fa-solid fa-store"></i>
+            Marketplace
+        </a>
+
+        <a href="orders.html">
+            <i class="fa-solid fa-box"></i>
+            My Orders
+        </a>
+
+        <div class="menu-title">Account</div>
+
+        <a href="profile.html">
+            <i class="fa-solid fa-user"></i>
+            Profile
+        </a>
+
+        <a href="referrals.html" class="active">
+            <i class="fa-solid fa-users"></i>
+            Referrals
+        </a>
+
+        <a href="notifications.html">
+            <i class="fa-solid fa-bell"></i>
+            Notifications
+        </a>
+
+        <a href="settings.html">
+            <i class="fa-solid fa-gear"></i>
+            Settings
+        </a>
+
+        <a href="login.html">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            Logout
+        </a>
+
+    </div>
+
+</aside>
+
+<main class="main">
+
+    <div class="topbar">
+
+        <button class="mobile-toggle" id="mobileToggle">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <div class="page-title">
+            <h1>Referrals</h1>
+            <p>Invite friends to WAYNE LOGS.</p>
+        </div>
+
+        <div class="top-actions">
+
+            <a href="notifications.html" class="icon-btn">
+                <i class="fa-regular fa-bell"></i>
+            </a>
+
+            <div class="avatar">W</div>
+
+        </div>
+
+    </div>
+
+    <section class="content">
+
+        <div class="hero">
+
+            <h1>
+                <i class="fa-solid fa-gift"></i>
+                Invite & Earn
+            </h1>
+
+            <p>
+                Share your WAYNE LOGS referral link with friends.
+                Referral rewards and rules will later be controlled
+                from the admin dashboard.
+            </p>
+
+        </div>
+
+        <div class="stats">
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+                    <small>Total Referrals</small>
+
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                </div>
+
+                <h2 id="totalReferrals">0</h2>
+
+            </div>
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+                    <small>Referral Earnings</small>
+
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-naira-sign"></i>
+                    </div>
+                </div>
+
+                <h2>₦0.00</h2>
+
+            </div>
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+                    <small>Referral Code</small>
+
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-link"></i>
+                    </div>
+                </div>
+
+                <h2 style="font-size:20px;">
+                    WAYNE001
+                </h2>
+
+            </div>
+
+        </div>
+
+        <div class="grid">
+
+            <div class="card">
+
+                <h2>Your Referral Link</h2>
+
+                <p class="muted">
+                    Send this link to anyone you want to invite.
+                </p>
+
+                <div class="copy-message" id="copyMessage">
+                    Referral link copied successfully.
+                </div>
+
+                <div class="referral-box">
+
+                    <input
+                        type="text"
+                        id="referralLink"
+                        value="https://waynelogs.com/register?ref=WAYNE001"
+                        readonly>
+
+                    <button
+                        class="copy-btn"
+                        id="copyButton">
+
+                        <i class="fa-regular fa-copy"></i>
+                        Copy
+
+                    </button>
+
+                </div>
+
+                <div class="share-title">
+                    Share Referral Link
+                </div>
+
+                <div class="share-buttons">
+
+                    <button class="share-btn" onclick="shareWhatsApp()">
+                        <i class="fa-brands fa-whatsapp"
+                        style="color:#25D366;"></i>
+                        WhatsApp
+                    </button>
+
+                    <button class="share-btn" onclick="shareTelegram()">
+                        <i class="fa-brands fa-telegram"
+                        style="color:#229ED9;"></i>
+                        Telegram
+                    </button>
+
+                    <button class="share-btn" onclick="shareNative()">
+                        <i class="fa-solid fa-share-nodes"></i>
+                        Share
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="card">
+
+                <h2>How It Works</h2>
+
+                <p class="muted">
+                    Referral rewards will become automatic after
+                    the backend is connected.
+                </p>
+
+                <div class="step">
+
+                    <div class="step-number">1</div>
+
+                    <div>
+                        <h3>Copy your link</h3>
+                        <p>
+                            Use your unique WAYNE LOGS referral link.
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="step">
+
+                    <div class="step-number">2</div>
+
+                    <div>
+                        <h3>Invite friends</h3>
+                        <p>
+                            Send the link to people who want to join.
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="step">
+
+                    <div class="step-number">3</div>
+
+                    <div>
+                        <h3>Earn rewards</h3>
+                        <p>
+                            Eligible rewards will be added according
+                            to your referral program rules.
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="referrals">
+
+            <div class="referrals-header">
+                <h2>My Referrals</h2>
+            </div>
+
+            <div class="referral-row referral-head">
+
+                <div>User</div>
+
+                <div>Date Joined</div>
+
+                <div class="hide-mobile">
+                    Status
+                </div>
+
+                <div class="hide-mobile">
+                    Earnings
+                </div>
+
+            </div>
+
+            <div class="empty">
+
+                <i class="fa-solid fa-user-group"></i>
+
+                <h3>No referrals yet</h3>
+
+                <p>
+                    Share your referral link to start inviting people.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<script>
+
+/* MOBILE MENU */
+
+const sidebar =
+    document.getElementById("sidebar");
+
+const mobileToggle =
+    document.getElementById("mobileToggle");
+
+const overlay =
+    document.getElementById("overlay");
+
+
+mobileToggle.addEventListener("click", function(){
+
+    sidebar.classList.add("active");
+    overlay.classList.add("active");
+
+});
+
+
+overlay.addEventListener("click", function(){
+
+    sidebar.classList.remove("active");
+    overlay.classList.remove("active");
+
+});
+
+
+/* REFERRAL LINK */
+
+const referralLink =
+    document.getElementById("referralLink");
+
+const copyButton =
+    document.getElementById("copyButton");
+
+const copyMessage =
+    document.getElementById("copyMessage");
+
+
+copyButton.addEventListener("click", async function(){
+
+    try{
+
+        await navigator.clipboard.writeText(
+            referralLink.value
+        );
+
+        showCopied();
+
+    }catch(error){
+
+        referralLink.select();
+
+        document.execCommand("copy");
+
+        showCopied();
+
+    }
+
+});
+
+
+function showCopied(){
+
+    copyMessage.style.display = "block";
+
+    setTimeout(function(){
+
+        copyMessage.style.display = "none";
+
+    },2000);
+
+}
+
+
+/* SHARE */
+
+function shareWhatsApp(){
+
+    const message =
+        "Join me on WAYNE LOGS: " +
+        referralLink.value;
+
+    window.open(
+        "https://wa.me/?text=" +
+        encodeURIComponent(message),
+        "_blank"
+    );
+
+}
+
+
+function shareTelegram(){
+
+    const message =
+        "Join me on WAYNE LOGS";
+
+    window.open(
+        "https://t.me/share/url?url=" +
+        encodeURIComponent(referralLink.value) +
+        "&text=" +
+        encodeURIComponent(message),
+        "_blank"
+    );
+
+}
+
+
+async function shareNative(){
+
+    if(navigator.share){
+
+        try{
+
+            await navigator.share({
+
+                title:"WAYNE LOGS",
+
+                text:
+                    "Join me on WAYNE LOGS.",
+
+                url:
+                    referralLink.value
+
+            });
+
+        }catch(error){}
+
+    }else{
+
+        try{
+
+            await navigator.clipboard.writeText(
+                referralLink.value
+            );
+
+            showCopied();
+
+        }catch(error){
+
+            alert(
+                "Copy your referral link manually."
+            );
+
+        }
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>

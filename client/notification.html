@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Notifications - WAYNE LOGS</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:#f5f8fc;
+    color:#1f2937;
+}
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+.sidebar{
+    position:fixed;
+    top:0;
+    left:0;
+    width:250px;
+    height:100vh;
+    background:#fff;
+    border-right:1px solid #e8edf3;
+    padding:24px 18px;
+    z-index:2000;
+    transition:.3s;
+}
+
+.brand{
+    padding:0 12px 28px;
+}
+
+.brand h2{
+    color:#0785df;
+    font-size:25px;
+}
+
+.brand p{
+    color:#8995a6;
+    font-size:11px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+}
+
+.menu-title{
+    font-size:11px;
+    color:#9aa4b2;
+    font-weight:bold;
+    padding:10px 12px;
+    text-transform:uppercase;
+}
+
+.menu a{
+    display:flex;
+    align-items:center;
+    gap:13px;
+    padding:13px 14px;
+    margin-bottom:5px;
+    border-radius:10px;
+    color:#556276;
+    font-size:14px;
+}
+
+.menu a:hover,
+.menu a.active{
+    background:#eaf6ff;
+    color:#0785df;
+}
+
+.main{
+    margin-left:250px;
+    min-height:100vh;
+}
+
+.topbar{
+    height:78px;
+    background:#fff;
+    border-bottom:1px solid #edf0f4;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 30px;
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
+
+.mobile-toggle{
+    display:none;
+    border:none;
+    background:none;
+    font-size:22px;
+    cursor:pointer;
+}
+
+.page-title h1{
+    font-size:21px;
+}
+
+.page-title p{
+    color:#8a95a4;
+    font-size:12px;
+    margin-top:3px;
+}
+
+.top-actions{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.icon-btn{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    border:1px solid #e5e9ef;
+    background:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.avatar{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:#0785df;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-weight:bold;
+}
+
+.content{
+    padding:30px;
+    max-width:1050px;
+    margin:auto;
+}
+
+.hero{
+    background:linear-gradient(135deg,#067fd7,#0aa0f4);
+    border-radius:22px;
+    padding:30px;
+    color:white;
+    margin-bottom:24px;
+    box-shadow:0 20px 45px rgba(7,133,223,.18);
+}
+
+.hero h1{
+    font-size:28px;
+    margin-bottom:8px;
+}
+
+.hero p{
+    opacity:.9;
+    font-size:14px;
+}
+
+.toolbar{
+    background:white;
+    border:1px solid #edf0f4;
+    border-radius:16px;
+    padding:16px 18px;
+    margin-bottom:18px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.toolbar-left{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.toolbar-left h2{
+    font-size:18px;
+}
+
+.count{
+    background:#eaf6ff;
+    color:#0785df;
+    padding:5px 9px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:bold;
+}
+
+.mark-btn{
+    border:none;
+    background:#0785df;
+    color:white;
+    padding:11px 15px;
+    border-radius:9px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.mark-btn:hover{
+    background:#006fc0;
+}
+
+.notifications{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.notification-card{
+    background:white;
+    border:1px solid #edf0f4;
+    border-radius:16px;
+    padding:18px;
+    display:flex;
+    gap:15px;
+    transition:.25s;
+}
+
+.notification-card.unread{
+    background:#f0f9ff;
+    border-color:#cdeaff;
+}
+
+.notification-card:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 25px rgba(0,0,0,.05);
+}
+
+.notification-icon{
+    width:48px;
+    height:48px;
+    min-width:48px;
+    border-radius:13px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:19px;
+}
+
+.icon-info{
+    background:#eaf6ff;
+    color:#0785df;
+}
+
+.icon-success{
+    background:#eaf8ef;
+    color:#159455;
+}
+
+.icon-warning{
+    background:#fff5dc;
+    color:#b17a00;
+}
+
+.icon-order{
+    background:#f3edff;
+    color:#7c3aed;
+}
+
+.notification-content{
+    flex:1;
+}
+
+.notification-top{
+    display:flex;
+    justify-content:space-between;
+    gap:15px;
+    margin-bottom:6px;
+}
+
+.notification-top h3{
+    font-size:15px;
+}
+
+.notification-time{
+    font-size:11px;
+    color:#98a2b3;
+    white-space:nowrap;
+}
+
+.notification-content p{
+    color:#7c8797;
+    font-size:13px;
+    line-height:1.6;
+}
+
+.notification-actions{
+    display:flex;
+    gap:8px;
+    margin-top:12px;
+}
+
+.small-btn{
+    border:1px solid #dfe6ee;
+    background:white;
+    padding:7px 10px;
+    border-radius:8px;
+    font-size:11px;
+    cursor:pointer;
+}
+
+.small-btn:hover{
+    border-color:#0785df;
+    color:#0785df;
+}
+
+.delete-btn:hover{
+    border-color:#d92d20;
+    color:#d92d20;
+}
+
+.empty{
+    display:none;
+    background:white;
+    border:1px solid #edf0f4;
+    border-radius:18px;
+    padding:55px 20px;
+    text-align:center;
+    color:#8792a1;
+}
+
+.empty i{
+    font-size:44px;
+    color:#ccd4de;
+    margin-bottom:14px;
+}
+
+.empty h3{
+    color:#566276;
+    margin-bottom:7px;
+}
+
+.overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(17,24,39,.4);
+    z-index:1500;
+}
+
+@media(max-width:900px){
+
+    .sidebar{
+        transform:translateX(-100%);
+    }
+
+    .sidebar.active{
+        transform:translateX(0);
+    }
+
+    .overlay.active{
+        display:block;
+    }
+
+    .main{
+        margin-left:0;
+    }
+
+    .mobile-toggle{
+        display:block;
+    }
+
+}
+
+@media(max-width:550px){
+
+    .content{
+        padding:20px 14px;
+    }
+
+    .topbar{
+        padding:0 15px;
+    }
+
+    .page-title p{
+        display:none;
+    }
+
+    .notification-card{
+        padding:15px;
+    }
+
+    .notification-top{
+        flex-direction:column;
+        gap:4px;
+    }
+
+    .toolbar{
+        align-items:flex-start;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="overlay" id="overlay"></div>
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="brand">
+        <h2>WAYNE LOGS</h2>
+        <p>Marketplace</p>
+    </div>
+
+    <div class="menu">
+
+        <div class="menu-title">Menu</div>
+
+        <a href="dashboard.html">
+            <i class="fa-solid fa-house"></i>
+            Dashboard
+        </a>
+
+        <a href="wallet.html">
+            <i class="fa-solid fa-wallet"></i>
+            Wallet
+        </a>
+
+        <a href="airtime.html">
+            <i class="fa-solid fa-phone"></i>
+            Airtime
+        </a>
+
+        <a href="data.html">
+            <i class="fa-solid fa-wifi"></i>
+            Data
+        </a>
+
+        <a href="electricity.html">
+            <i class="fa-solid fa-bolt"></i>
+            Electricity
+        </a>
+
+        <a href="cable.html">
+            <i class="fa-solid fa-tv"></i>
+            Cable TV
+        </a>
+
+        <a href="marketplace.html">
+            <i class="fa-solid fa-store"></i>
+            Marketplace
+        </a>
+
+        <a href="orders.html">
+            <i class="fa-solid fa-box"></i>
+            My Orders
+        </a>
+
+        <div class="menu-title">Account</div>
+
+        <a href="profile.html">
+            <i class="fa-solid fa-user"></i>
+            Profile
+        </a>
+
+        <a href="referrals.html">
+            <i class="fa-solid fa-users"></i>
+            Referrals
+        </a>
+
+        <a href="notifications.html" class="active">
+            <i class="fa-solid fa-bell"></i>
+            Notifications
+        </a>
+
+        <a href="settings.html">
+            <i class="fa-solid fa-gear"></i>
+            Settings
+        </a>
+
+        <a href="login.html">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            Logout
+        </a>
+
+    </div>
+
+</aside>
+
+<main class="main">
+
+    <div class="topbar">
+
+        <button class="mobile-toggle" id="mobileToggle">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <div class="page-title">
+            <h1>Notifications</h1>
+            <p>Stay updated with your account activity.</p>
+        </div>
+
+        <div class="top-actions">
+
+            <div class="icon-btn">
+                <i class="fa-regular fa-bell"></i>
+            </div>
+
+            <div class="avatar">W</div>
+
+        </div>
+
+    </div>
+
+    <section class="content">
+
+        <div class="hero">
+
+            <h1>
+                <i class="fa-solid fa-bell"></i>
+                Notifications
+            </h1>
+
+            <p>
+                View important updates about your wallet,
+                purchases and WAYNE LOGS account.
+            </p>
+
+        </div>
+
+        <div class="toolbar">
+
+            <div class="toolbar-left">
+
+                <h2>Recent Notifications</h2>
+
+                <span class="count" id="unreadCount">
+                    0 unread
+                </span>
+
+            </div>
+
+            <button class="mark-btn" id="markAllBtn">
+
+                <i class="fa-solid fa-check-double"></i>
+
+                Mark All Read
+
+            </button>
+
+        </div>
+
+        <div class="notifications" id="notificationList"></div>
+
+        <div class="empty" id="emptyState">
+
+            <i class="fa-regular fa-bell-slash"></i>
+
+            <h3>No notifications</h3>
+
+            <p>
+                New account updates will appear here.
+            </p>
+
+        </div>
+
+    </section>
+
+</main>
+
+<script>
+
+/* MOBILE MENU */
+
+const sidebar =
+    document.getElementById("sidebar");
+
+const mobileToggle =
+    document.getElementById("mobileToggle");
+
+const overlay =
+    document.getElementById("overlay");
+
+
+mobileToggle.addEventListener("click", function(){
+
+    sidebar.classList.add("active");
+    overlay.classList.add("active");
+
+});
+
+
+overlay.addEventListener("click", function(){
+
+    sidebar.classList.remove("active");
+    overlay.classList.remove("active");
+
+});
+
+
+/* DEMO NOTIFICATIONS */
+
+const defaultNotifications = [
+
+    {
+        id:1,
+        title:"Welcome to WAYNE LOGS",
+        message:
+            "Your WAYNE LOGS account is ready. You can now explore the marketplace and available services.",
+        time:"Just now",
+        type:"info",
+        read:false
+    },
+
+    {
+        id:2,
+        title:"Wallet Ready",
+        message:
+            "Your wallet section is available. Real wallet funding will be connected when Paystack and the backend are enabled.",
+        time:"Today",
+        type:"success",
+        read:false
+    },
+
+    {
+        id:3,
+        title:"Marketplace Update",
+        message:
+            "Marketplace listings are currently demo items. Admin-controlled products and prices will be connected later.",
+        time:"Today",
+        type:"order",
+        read:true
+    }
+
+];
+
+
+let notifications =
+    JSON.parse(
+        localStorage.getItem(
+            "wayneNotifications"
+        )
+    );
+
+
+if(!notifications){
+
+    notifications =
+        defaultNotifications;
+
+    saveNotifications();
+
+}
+
+
+const notificationList =
+    document.getElementById(
+        "notificationList"
+    );
+
+const emptyState =
+    document.getElementById(
+        "emptyState"
+    );
+
+const unreadCount =
+    document.getElementById(
+        "unreadCount"
+    );
+
+
+function saveNotifications(){
+
+    localStorage.setItem(
+        "wayneNotifications",
+        JSON.stringify(notifications)
+    );
+
+}
+
+
+function getIcon(type){
+
+    if(type === "success"){
+
+        return {
+            icon:"fa-solid fa-circle-check",
+            className:"icon-success"
+        };
+
+    }
+
+    if(type === "warning"){
+
+        return {
+            icon:"fa-solid fa-triangle-exclamation",
+            className:"icon-warning"
+        };
+
+    }
+
+    if(type === "order"){
+
+        return {
+            icon:"fa-solid fa-box",
+            className:"icon-order"
+        };
+
+    }
+
+    return {
+        icon:"fa-solid fa-circle-info",
+        className:"icon-info"
+    };
+
+}
+
+
+function renderNotifications(){
+
+    notificationList.innerHTML = "";
+
+
+    const unread =
+        notifications.filter(
+            function(item){
+                return !item.read;
+            }
+        ).length;
+
+
+    unreadCount.textContent =
+        unread + " unread";
+
+
+    if(notifications.length === 0){
+
+        emptyState.style.display =
+            "block";
+
+        return;
+
+    }
+
+
+    emptyState.style.display =
+        "none";
+
+
+    notifications.forEach(
+        function(item){
+
+            const icon =
+                getIcon(item.type);
+
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.className =
+                "notification-card" +
+                (
+                    item.read
+                    ? ""
+                    : " unread"
+                );
+
+
+            card.innerHTML = `
+
+                <div class="notification-icon ${icon.className}">
+
+                    <i class="${icon.icon}"></i>
+
+                </div>
+
+
+                <div class="notification-content">
+
+                    <div class="notification-top">
+
+                        <h3>
+                            ${item.title}
+                        </h3>
+
+                        <span class="notification-time">
+                            ${item.time}
+                        </span>
+
+                    </div>
+
+
+                    <p>
+                        ${item.message}
+                    </p>
+
+
+                    <div class="notification-actions">
+
+                        ${
+                            item.read
+
+                            ?
+
+                            ""
+
+                            :
+
+                            `
+                            <button
+                                class="small-btn"
+                                onclick="markRead(${item.id})">
+
+                                <i class="fa-solid fa-check"></i>
+                                Mark Read
+
+                            </button>
+                            `
+                        }
+
+
+                        <button
+                            class="small-btn delete-btn"
+                            onclick="deleteNotification(${item.id})">
+
+                            <i class="fa-solid fa-trash"></i>
+                            Delete
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+
+            notificationList.appendChild(
+                card
+            );
+
+        }
+    );
+
+}
+
+
+function markRead(id){
+
+    notifications =
+        notifications.map(
+            function(item){
+
+                if(item.id === id){
+
+                    item.read = true;
+
+                }
+
+                return item;
+
+            }
+        );
+
+
+    saveNotifications();
+
+    renderNotifications();
+
+}
+
+
+function deleteNotification(id){
+
+    notifications =
+        notifications.filter(
+            function(item){
+
+                return item.id !== id;
+
+            }
+        );
+
+
+    saveNotifications();
+
+    renderNotifications();
+
+}
+
+
+document.getElementById(
+    "markAllBtn"
+)
+.addEventListener(
+    "click",
+    function(){
+
+        notifications =
+            notifications.map(
+                function(item){
+
+                    item.read = true;
+
+                    return item;
+
+                }
+            );
+
+
+        saveNotifications();
+
+        renderNotifications();
+
+    }
+);
+
+
+renderNotifications();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buy Data - WAYNE LOGS</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:#f5f8fc;
+    color:#1f2937;
+}
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+.sidebar{
+    position:fixed;
+    top:0;
+    left:0;
+    width:250px;
+    height:100vh;
+    background:#fff;
+    border-right:1px solid #e8edf3;
+    padding:24px 18px;
+    transition:.3s;
+    z-index:2000;
+}
+
+.brand{
+    padding:0 12px 28px;
+}
+
+.brand h2{
+    color:#0785df;
+    font-size:25px;
+}
+
+.brand p{
+    font-size:11px;
+    color:#8995a6;
+    letter-spacing:2px;
+    text-transform:uppercase;
+}
+
+.menu-title{
+    font-size:11px;
+    color:#9aa4b2;
+    font-weight:bold;
+    padding:10px 12px;
+    text-transform:uppercase;
+}
+
+.menu a{
+    display:flex;
+    align-items:center;
+    gap:13px;
+    padding:13px 14px;
+    margin-bottom:5px;
+    border-radius:10px;
+    color:#556276;
+    font-size:14px;
+}
+
+.menu a:hover,
+.menu a.active{
+    background:#eaf6ff;
+    color:#0785df;
+}
+
+.main{
+    margin-left:250px;
+    min-height:100vh;
+}
+
+.topbar{
+    height:78px;
+    background:#fff;
+    border-bottom:1px solid #edf0f4;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 30px;
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
+
+.mobile-toggle{
+    display:none;
+    border:none;
+    background:none;
+    font-size:22px;
+    cursor:pointer;
+}
+
+.page-title h1{
+    font-size:21px;
+}
+
+.page-title p{
+    font-size:12px;
+    color:#8a95a4;
+    margin-top:3px;
+}
+
+.top-actions{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.icon-btn{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    border:1px solid #e5e9ef;
+    background:#fff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.avatar{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:#0785df;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-weight:bold;
+}
+
+.content{
+    padding:30px;
+    max-width:1000px;
+    margin:auto;
+}
+
+.hero-card{
+    background:linear-gradient(135deg,#067fd7,#0aa0f4);
+    color:white;
+    border-radius:20px;
+    padding:28px;
+    margin-bottom:25px;
+    box-shadow:0 20px 45px rgba(7,133,223,.18);
+}
+
+.hero-card h1{
+    font-size:27px;
+    margin-bottom:8px;
+}
+
+.hero-card p{
+    opacity:.9;
+    font-size:14px;
+}
+
+.form-card{
+    background:white;
+    border:1px solid #edf0f4;
+    border-radius:18px;
+    padding:28px;
+}
+
+.form-card h2{
+    font-size:20px;
+    margin-bottom:5px;
+}
+
+.form-card > p{
+    color:#8893a3;
+    font-size:13px;
+    margin-bottom:24px;
+}
+
+.networks{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+    margin-bottom:24px;
+}
+
+.network{
+    border:1px solid #dfe6ee;
+    background:#fff;
+    border-radius:13px;
+    padding:17px 10px;
+    text-align:center;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.network:hover{
+    border-color:#0785df;
+    transform:translateY(-2px);
+}
+
+.network.active{
+    border:2px solid #0785df;
+    background:#eef8ff;
+}
+
+.network-logo{
+    width:48px;
+    height:48px;
+    margin:0 auto 9px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+    color:white;
+    font-size:13px;
+}
+
+.mtn{ background:#ffcc00; color:#111; }
+.airtel{ background:#e60000; }
+.glo{ background:#19a447; }
+.mobile9{ background:#69a82f; }
+
+.network span{
+    font-size:13px;
+    font-weight:bold;
+}
+
+.form-group{
+    margin-bottom:18px;
+}
+
+.form-group label{
+    display:block;
+    margin-bottom:8px;
+    font-size:13px;
+    font-weight:600;
+}
+
+.form-group input,
+.form-group select{
+    width:100%;
+    height:50px;
+    border:1px solid #dfe6ee;
+    background:#f9fbfd;
+    border-radius:11px;
+    padding:0 15px;
+    font-size:15px;
+    outline:none;
+}
+
+.form-group input:focus,
+.form-group select:focus{
+    border-color:#0785df;
+    background:white;
+    box-shadow:0 0 0 4px rgba(7,133,223,.09);
+}
+
+.plan-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-bottom:20px;
+}
+
+.plan-card{
+    border:1px solid #dfe6ee;
+    background:white;
+    border-radius:12px;
+    padding:15px;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.plan-card:hover{
+    border-color:#0785df;
+    transform:translateY(-2px);
+}
+
+.plan-card.active{
+    border:2px solid #0785df;
+    background:#eef8ff;
+}
+
+.plan-card h4{
+    font-size:15px;
+    margin-bottom:5px;
+}
+
+.plan-card p{
+    font-size:12px;
+    color:#7d8898;
+}
+
+.plan-card strong{
+    display:block;
+    color:#0785df;
+    margin-top:8px;
+}
+
+.summary{
+    background:#f8fafc;
+    border-radius:12px;
+    padding:16px;
+    margin:20px 0;
+}
+
+.summary-row{
+    display:flex;
+    justify-content:space-between;
+    padding:6px 0;
+    font-size:13px;
+}
+
+.summary-row span:first-child{
+    color:#7d8898;
+}
+
+.buy-btn{
+    width:100%;
+    height:52px;
+    border:none;
+    border-radius:11px;
+    background:#0785df;
+    color:white;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.buy-btn:hover{
+    background:#006fc0;
+}
+
+.notice{
+    text-align:center;
+    color:#8a95a4;
+    font-size:12px;
+    margin-top:13px;
+}
+
+.notice i{
+    color:#159455;
+}
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(17,24,39,.5);
+    z-index:3000;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.modal.active{
+    display:flex;
+}
+
+.modal-card{
+    width:100%;
+    max-width:420px;
+    background:#fff;
+    border-radius:18px;
+    padding:28px;
+    text-align:center;
+}
+
+.modal-icon{
+    width:65px;
+    height:65px;
+    margin:0 auto 15px;
+    border-radius:50%;
+    background:#eaf6ff;
+    color:#0785df;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:27px;
+}
+
+.modal-card h3{
+    margin-bottom:8px;
+}
+
+.modal-card p{
+    color:#7b8797;
+    line-height:1.6;
+    font-size:14px;
+}
+
+.modal-card button{
+    margin-top:20px;
+    width:100%;
+    height:45px;
+    border:none;
+    border-radius:10px;
+    background:#0785df;
+    color:white;
+    cursor:pointer;
+}
+
+.overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(17,24,39,.4);
+    z-index:1500;
+}
+
+@media(max-width:850px){
+    .sidebar{
+        transform:translateX(-100%);
+    }
+
+    .sidebar.active{
+        transform:translateX(0);
+    }
+
+    .overlay.active{
+        display:block;
+    }
+
+    .main{
+        margin-left:0;
+    }
+
+    .mobile-toggle{
+        display:block;
+    }
+}
+
+@media(max-width:600px){
+    .content{
+        padding:20px 14px;
+    }
+
+    .topbar{
+        padding:0 15px;
+    }
+
+    .page-title p{
+        display:none;
+    }
+
+    .networks{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .plan-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .form-card{
+        padding:22px 17px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="overlay" id="overlay"></div>
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="brand">
+        <h2>WAYNE LOGS</h2>
+        <p>Marketplace</p>
+    </div>
+
+    <div class="menu">
+
+        <div class="menu-title">Menu</div>
+
+        <a href="dashboard.html">
+            <i class="fa-solid fa-house"></i>
+            Dashboard
+        </a>
+
+        <a href="wallet.html">
+            <i class="fa-solid fa-wallet"></i>
+            Wallet
+        </a>
+
+        <a href="airtime.html">
+            <i class="fa-solid fa-phone"></i>
+            Airtime
+        </a>
+
+        <a href="data.html" class="active">
+            <i class="fa-solid fa-wifi"></i>
+            Data
+        </a>
+
+        <a href="electricity.html">
+            <i class="fa-solid fa-bolt"></i>
+            Electricity
+        </a>
+
+        <a href="cable.html">
+            <i class="fa-solid fa-tv"></i>
+            Cable TV
+        </a>
+
+        <a href="marketplace.html">
+            <i class="fa-solid fa-store"></i>
+            Marketplace
+        </a>
+
+        <div class="menu-title">Account</div>
+
+        <a href="profile.html">
+            <i class="fa-solid fa-user"></i>
+            Profile
+        </a>
+
+        <a href="referrals.html">
+            <i class="fa-solid fa-users"></i>
+            Referrals
+        </a>
+
+        <a href="settings.html">
+            <i class="fa-solid fa-gear"></i>
+            Settings
+        </a>
+
+        <a href="login.html">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            Logout
+        </a>
+
+    </div>
+
+</aside>
+
+<main class="main">
+
+    <div class="topbar">
+
+        <button class="mobile-toggle" id="mobileToggle">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <div class="page-title">
+            <h1>Buy Data</h1>
+            <p>Purchase affordable internet data bundles.</p>
+        </div>
+
+        <div class="top-actions">
+            <div class="icon-btn">
+                <i class="fa-regular fa-bell"></i>
+            </div>
+            <div class="avatar">W</div>
+        </div>
+
+    </div>
+
+    <section class="content">
+
+        <div class="hero-card">
+            <h1><i class="fa-solid fa-wifi"></i> Data Bundles</h1>
+            <p>Select your network, choose a plan and enter the recipient phone number.</p>
+        </div>
+
+        <div class="form-card">
+
+            <h2>Purchase Data</h2>
+            <p>Select a network to view available plans.</p>
+
+            <label style="font-size:13px;font-weight:600;display:block;margin-bottom:9px;">
+                Select Network
+            </label>
+
+            <div class="networks">
+
+                <div class="network" data-network="MTN">
+                    <div class="network-logo mtn">MTN</div>
+                    <span>MTN</span>
+                </div>
+
+                <div class="network" data-network="Airtel">
+                    <div class="network-logo airtel">A</div>
+                    <span>Airtel</span>
+                </div>
+
+                <div class="network" data-network="Glo">
+                    <div class="network-logo glo">GLO</div>
+                    <span>Glo</span>
+                </div>
+
+                <div class="network" data-network="9mobile">
+                    <div class="network-logo mobile9">9</div>
+                    <span>9mobile</span>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label>Phone Number</label>
+
+                <input
+                    type="tel"
+                    id="phone"
+                    placeholder="08012345678"
+                    maxlength="11">
+            </div>
+
+            <label style="font-size:13px;font-weight:600;display:block;margin-bottom:9px;">
+                Select Data Plan
+            </label>
+
+            <div class="plan-grid">
+
+                <div class="plan-card" data-plan="500MB" data-price="300">
+                    <h4>500MB</h4>
+                    <p>30 Days</p>
+                    <strong>₦300</strong>
+                </div>
+
+                <div class="plan-card" data-plan="1GB" data-price="500">
+                    <h4>1GB</h4>
+                    <p>30 Days</p>
+                    <strong>₦500</strong>
+                </div>
+
+                <div class="plan-card" data-plan="2GB" data-price="900">
+                    <h4>2GB</h4>
+                    <p>30 Days</p>
+                    <strong>₦900</strong>
+                </div>
+
+                <div class="plan-card" data-plan="3GB" data-price="1300">
+                    <h4>3GB</h4>
+                    <p>30 Days</p>
+                    <strong>₦1,300</strong>
+                </div>
+
+                <div class="plan-card" data-plan="5GB" data-price="2000">
+                    <h4>5GB</h4>
+                    <p>30 Days</p>
+                    <strong>₦2,000</strong>
+                </div>
+
+                <div class="plan-card" data-plan="10GB" data-price="3800">
+                    <h4>10GB</h4>
+                    <p>30 Days</p>
+                    <strong>₦3,800</strong>
+                </div>
+
+            </div>
+
+            <div class="summary">
+
+                <div class="summary-row">
+                    <span>Network</span>
+                    <strong id="networkSummary">Not selected</strong>
+                </div>
+
+                <div class="summary-row">
+                    <span>Phone Number</span>
+                    <strong id="phoneSummary">—</strong>
+                </div>
+
+                <div class="summary-row">
+                    <span>Plan</span>
+                    <strong id="planSummary">Not selected</strong>
+                </div>
+
+                <div class="summary-row">
+                    <span>Amount</span>
+                    <strong id="amountSummary">₦0</strong>
+                </div>
+
+                <div class="summary-row">
+                    <span>Payment</span>
+                    <strong>Wallet</strong>
+                </div>
+
+            </div>
+
+            <button class="buy-btn" id="buyBtn">
+                <i class="fa-solid fa-lock"></i>
+                Buy Data
+            </button>
+
+            <div class="notice">
+                <i class="fa-solid fa-shield-halved"></i>
+                Secure WAYNE LOGS transaction.
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<div class="modal" id="modal">
+
+    <div class="modal-card">
+
+        <div class="modal-icon">
+            <i class="fa-solid fa-wifi"></i>
+        </div>
+
+        <h3>Data Form Working</h3>
+
+        <p id="modalText"></p>
+
+        <button id="closeModal">
+            Continue
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+
+const sidebar = document.getElementById("sidebar");
+const mobileToggle = document.getElementById("mobileToggle");
+const overlay = document.getElementById("overlay");
+
+mobileToggle.addEventListener("click", function(){
+    sidebar.classList.add("active");
+    overlay.classList.add("active");
+});
+
+overlay.addEventListener("click", function(){
+    sidebar.classList.remove("active");
+    overlay.classList.remove("active");
+});
+
+
+let selectedNetwork = "";
+let selectedPlan = "";
+let selectedPrice = 0;
+
+const networkCards = document.querySelectorAll(".network");
+const planCards = document.querySelectorAll(".plan-card");
+
+const networkSummary =
+    document.getElementById("networkSummary");
+
+const planSummary =
+    document.getElementById("planSummary");
+
+const amountSummary =
+    document.getElementById("amountSummary");
+
+const phone =
+    document.getElementById("phone");
+
+const phoneSummary =
+    document.getElementById("phoneSummary");
+
+
+networkCards.forEach(function(card){
+
+    card.addEventListener("click", function(){
+
+        networkCards.forEach(function(item){
+            item.classList.remove("active");
+        });
+
+        card.classList.add("active");
+
+        selectedNetwork = card.dataset.network;
+
+        networkSummary.textContent = selectedNetwork;
+
+    });
+
+});
+
+
+planCards.forEach(function(card){
+
+    card.addEventListener("click", function(){
+
+        planCards.forEach(function(item){
+            item.classList.remove("active");
+        });
+
+        card.classList.add("active");
+
+        selectedPlan = card.dataset.plan;
+        selectedPrice = Number(card.dataset.price);
+
+        planSummary.textContent = selectedPlan;
+
+        amountSummary.textContent =
+            "₦" + selectedPrice.toLocaleString();
+
+    });
+
+});
+
+
+phone.addEventListener("input", function(){
+
+    phoneSummary.textContent =
+        phone.value || "—";
+
+});
+
+
+const modal =
+    document.getElementById("modal");
+
+const modalText =
+    document.getElementById("modalText");
+
+
+document.getElementById("buyBtn")
+.addEventListener("click", function(){
+
+    const phoneValue = phone.value.trim();
+
+    if(!selectedNetwork){
+
+        alert("Please select a network.");
+
+        return;
+    }
+
+    if(
+        phoneValue.length !== 11 ||
+        !/^[0-9]+$/.test(phoneValue)
+    ){
+
+        alert("Please enter a valid 11-digit phone number.");
+
+        return;
+    }
+
+    if(!selectedPlan){
+
+        alert("Please select a data plan.");
+
+        return;
+    }
+
+    modalText.textContent =
+        "You selected " +
+        selectedNetwork +
+        " " +
+        selectedPlan +
+        " for " +
+        phoneValue +
+        " at ₦" +
+        selectedPrice.toLocaleString() +
+        ". The real VTU API will be connected later.";
+
+    modal.classList.add("active");
+
+});
+
+
+document.getElementById("closeModal")
+.addEventListener("click", function(){
+
+    modal.classList.remove("active");
+
+});
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dashboard - WAYNE LOGS</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:#f5f8fc;
+    color:#1f2937;
+}
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+.sidebar{
+    position:fixed;
+    top:0;
+    left:0;
+    width:250px;
+    height:100vh;
+    background:white;
+    border-right:1px solid #e8edf3;
+    padding:24px 18px;
+    transition:.3s;
+    z-index:2000;
+    overflow-y:auto;
+}
+
+.brand{
+    padding:0 12px 28px;
+}
+
+.brand h2{
+    color:#0785df;
+    font-size:25px;
+}
+
+.brand p{
+    font-size:11px;
+    color:#8995a6;
+    letter-spacing:2px;
+    text-transform:uppercase;
+}
+
+.menu-title{
+    font-size:11px;
+    color:#9aa4b2;
+    font-weight:bold;
+    padding:10px 12px;
+    text-transform:uppercase;
+}
+
+.menu a,
+.menu button{
+    width:100%;
+    border:none;
+    background:none;
+    display:flex;
+    align-items:center;
+    gap:13px;
+    padding:13px 14px;
+    margin-bottom:5px;
+    border-radius:10px;
+    color:#556276;
+    font-size:14px;
+    cursor:pointer;
+    text-align:left;
+}
+
+.menu a:hover,
+.menu a.active,
+.menu button:hover{
+    background:#eaf6ff;
+    color:#0785df;
+}
+
+.main{
+    margin-left:250px;
+    min-height:100vh;
+}
+
+.topbar{
+    height:78px;
+    background:white;
+    border-bottom:1px solid #edf0f4;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 30px;
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
+
+.mobile-toggle{
+    display:none;
+    border:none;
+    background:none;
+    font-size:22px;
+    cursor:pointer;
+}
+
+.search{
+    position:relative;
+    width:340px;
+    max-width:45vw;
+}
+
+.search i{
+    position:absolute;
+    left:14px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#8d98a7;
+}
+
+.search input{
+    width:100%;
+    height:44px;
+    border:1px solid #e1e7ee;
+    border-radius:11px;
+    padding:0 14px 0 40px;
+    outline:none;
+    background:#f9fbfd;
+}
+
+.user-area{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.notification{
+    width:42px;
+    height:42px;
+    border:1px solid #e5e9ef;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.avatar{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:#0785df;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-weight:bold;
+}
+
+.user-info strong{
+    display:block;
+    font-size:13px;
+}
+
+.user-info span{
+    font-size:11px;
+    color:#8a95a4;
+}
+
+.content{
+    padding:30px;
+    max-width:1250px;
+    margin:auto;
+}
+
+.loading{
+    background:white;
+    border:1px solid #edf0f4;
+    border-radius:16px;
+    padding:18px;
+    margin-bottom:20px;
+    color:#667085;
+    font-size:14px;
+}
+
+.welcome{
+    margin-bottom:22px;
+}
+
+.welcome h1{
+    font-size:28px;
+    margin-bottom:6px;
+}
+
+.welcome p{
+    color:#8290a0;
+    font-size:14px;
+}
+
+.wallet{
+    background:linear-gradient(135deg,#067fd7,#0aa0f4);
+    border-radius:22px;
+    color:white;
+    padding:28px;
+    margin-bottom:23px;
+    box-shadow:0 20px 45px rgba(7,133,223,.18);
+}
+
+.wallet small{
+    opacity:.8;
+}
+
+.balance{
+    font-size:38px;
+    font-weight:bold;
+    margin:10px 0;
+}
+
+.wallet-actions{
+    display:flex;
+    gap:10px;
+    margin-top:18px;
+    flex-wrap:wrap;
+}
+
+.wallet-actions a{
+    background:white;
+    color:#0785df;
+    padding:11px 16px;
+    border-radius:10px;
+    font-weight:bold;
+    font-size:13px;
+}
+
+.section-title{
+    margin:25px 0 14px;
+    font-size:18px;
+}
+
+.services{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+}
+
+.service{
+    background:white;
+    border:1px solid #edf0f4;
+    border-radius:16px;
+    padding:20px;
+    transition:.25s;
+}
+
+.service:hover{
+    transform:translateY(-3px);
+    box-shadow:0 12px 28px rgba(0,0,0,.05);
+}
+
+.service-icon{
+    width:48px;
+    height:48px;
+    border-radius:13px;
+    background:#eaf6ff;
+    color:#0785df;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+    margin-bottom:14px;
+}
+
+.service h3{
+    font-size:15px;
+    margin-bottom:5px;
+}
+
+.service p{
+    color:#8a95a4;
+    font-size:12px;
+}
+
+.market{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+}
+
+.market-card{
+    background:white;
+    border:1px solid #edf0f4;
+    border-radius:16px;
+    padding:20px;
+}
+
+.market-card i{
+    font-size:27px;
+    margin-bottom:13px;
+}
+
+.market-card h3{
+    font-size:15px;
+    margin-bottom:5px;
+}
+
+.market-card p{
+    color:#8995a6;
+    font-size:12px;
+    margin-bottom:14px;
+}
+
+.market-card a{
+    color:#0785df;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin-top:23px;
+}
+
+.stat{
+    background:white;
+    border:1px solid #edf0f4;
+    border-radius:16px;
+    padding:20px;
+}
+
+.stat span{
+    color:#8893a3;
+    font-size:12px;
+}
+
+.stat h2{
+    margin-top:8px;
+    font-size:25px;
+}
+
+.transactions{
+    margin-top:23px;
+    background:white;
+    border:1px solid #edf0f4;
+    border-radius:18px;
+    overflow:hidden;
+}
+
+.transactions-title{
+    padding:20px;
+    border-bottom:1px solid #edf0f4;
+}
+
+.transaction-row{
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr 1fr;
+    padding:15px 20px;
+    border-bottom:1px solid #f0f2f5;
+    font-size:13px;
+}
+
+.transaction-head{
+    background:#fafbfd;
+    color:#687487;
+    font-weight:bold;
+}
+
+.empty{
+    color:#8a95a4;
+}
+
+.overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(17,24,39,.4);
+    z-index:1500;
+}
+
+@media(max-width:1050px){
+    .services,
+    .market{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:850px){
+    .sidebar{
+        transform:translateX(-100%);
+    }
+
+    .sidebar.active{
+        transform:translateX(0);
+    }
+
+    .overlay.active{
+        display:block;
+    }
+
+    .main{
+        margin-left:0;
+    }
+
+    .mobile-toggle{
+        display:block;
+    }
+
+    .search{
+        display:none;
+    }
+}
+
+@media(max-width:550px){
+    .content{
+        padding:20px 14px;
+    }
+
+    .topbar{
+        padding:0 15px;
+    }
+
+    .services,
+    .market{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .user-info{
+        display:none;
+    }
+
+    .balance{
+        font-size:32px;
+    }
+
+    .transaction-row{
+        grid-template-columns:2fr 1fr;
+    }
+
+    .hide-mobile{
+        display:none;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="overlay" id="overlay"></div>
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="brand">
+        <h2>WAYNE LOGS</h2>
+        <p>Marketplace</p>
+    </div>
+
+    <div class="menu">
+
+        <div class="menu-title">Menu</div>
+
+        <a href="dashboard.html" class="active">
+            <i class="fa-solid fa-house"></i>
+            Dashboard
+        </a>
+
+        <a href="wallet.html">
+            <i class="fa-solid fa-wallet"></i>
+            Wallet
+        </a>
+
+        <a href="airtime.html">
+            <i class="fa-solid fa-phone"></i>
+            Airtime
+        </a>
+
+        <a href="data.html">
+            <i class="fa-solid fa-wifi"></i>
+            Data
+        </a>
+
+        <a href="electricity.html">
+            <i class="fa-solid fa-bolt"></i>
+            Electricity
+        </a>
+
+        <a href="cable.html">
+            <i class="fa-solid fa-tv"></i>
+            Cable TV
+        </a>
+
+        <a href="marketplace.html">
+            <i class="fa-solid fa-store"></i>
+            Marketplace
+        </a>
+
+        <a href="orders.html">
+            <i class="fa-solid fa-box"></i>
+            My Orders
+        </a>
+
+        <div class="menu-title">Account</div>
+
+        <a href="profile.html">
+            <i class="fa-solid fa-user"></i>
+            Profile
+        </a>
+
+        <a href="referrals.html">
+            <i class="fa-solid fa-users"></i>
+            Referrals
+        </a>
+
+        <a href="notifications.html">
+            <i class="fa-solid fa-bell"></i>
+            Notifications
+        </a>
+
+        <a href="settings.html">
+            <i class="fa-solid fa-gear"></i>
+            Settings
+        </a>
+
+        <button id="logoutBtn">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            Logout
+        </button>
+
+    </div>
+
+</aside>
+
+<main class="main">
+
+    <div class="topbar">
+
+        <button class="mobile-toggle" id="mobileToggle">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <div class="search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="Search WAYNE LOGS...">
+        </div>
+
+        <div class="user-area">
+
+            <a href="notifications.html" class="notification">
+                <i class="fa-regular fa-bell"></i>
+            </a>
+
+            <div class="avatar" id="topAvatar">W</div>
+
+            <div class="user-info">
+                <strong id="topName">Loading...</strong>
+                <span id="topEmail">Loading...</span>
+            </div>
+
+        </div>
+
+    </div>
+
+    <section class="content">
+
+        <div class="loading" id="loadingMessage">
+            Checking your WAYNE LOGS account...
+        </div>
+
+        <div class="welcome">
+            <h1>
+                Welcome back,
+                <span id="welcomeName">User</span> 👋
+            </h1>
+
+            <p>
+                Manage your wallet, services and marketplace purchases.
+            </p>
+        </div>
+
+        <div class="wallet">
+
+            <small>Available Balance</small>
+
+            <div class="balance" id="walletBalance">
+                ₦0.00
+            </div>
+
+            <p>Your WAYNE LOGS wallet balance.</p>
+
+            <div class="wallet-actions">
+                <a href="wallet.html">
+                    <i class="fa-solid fa-plus"></i>
+                    Fund Wallet
+                </a>
+
+                <a href="orders.html">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    Transactions
+                </a>
+            </div>
+
+        </div>
+
+        <h2 class="section-title">Quick Services</h2>
+
+        <div class="services">
+
+            <a href="airtime.html" class="service">
+                <div class="service-icon">
+                    <i class="fa-solid fa-phone"></i>
+                </div>
+                <h3>Airtime</h3>
+                <p>Buy mobile airtime.</p>
+            </a>
+
+            <a href="data.html" class="service">
+                <div class="service-icon">
+                    <i class="fa-solid fa-wifi"></i>
+                </div>
+                <h3>Data</h3>
+                <p>Purchase data bundles.</p>
+            </a>
+
+            <a href="electricity.html" class="service">
+                <div class="service-icon">
+                    <i class="fa-solid fa-bolt"></i>
+                </div>
+                <h3>Electricity</h3>
+                <p>Pay electricity bills.</p>
+            </a>
+
+            <a href="cable.html" class="service">
+                <div class="service-icon">
+                    <i class="fa-solid fa-tv"></i>
+                </div>
+                <h3>Cable TV</h3>
+                <p>Renew subscriptions.</p>
+            </a>
+
+        </div>
+
+        <h2 class="section-title">Digital Marketplace</h2>
+
+        <div class="market">
+
+            <div class="market-card">
+                <i class="fa-brands fa-instagram" style="color:#d62976"></i>
+                <h3>Instagram</h3>
+                <p>Browse available listings.</p>
+                <a href="marketplace.html">Browse →</a>
+            </div>
+
+            <div class="market-card">
+                <i class="fa-brands fa-facebook" style="color:#1877f2"></i>
+                <h3>Facebook</h3>
+                <p>Browse available listings.</p>
+                <a href="marketplace.html">Browse →</a>
+            </div>
+
+            <div class="market-card">
+                <i class="fa-brands fa-tiktok"></i>
+                <h3>TikTok</h3>
+                <p>Browse available listings.</p>
+                <a href="marketplace.html">Browse →</a>
+            </div>
+
+            <div class="market-card">
+                <i class="fa-brands fa-youtube" style="color:#ff0000"></i>
+                <h3>YouTube</h3>
+                <p>Browse available listings.</p>
+                <a href="marketplace.html">Browse →</a>
+            </div>
+
+        </div>
+
+        <div class="stats">
+
+            <div class="stat">
+                <span>Total Orders</span>
+                <h2 id="orderCount">0</h2>
+            </div>
+
+            <div class="stat">
+                <span>Wallet Balance</span>
+                <h2 id="statBalance">₦0.00</h2>
+            </div>
+
+            <div class="stat">
+                <span>Account Status</span>
+                <h2 style="color:#159455;">Active</h2>
+            </div>
+
+        </div>
+
+        <div class="transactions">
+
+            <div class="transactions-title">
+                <h2 style="font-size:18px;">
+                    Recent Orders
+                </h2>
+            </div>
+
+            <div class="transaction-row transaction-head">
+                <div>Description</div>
+                <div>Amount</div>
+                <div class="hide-mobile">Payment</div>
+                <div class="hide-mobile">Status</div>
+            </div>
+
+            <div id="recentOrders"></div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<script>
+
+const token =
+    localStorage.getItem("wayneToken");
+
+
+if(!token){
+    window.location.replace("login.html");
+}
+
+
+/* =========================
+   VERIFY USER WITH BACKEND
+========================= */
+
+async function loadLoggedInUser(){
+
+    try{
+
+        const response =
+            await fetch(
+                "http://localhost:5000/api/auth/me",
+                {
+                    headers:{
+                        "Authorization":
+                        "Bearer " + token
+                    }
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if(!response.ok){
+
+            logoutUser();
+
+            return;
+        }
+
+
+        const user =
+            data.user;
+
+
+        localStorage.setItem(
+            "wayneUser",
+            JSON.stringify(user)
+        );
+
+
+        showUser(user);
+
+
+        document.getElementById(
+            "loadingMessage"
+        ).style.display =
+            "none";
+
+
+    }catch(error){
+
+        document.getElementById(
+            "loadingMessage"
+        ).textContent =
+            "Could not connect to the WAYNE LOGS server.";
+
+    }
+
+}
+
+
+/* =========================
+   DISPLAY USER
+========================= */
+
+function showUser(user){
+
+    const firstName =
+        user.firstName || "User";
+
+    const lastName =
+        user.lastName || "";
+
+    const fullName =
+        (firstName + " " + lastName).trim();
+
+
+    document.getElementById(
+        "welcomeName"
+    ).textContent =
+        firstName;
+
+
+    document.getElementById(
+        "topName"
+    ).textContent =
+        fullName;
+
+
+    document.getElementById(
+        "topEmail"
+    ).textContent =
+        user.email || "";
+
+
+    document.getElementById(
+        "topAvatar"
+    ).textContent =
+        firstName
+        .charAt(0)
+        .toUpperCase();
+
+
+    const balance =
+        Number(
+            user.walletBalance || 0
+        );
+
+
+    const formattedBalance =
+        "₦" +
+        balance.toLocaleString(
+            "en-NG",
+            {
+                minimumFractionDigits:2,
+                maximumFractionDigits:2
+            }
+        );
+
+
+    document.getElementById(
+        "walletBalance"
+    ).textContent =
+        formattedBalance;
+
+
+    document.getElementById(
+        "statBalance"
+    ).textContent =
+        formattedBalance;
+
+}
+
+
+/* =========================
+   ORDERS
+========================= */
+
+const orders =
+    JSON.parse(
+        localStorage.getItem(
+            "wayneOrders"
+        )
+    ) || [];
+
+
+document.getElementById(
+    "orderCount"
+).textContent =
+    orders.length;
+
+
+const recentOrders =
+    document.getElementById(
+        "recentOrders"
+    );
+
+
+if(orders.length === 0){
+
+    recentOrders.innerHTML = `
+
+        <div class="transaction-row empty">
+
+            <div>No orders yet</div>
+
+            <div>₦0</div>
+
+            <div class="hide-mobile">—</div>
+
+            <div class="hide-mobile">—</div>
+
+        </div>
+
+    `;
+
+}else{
+
+    orders
+    .slice()
+    .reverse()
+    .slice(0,5)
+    .forEach(function(order){
+
+        const row =
+            document.createElement(
+                "div"
+            );
+
+
+        row.className =
+            "transaction-row";
+
+
+        row.innerHTML = `
+
+            <div>
+                ${order.product || "Order"}
+            </div>
+
+            <div>
+                ₦${Number(order.price || 0).toLocaleString()}
+            </div>
+
+            <div class="hide-mobile">
+                ${order.payment || "Wallet"}
+            </div>
+
+            <div class="hide-mobile">
+                ${order.status || "Pending"}
+            </div>
+
+        `;
+
+
+        recentOrders.appendChild(row);
+
+    });
+
+}
+
+
+/* =========================
+   MOBILE MENU
+========================= */
+
+const sidebar =
+    document.getElementById(
+        "sidebar"
+    );
+
+const mobileToggle =
+    document.getElementById(
+        "mobileToggle"
+    );
+
+const overlay =
+    document.getElementById(
+        "overlay"
+    );
+
+
+mobileToggle.addEventListener(
+    "click",
+    function(){
+
+        sidebar.classList.add(
+            "active"
+        );
+
+        overlay.classList.add(
+            "active"
+        );
+
+    }
+);
+
+
+overlay.addEventListener(
+    "click",
+    function(){
+
+        sidebar.classList.remove(
+            "active"
+        );
+
+        overlay.classList.remove(
+            "active"
+        );
+
+    }
+);
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+function logoutUser(){
+
+    localStorage.removeItem(
+        "wayneToken"
+    );
+
+    localStorage.removeItem(
+        "wayneUser"
+    );
+
+    window.location.replace(
+        "login.html"
+    );
+
+}
+
+
+document.getElementById(
+    "logoutBtn"
+)
+.addEventListener(
+    "click",
+    logoutUser
+);
+
+
+/* START */
+
+loadLoggedInUser();
+
+</script>
+
+</body>
+</html>

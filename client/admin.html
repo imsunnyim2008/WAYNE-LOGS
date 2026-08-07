@@ -1,0 +1,2401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Admin Dashboard - WAYNE LOGS</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:#f5f8fc;
+    color:#1f2937;
+}
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+button,
+input,
+select,
+textarea{
+    font-family:inherit;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    width:260px;
+    height:100vh;
+    background:#0f172a;
+    color:white;
+    padding:24px 18px;
+    z-index:2000;
+    transition:.3s;
+    overflow-y:auto;
+}
+
+.brand{
+    padding:0 12px 28px;
+}
+
+.brand h2{
+    font-size:24px;
+    color:white;
+}
+
+.brand p{
+    font-size:11px;
+    color:#7dd3fc;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    margin-top:3px;
+}
+
+.admin-badge{
+    margin:0 12px 20px;
+    background:#1e293b;
+    padding:12px;
+    border-radius:10px;
+    font-size:12px;
+    color:#cbd5e1;
+}
+
+.admin-badge i{
+    color:#38bdf8;
+    margin-right:5px;
+}
+
+.menu-title{
+    color:#64748b;
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    padding:12px;
+    font-weight:bold;
+}
+
+.menu button,
+.menu a{
+    width:100%;
+    border:none;
+    background:none;
+    color:#cbd5e1;
+    display:flex;
+    align-items:center;
+    gap:13px;
+    padding:13px 14px;
+    margin-bottom:4px;
+    border-radius:10px;
+    font-size:14px;
+    cursor:pointer;
+    text-align:left;
+}
+
+.menu button:hover,
+.menu button.active,
+.menu a:hover{
+    background:#1e293b;
+    color:#38bdf8;
+}
+
+/* MAIN */
+
+.main{
+    margin-left:260px;
+    min-height:100vh;
+}
+
+.topbar{
+    height:78px;
+    background:white;
+    border-bottom:1px solid #e8edf3;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 30px;
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
+
+.mobile-toggle{
+    display:none;
+    border:none;
+    background:none;
+    font-size:22px;
+    cursor:pointer;
+}
+
+.page-heading h1{
+    font-size:21px;
+}
+
+.page-heading p{
+    color:#8a95a4;
+    font-size:12px;
+    margin-top:3px;
+}
+
+.admin-user{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.admin-avatar{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:#0785df;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+}
+
+.admin-user strong{
+    display:block;
+    font-size:13px;
+}
+
+.admin-user span{
+    color:#8a95a4;
+    font-size:11px;
+}
+
+/* CONTENT */
+
+.content{
+    padding:30px;
+    max-width:1400px;
+    margin:auto;
+}
+
+.section{
+    display:none;
+}
+
+.section.active{
+    display:block;
+}
+
+/* WELCOME */
+
+.welcome{
+    background:linear-gradient(135deg,#0f172a,#0785df);
+    border-radius:20px;
+    padding:30px;
+    color:white;
+    margin-bottom:24px;
+}
+
+.welcome h1{
+    font-size:28px;
+    margin-bottom:8px;
+}
+
+.welcome p{
+    opacity:.85;
+    font-size:14px;
+    line-height:1.6;
+}
+
+/* STATS */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:16px;
+    margin-bottom:24px;
+}
+
+.stat-card{
+    background:white;
+    border:1px solid #edf0f4;
+    border-radius:17px;
+    padding:21px;
+}
+
+.stat-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.stat-top span{
+    font-size:12px;
+    color:#7f8a99;
+}
+
+.stat-icon{
+    width:43px;
+    height:43px;
+    border-radius:12px;
+    background:#eaf6ff;
+    color:#0785df;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.stat-card h2{
+    margin-top:13px;
+    font-size:25px;
+}
+
+.stat-card small{
+    color:#98a2b3;
+    font-size:11px;
+}
+
+/* CARD */
+
+.card{
+    background:white;
+    border:1px solid #edf0f4;
+    border-radius:18px;
+    overflow:hidden;
+    margin-bottom:22px;
+}
+
+.card-header{
+    padding:20px;
+    border-bottom:1px solid #edf0f4;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+.card-header h2{
+    font-size:18px;
+}
+
+.card-header p{
+    color:#8a95a4;
+    font-size:12px;
+    margin-top:4px;
+}
+
+.card-body{
+    padding:20px;
+}
+
+/* BUTTONS */
+
+.primary-btn{
+    border:none;
+    background:#0785df;
+    color:white;
+    border-radius:10px;
+    padding:11px 16px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.primary-btn:hover{
+    background:#006fc0;
+}
+
+.secondary-btn{
+    border:1px solid #dfe6ee;
+    background:white;
+    color:#566276;
+    border-radius:9px;
+    padding:9px 12px;
+    cursor:pointer;
+}
+
+.danger-btn{
+    border:1px solid #fecaca;
+    background:#fff5f5;
+    color:#dc2626;
+    border-radius:9px;
+    padding:9px 12px;
+    cursor:pointer;
+}
+
+/* TABLE */
+
+.table-wrap{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:800px;
+}
+
+th{
+    text-align:left;
+    font-size:12px;
+    color:#667085;
+    background:#fafbfd;
+    padding:14px 16px;
+}
+
+td{
+    padding:15px 16px;
+    border-top:1px solid #eef1f4;
+    font-size:13px;
+    vertical-align:middle;
+}
+
+.platform{
+    font-weight:bold;
+}
+
+.product-name{
+    font-weight:600;
+}
+
+.price{
+    color:#0785df;
+    font-weight:bold;
+}
+
+.status{
+    display:inline-block;
+    padding:6px 9px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:bold;
+}
+
+.available{
+    background:#eaf8ef;
+    color:#15803d;
+}
+
+.out{
+    background:#fff1f2;
+    color:#be123c;
+}
+
+.pending{
+    background:#fff7dd;
+    color:#946200;
+}
+
+.completed{
+    background:#eaf8ef;
+    color:#15803d;
+}
+
+.action-buttons{
+    display:flex;
+    gap:6px;
+}
+
+/* FORM */
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.form-group{
+    margin-bottom:16px;
+}
+
+.form-group label{
+    display:block;
+    font-size:12px;
+    font-weight:bold;
+    margin-bottom:7px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+    width:100%;
+    border:1px solid #dfe6ee;
+    background:#f9fbfd;
+    border-radius:10px;
+    padding:12px 14px;
+    outline:none;
+    font-size:14px;
+}
+
+.form-group input,
+.form-group select{
+    height:48px;
+}
+
+.form-group textarea{
+    height:100px;
+    resize:vertical;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{
+    border-color:#0785df;
+    background:white;
+    box-shadow:0 0 0 4px rgba(7,133,223,.08);
+}
+
+.form-full{
+    grid-column:1 / -1;
+}
+
+/* SEARCH */
+
+.search-box{
+    position:relative;
+    width:280px;
+    max-width:100%;
+}
+
+.search-box i{
+    position:absolute;
+    left:13px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#98a2b3;
+}
+
+.search-box input{
+    width:100%;
+    height:42px;
+    border:1px solid #dfe6ee;
+    border-radius:9px;
+    padding:0 12px 0 38px;
+    outline:none;
+}
+
+/* MODAL */
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(15,23,42,.6);
+    z-index:5000;
+    display:none;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.modal.active{
+    display:flex;
+}
+
+.modal-card{
+    width:100%;
+    max-width:650px;
+    max-height:90vh;
+    overflow-y:auto;
+    background:white;
+    border-radius:20px;
+}
+
+.modal-header{
+    padding:20px;
+    border-bottom:1px solid #edf0f4;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.modal-header h2{
+    font-size:19px;
+}
+
+.close-btn{
+    width:36px;
+    height:36px;
+    border:none;
+    background:#f2f4f7;
+    border-radius:50%;
+    cursor:pointer;
+}
+
+.modal-body{
+    padding:22px;
+}
+
+.modal-footer{
+    padding:18px 22px;
+    border-top:1px solid #edf0f4;
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+}
+
+/* EMPTY */
+
+.empty{
+    padding:45px;
+    text-align:center;
+    color:#98a2b3;
+}
+
+.empty i{
+    font-size:40px;
+    margin-bottom:12px;
+}
+
+.empty h3{
+    color:#566276;
+    margin-bottom:6px;
+}
+
+/* SETTINGS */
+
+.setting-box{
+    padding:17px;
+    border:1px solid #edf0f4;
+    border-radius:13px;
+    margin-bottom:12px;
+}
+
+.setting-box strong{
+    display:block;
+    margin-bottom:5px;
+}
+
+.setting-box p{
+    color:#8893a3;
+    font-size:12px;
+    line-height:1.5;
+}
+
+/* OVERLAY */
+
+.overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(15,23,42,.5);
+    z-index:1500;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1100px){
+
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+@media(max-width:850px){
+
+    .sidebar{
+        transform:translateX(-100%);
+    }
+
+    .sidebar.active{
+        transform:translateX(0);
+    }
+
+    .overlay.active{
+        display:block;
+    }
+
+    .main{
+        margin-left:0;
+    }
+
+    .mobile-toggle{
+        display:block;
+    }
+
+}
+
+@media(max-width:600px){
+
+    .content{
+        padding:20px 14px;
+    }
+
+    .topbar{
+        padding:0 15px;
+    }
+
+    .admin-user div:last-child{
+        display:none;
+    }
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .form-full{
+        grid-column:auto;
+    }
+
+    .welcome h1{
+        font-size:24px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="overlay" id="overlay"></div>
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="brand">
+        <h2>WAYNE LOGS</h2>
+        <p>Admin Panel</p>
+    </div>
+
+    <div class="admin-badge">
+        <i class="fa-solid fa-shield-halved"></i>
+        Administrator Area
+    </div>
+
+    <div class="menu">
+
+        <div class="menu-title">Management</div>
+
+        <button class="nav-btn active" data-section="overview">
+            <i class="fa-solid fa-chart-line"></i>
+            Overview
+        </button>
+
+        <button class="nav-btn" data-section="products">
+            <i class="fa-solid fa-box"></i>
+            Products
+        </button>
+
+        <button class="nav-btn" data-section="orders">
+            <i class="fa-solid fa-cart-shopping"></i>
+            Orders
+        </button>
+
+        <button class="nav-btn" data-section="users">
+            <i class="fa-solid fa-users"></i>
+            Users
+        </button>
+
+        <button class="nav-btn" data-section="payments">
+            <i class="fa-solid fa-credit-card"></i>
+            Payments
+        </button>
+
+        <button class="nav-btn" data-section="settings">
+            <i class="fa-solid fa-gear"></i>
+            Admin Settings
+        </button>
+
+        <div class="menu-title">Website</div>
+
+        <a href="dashboard.html">
+            <i class="fa-solid fa-arrow-left"></i>
+            User Dashboard
+        </a>
+
+        <a href="index.html">
+            <i class="fa-solid fa-globe"></i>
+            View Website
+        </a>
+
+    </div>
+
+</aside>
+
+<!-- MAIN -->
+
+<main class="main">
+
+    <div class="topbar">
+
+        <button class="mobile-toggle" id="mobileToggle">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <div class="page-heading">
+            <h1 id="pageTitle">Admin Overview</h1>
+            <p>Manage WAYNE LOGS from one place.</p>
+        </div>
+
+        <div class="admin-user">
+
+            <div class="admin-avatar">
+                A
+            </div>
+
+            <div>
+                <strong>WAYNE Admin</strong>
+                <span>Administrator</span>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="content">
+
+        <!-- OVERVIEW -->
+
+        <section class="section active" id="overview">
+
+            <div class="welcome">
+
+                <h1>
+                    <i class="fa-solid fa-shield-halved"></i>
+                    Admin Dashboard
+                </h1>
+
+                <p>
+                    Manage marketplace products, customer orders,
+                    users and WAYNE LOGS services.
+                </p>
+
+            </div>
+
+            <div class="stats">
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span>Products</span>
+
+                        <div class="stat-icon">
+                            <i class="fa-solid fa-box"></i>
+                        </div>
+
+                    </div>
+
+                    <h2 id="overviewProducts">0</h2>
+
+                    <small>Marketplace listings</small>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span>Orders</span>
+
+                        <div class="stat-icon">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                        </div>
+
+                    </div>
+
+                    <h2 id="overviewOrders">0</h2>
+
+                    <small>Total customer orders</small>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span>Order Value</span>
+
+                        <div class="stat-icon">
+                            <i class="fa-solid fa-naira-sign"></i>
+                        </div>
+
+                    </div>
+
+                    <h2 id="overviewRevenue">₦0</h2>
+
+                    <small>Demo order value</small>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span>Users</span>
+
+                        <div class="stat-icon">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+
+                    </div>
+
+                    <h2 id="overviewUsers">1</h2>
+
+                    <small>Demo registered users</small>
+
+                </div>
+
+            </div>
+
+            <div class="card">
+
+                <div class="card-header">
+
+                    <div>
+                        <h2>Recent Orders</h2>
+                        <p>Latest marketplace activity.</p>
+                    </div>
+
+                </div>
+
+                <div class="table-wrap">
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>Order</th>
+                                <th>Product</th>
+                                <th>Amount</th>
+                                <th>Payment</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="recentOrdersTable"></tbody>
+
+                    </table>
+
+                </div>
+
+                <div class="empty" id="recentOrdersEmpty">
+
+                    <i class="fa-solid fa-box-open"></i>
+
+                    <h3>No orders yet</h3>
+
+                    <p>
+                        Customer orders will appear here.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- PRODUCTS -->
+
+        <section class="section" id="products">
+
+            <div class="card">
+
+                <div class="card-header">
+
+                    <div>
+                        <h2>Marketplace Products</h2>
+                        <p>
+                            Add products, change prices and control stock.
+                        </p>
+                    </div>
+
+                    <button
+                        class="primary-btn"
+                        id="addProductBtn">
+
+                        <i class="fa-solid fa-plus"></i>
+                        Add Product
+
+                    </button>
+
+                </div>
+
+                <div class="card-body">
+
+                    <div class="search-box">
+
+                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                        <input
+                            type="text"
+                            id="productSearch"
+                            placeholder="Search products...">
+
+                    </div>
+
+                </div>
+
+                <div class="table-wrap">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+                                <th>Product</th>
+                                <th>Platform</th>
+                                <th>Price</th>
+                                <th>Stock</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="productTable"></tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ORDERS -->
+
+        <section class="section" id="orders">
+
+            <div class="card">
+
+                <div class="card-header">
+
+                    <div>
+                        <h2>Customer Orders</h2>
+                        <p>
+                            Review orders created through checkout.
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="table-wrap">
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Product</th>
+                                <th>Amount</th>
+                                <th>Customer</th>
+                                <th>Payment</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="adminOrdersTable"></tbody>
+
+                    </table>
+
+                </div>
+
+                <div class="empty" id="ordersEmpty">
+
+                    <i class="fa-solid fa-cart-shopping"></i>
+
+                    <h3>No orders found</h3>
+
+                    <p>
+                        Orders created by customers will appear here.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- USERS -->
+
+        <section class="section" id="users">
+
+            <div class="card">
+
+                <div class="card-header">
+
+                    <div>
+                        <h2>Users</h2>
+
+                        <p>
+                            Registered customers will appear here
+                            after the backend is connected.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="table-wrap">
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="usersTable"></tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- PAYMENTS -->
+
+        <section class="section" id="payments">
+
+            <div class="card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h2>Payments</h2>
+
+                        <p>
+                            Paystack transactions will appear here
+                            after the secure backend integration.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="card-body">
+
+                    <div class="setting-box">
+
+                        <strong>
+                            <i class="fa-solid fa-credit-card"></i>
+                            Paystack
+                        </strong>
+
+                        <p>
+                            Your Paystack secret key will never be placed
+                            inside this HTML page. It will be stored securely
+                            inside the server environment file.
+                        </p>
+
+                    </div>
+
+                    <div class="setting-box">
+
+                        <strong>
+                            Wallet Funding
+                        </strong>
+
+                        <p>
+                            Wallet balances will only be credited after
+                            the backend verifies a successful Paystack transaction.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- SETTINGS -->
+
+        <section class="section" id="settings">
+
+            <div class="card">
+
+                <div class="card-header">
+
+                    <div>
+                        <h2>Admin Settings</h2>
+                        <p>Basic website administration options.</p>
+                    </div>
+
+                </div>
+
+                <div class="card-body">
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+
+                            <label>Website Name</label>
+
+                            <input
+                                value="WAYNE LOGS"
+                                readonly>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label>Currency</label>
+
+                            <input
+                                value="NGN - Nigerian Naira"
+                                readonly>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label>Payment Gateway</label>
+
+                            <input
+                                value="Paystack"
+                                readonly>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label>Marketplace Status</label>
+
+                            <select id="marketplaceStatus">
+
+                                <option value="active">
+                                    Active
+                                </option>
+
+                                <option value="maintenance">
+                                    Maintenance
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</main>
+
+<!-- PRODUCT MODAL -->
+
+<div class="modal" id="productModal">
+
+    <div class="modal-card">
+
+        <div class="modal-header">
+
+            <h2 id="modalTitle">
+                Add Product
+            </h2>
+
+            <button class="close-btn" id="closeModal">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+        </div>
+
+        <div class="modal-body">
+
+            <input
+                type="hidden"
+                id="editProductId">
+
+            <div class="form-grid">
+
+                <div class="form-group">
+
+                    <label>Product Name</label>
+
+                    <input
+                        type="text"
+                        id="productName"
+                        placeholder="Example: Instagram Starter Account">
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>Platform</label>
+
+                    <select id="productPlatform">
+
+                        <option value="">
+                            Select platform
+                        </option>
+
+                        <option>Instagram</option>
+                        <option>Facebook</option>
+                        <option>TikTok</option>
+                        <option>YouTube</option>
+                        <option>Telegram</option>
+                        <option>X / Twitter</option>
+                        <option>Snapchat</option>
+                        <option>Discord</option>
+                        <option>LinkedIn</option>
+                        <option>Reddit</option>
+                        <option>Other</option>
+
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>Price (₦)</label>
+
+                    <input
+                        type="number"
+                        id="productPrice"
+                        min="0"
+                        placeholder="5000">
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>Stock</label>
+
+                    <input
+                        type="number"
+                        id="productStock"
+                        min="0"
+                        value="1">
+
+                </div>
+
+                <div class="form-group form-full">
+
+                    <label>Description</label>
+
+                    <textarea
+                        id="productDescription"
+                        placeholder="Enter product details..."></textarea>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>Status</label>
+
+                    <select id="productStatus">
+
+                        <option value="Available">
+                            Available
+                        </option>
+
+                        <option value="Out of Stock">
+                            Out of Stock
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+
+            <button
+                class="secondary-btn"
+                id="cancelModal">
+
+                Cancel
+
+            </button>
+
+            <button
+                class="primary-btn"
+                id="saveProductBtn">
+
+                <i class="fa-solid fa-floppy-disk"></i>
+                Save Product
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+/* ======================
+   SIDEBAR
+====================== */
+
+const sidebar =
+    document.getElementById("sidebar");
+
+const mobileToggle =
+    document.getElementById("mobileToggle");
+
+const overlay =
+    document.getElementById("overlay");
+
+mobileToggle.addEventListener(
+    "click",
+    function(){
+
+        sidebar.classList.add("active");
+        overlay.classList.add("active");
+
+    }
+);
+
+overlay.addEventListener(
+    "click",
+    function(){
+
+        sidebar.classList.remove("active");
+        overlay.classList.remove("active");
+
+    }
+);
+
+
+/* ======================
+   NAVIGATION
+====================== */
+
+const navButtons =
+    document.querySelectorAll(".nav-btn");
+
+const sections =
+    document.querySelectorAll(".section");
+
+const pageTitle =
+    document.getElementById("pageTitle");
+
+
+navButtons.forEach(function(button){
+
+    button.addEventListener("click", function(){
+
+        navButtons.forEach(function(btn){
+            btn.classList.remove("active");
+        });
+
+        sections.forEach(function(section){
+            section.classList.remove("active");
+        });
+
+        button.classList.add("active");
+
+        const sectionID =
+            button.dataset.section;
+
+        document
+        .getElementById(sectionID)
+        .classList.add("active");
+
+        const titles = {
+
+            overview:"Admin Overview",
+            products:"Products",
+            orders:"Orders",
+            users:"Users",
+            payments:"Payments",
+            settings:"Admin Settings"
+
+        };
+
+        pageTitle.textContent =
+            titles[sectionID];
+
+        sidebar.classList.remove("active");
+        overlay.classList.remove("active");
+
+    });
+
+});
+
+
+/* ======================
+   DEFAULT PRODUCTS
+====================== */
+
+const defaultProducts = [
+
+    {
+        id:1,
+        name:"Instagram Starter Account",
+        platform:"Instagram",
+        price:5000,
+        stock:1,
+        status:"Available",
+        description:"Example Instagram marketplace listing."
+    },
+
+    {
+        id:2,
+        name:"Facebook Marketplace Account",
+        platform:"Facebook",
+        price:4500,
+        stock:1,
+        status:"Available",
+        description:"Example Facebook marketplace listing."
+    },
+
+    {
+        id:3,
+        name:"TikTok Account",
+        platform:"TikTok",
+        price:6500,
+        stock:1,
+        status:"Available",
+        description:"Example TikTok marketplace listing."
+    },
+
+    {
+        id:4,
+        name:"YouTube Channel",
+        platform:"YouTube",
+        price:12000,
+        stock:1,
+        status:"Available",
+        description:"Example YouTube marketplace listing."
+    },
+
+    {
+        id:5,
+        name:"Telegram Channel",
+        platform:"Telegram",
+        price:7000,
+        stock:1,
+        status:"Available",
+        description:"Example Telegram marketplace listing."
+    },
+
+    {
+        id:6,
+        name:"X / Twitter Account",
+        platform:"X / Twitter",
+        price:5500,
+        stock:1,
+        status:"Available",
+        description:"Example X marketplace listing."
+    }
+
+];
+
+
+let products =
+    JSON.parse(
+        localStorage.getItem("wayneProducts")
+    );
+
+
+if(!products){
+
+    products =
+        defaultProducts;
+
+    saveProducts();
+
+}
+
+
+function saveProducts(){
+
+    localStorage.setItem(
+        "wayneProducts",
+        JSON.stringify(products)
+    );
+
+}
+
+
+/* ======================
+   PRODUCT TABLE
+====================== */
+
+const productTable =
+    document.getElementById("productTable");
+
+const productSearch =
+    document.getElementById("productSearch");
+
+
+function renderProducts(){
+
+    const search =
+        productSearch.value
+        .toLowerCase()
+        .trim();
+
+
+    productTable.innerHTML = "";
+
+
+    const filtered =
+        products.filter(function(product){
+
+            return (
+
+                product.name
+                .toLowerCase()
+                .includes(search)
+
+                ||
+
+                product.platform
+                .toLowerCase()
+                .includes(search)
+
+            );
+
+        });
+
+
+    filtered.forEach(function(product){
+
+        const statusClass =
+            product.status === "Available"
+            ? "available"
+            : "out";
+
+
+        const row =
+            document.createElement("tr");
+
+
+        row.innerHTML = `
+
+            <td class="product-name">
+                ${escapeHTML(product.name)}
+            </td>
+
+            <td class="platform">
+                ${escapeHTML(product.platform)}
+            </td>
+
+            <td class="price">
+                ₦${Number(product.price).toLocaleString()}
+            </td>
+
+            <td>
+                ${Number(product.stock)}
+            </td>
+
+            <td>
+
+                <span class="status ${statusClass}">
+                    ${escapeHTML(product.status)}
+                </span>
+
+            </td>
+
+            <td>
+
+                <div class="action-buttons">
+
+                    <button
+                        class="secondary-btn"
+                        onclick="editProduct(${product.id})">
+
+                        <i class="fa-solid fa-pen"></i>
+
+                    </button>
+
+                    <button
+                        class="danger-btn"
+                        onclick="deleteProduct(${product.id})">
+
+                        <i class="fa-solid fa-trash"></i>
+
+                    </button>
+
+                </div>
+
+            </td>
+
+        `;
+
+
+        productTable.appendChild(row);
+
+    });
+
+
+    updateOverview();
+
+}
+
+
+productSearch.addEventListener(
+    "input",
+    renderProducts
+);
+
+
+/* ======================
+   PRODUCT MODAL
+====================== */
+
+const productModal =
+    document.getElementById("productModal");
+
+const modalTitle =
+    document.getElementById("modalTitle");
+
+const editProductId =
+    document.getElementById("editProductId");
+
+const productName =
+    document.getElementById("productName");
+
+const productPlatform =
+    document.getElementById("productPlatform");
+
+const productPrice =
+    document.getElementById("productPrice");
+
+const productStock =
+    document.getElementById("productStock");
+
+const productDescription =
+    document.getElementById("productDescription");
+
+const productStatus =
+    document.getElementById("productStatus");
+
+
+document.getElementById(
+    "addProductBtn"
+)
+.addEventListener(
+    "click",
+    function(){
+
+        clearProductForm();
+
+        modalTitle.textContent =
+            "Add Product";
+
+        productModal.classList.add(
+            "active"
+        );
+
+    }
+);
+
+
+function closeProductModal(){
+
+    productModal.classList.remove(
+        "active"
+    );
+
+}
+
+
+document.getElementById(
+    "closeModal"
+)
+.addEventListener(
+    "click",
+    closeProductModal
+);
+
+
+document.getElementById(
+    "cancelModal"
+)
+.addEventListener(
+    "click",
+    closeProductModal
+);
+
+
+function clearProductForm(){
+
+    editProductId.value = "";
+
+    productName.value = "";
+
+    productPlatform.value = "";
+
+    productPrice.value = "";
+
+    productStock.value = "1";
+
+    productDescription.value = "";
+
+    productStatus.value =
+        "Available";
+
+}
+
+
+/* SAVE PRODUCT */
+
+document.getElementById(
+    "saveProductBtn"
+)
+.addEventListener(
+    "click",
+    function(){
+
+        const name =
+            productName.value.trim();
+
+        const platform =
+            productPlatform.value;
+
+        const price =
+            Number(productPrice.value);
+
+        const stock =
+            Number(productStock.value);
+
+        const description =
+            productDescription.value.trim();
+
+        const status =
+            productStatus.value;
+
+
+        if(!name){
+
+            alert(
+                "Please enter a product name."
+            );
+
+            return;
+
+        }
+
+
+        if(!platform){
+
+            alert(
+                "Please select a platform."
+            );
+
+            return;
+
+        }
+
+
+        if(!price || price < 0){
+
+            alert(
+                "Please enter a valid price."
+            );
+
+            return;
+
+        }
+
+
+        if(stock < 0){
+
+            alert(
+                "Please enter valid stock."
+            );
+
+            return;
+
+        }
+
+
+        const editingID =
+            Number(editProductId.value);
+
+
+        if(editingID){
+
+            products =
+                products.map(
+                    function(product){
+
+                        if(
+                            product.id ===
+                            editingID
+                        ){
+
+                            return {
+
+                                ...product,
+
+                                name:name,
+                                platform:platform,
+                                price:price,
+                                stock:stock,
+                                description:description,
+                                status:status
+
+                            };
+
+                        }
+
+                        return product;
+
+                    }
+                );
+
+        }else{
+
+            products.push({
+
+                id:Date.now(),
+
+                name:name,
+
+                platform:platform,
+
+                price:price,
+
+                stock:stock,
+
+                description:description,
+
+                status:status
+
+            });
+
+        }
+
+
+        saveProducts();
+
+        renderProducts();
+
+        closeProductModal();
+
+    }
+);
+
+
+/* EDIT */
+
+function editProduct(id){
+
+    const product =
+        products.find(
+            function(item){
+                return item.id === id;
+            }
+        );
+
+
+    if(!product){
+        return;
+    }
+
+
+    editProductId.value =
+        product.id;
+
+    productName.value =
+        product.name;
+
+    productPlatform.value =
+        product.platform;
+
+    productPrice.value =
+        product.price;
+
+    productStock.value =
+        product.stock;
+
+    productDescription.value =
+        product.description || "";
+
+    productStatus.value =
+        product.status;
+
+
+    modalTitle.textContent =
+        "Edit Product";
+
+
+    productModal.classList.add(
+        "active"
+    );
+
+}
+
+
+/* DELETE */
+
+function deleteProduct(id){
+
+    const product =
+        products.find(
+            function(item){
+                return item.id === id;
+            }
+        );
+
+
+    if(!product){
+        return;
+    }
+
+
+    const confirmed =
+        confirm(
+            "Delete " +
+            product.name +
+            "?"
+        );
+
+
+    if(!confirmed){
+        return;
+    }
+
+
+    products =
+        products.filter(
+            function(item){
+                return item.id !== id;
+            }
+        );
+
+
+    saveProducts();
+
+    renderProducts();
+
+}
+
+
+/* ======================
+   ORDERS
+====================== */
+
+let orders =
+    JSON.parse(
+        localStorage.getItem(
+            "wayneOrders"
+        )
+    ) || [];
+
+
+const adminOrdersTable =
+    document.getElementById(
+        "adminOrdersTable"
+    );
+
+const ordersEmpty =
+    document.getElementById(
+        "ordersEmpty"
+    );
+
+const recentOrdersTable =
+    document.getElementById(
+        "recentOrdersTable"
+    );
+
+const recentOrdersEmpty =
+    document.getElementById(
+        "recentOrdersEmpty"
+    );
+
+
+function renderOrders(){
+
+    adminOrdersTable.innerHTML = "";
+
+    recentOrdersTable.innerHTML = "";
+
+
+    if(orders.length === 0){
+
+        ordersEmpty.style.display =
+            "block";
+
+        recentOrdersEmpty.style.display =
+            "block";
+
+        updateOverview();
+
+        return;
+
+    }
+
+
+    ordersEmpty.style.display =
+        "none";
+
+    recentOrdersEmpty.style.display =
+        "none";
+
+
+    orders
+    .slice()
+    .reverse()
+    .forEach(function(order){
+
+        const row =
+            document.createElement("tr");
+
+
+        const status =
+            order.status || "Pending";
+
+
+        const statusClass =
+            status === "Completed"
+            ? "completed"
+            : "pending";
+
+
+        row.innerHTML = `
+
+            <td>
+                ${escapeHTML(order.id || "—")}
+            </td>
+
+            <td>
+                ${escapeHTML(order.product || "—")}
+            </td>
+
+            <td class="price">
+                ₦${Number(order.price || 0).toLocaleString()}
+            </td>
+
+            <td>
+                ${escapeHTML(order.email || "—")}
+            </td>
+
+            <td>
+                ${escapeHTML(order.payment || "Wallet")}
+            </td>
+
+            <td>
+
+                <span class="status ${statusClass}">
+                    ${escapeHTML(status)}
+                </span>
+
+            </td>
+
+            <td>
+
+                <button
+                    class="secondary-btn"
+                    onclick="toggleOrderStatus('${escapeAttribute(order.id)}')">
+
+                    Update
+
+                </button>
+
+            </td>
+
+        `;
+
+
+        adminOrdersTable.appendChild(
+            row
+        );
+
+    });
+
+
+    orders
+    .slice()
+    .reverse()
+    .slice(0,5)
+    .forEach(function(order){
+
+        const row =
+            document.createElement("tr");
+
+
+        const status =
+            order.status || "Pending";
+
+
+        const statusClass =
+            status === "Completed"
+            ? "completed"
+            : "pending";
+
+
+        row.innerHTML = `
+
+            <td>
+                ${escapeHTML(order.id || "—")}
+            </td>
+
+            <td>
+                ${escapeHTML(order.product || "—")}
+            </td>
+
+            <td class="price">
+                ₦${Number(order.price || 0).toLocaleString()}
+            </td>
+
+            <td>
+                ${escapeHTML(order.payment || "Wallet")}
+            </td>
+
+            <td>
+
+                <span class="status ${statusClass}">
+                    ${escapeHTML(status)}
+                </span>
+
+            </td>
+
+        `;
+
+
+        recentOrdersTable.appendChild(
+            row
+        );
+
+    });
+
+
+    updateOverview();
+
+}
+
+
+function toggleOrderStatus(id){
+
+    orders =
+        orders.map(
+            function(order){
+
+                if(order.id === id){
+
+                    order.status =
+                        order.status ===
+                        "Completed"
+
+                        ?
+
+                        "Pending"
+
+                        :
+
+                        "Completed";
+
+                }
+
+                return order;
+
+            }
+        );
+
+
+    localStorage.setItem(
+        "wayneOrders",
+        JSON.stringify(orders)
+    );
+
+
+    renderOrders();
+
+}
+
+
+/* ======================
+   USER DEMO
+====================== */
+
+function renderUser(){
+
+    const profile =
+        JSON.parse(
+            localStorage.getItem(
+                "wayneProfile"
+            )
+        );
+
+
+    const usersTable =
+        document.getElementById(
+            "usersTable"
+        );
+
+
+    usersTable.innerHTML = "";
+
+
+    if(profile){
+
+        const fullName =
+            (
+                profile.firstName || ""
+            )
+            +
+            " "
+            +
+            (
+                profile.lastName || ""
+            );
+
+
+        usersTable.innerHTML = `
+
+            <tr>
+
+                <td>
+                    ${escapeHTML(fullName.trim() || "WAYNE User")}
+                </td>
+
+                <td>
+                    ${escapeHTML(profile.email || "—")}
+                </td>
+
+                <td>
+                    ${escapeHTML(profile.phone || "—")}
+                </td>
+
+                <td>
+                    <span class="status available">
+                        Active
+                    </span>
+                </td>
+
+            </tr>
+
+        `;
+
+    }else{
+
+        usersTable.innerHTML = `
+
+            <tr>
+
+                <td>WAYNE User</td>
+
+                <td>user@example.com</td>
+
+                <td>—</td>
+
+                <td>
+
+                    <span class="status available">
+                        Active
+                    </span>
+
+                </td>
+
+            </tr>
+
+        `;
+
+    }
+
+}
+
+
+/* ======================
+   OVERVIEW
+====================== */
+
+function updateOverview(){
+
+    document.getElementById(
+        "overviewProducts"
+    ).textContent =
+        products.length;
+
+
+    document.getElementById(
+        "overviewOrders"
+    ).textContent =
+        orders.length;
+
+
+    const revenue =
+        orders.reduce(
+            function(total, order){
+
+                return total +
+                    Number(
+                        order.price || 0
+                    );
+
+            },
+            0
+        );
+
+
+    document.getElementById(
+        "overviewRevenue"
+    ).textContent =
+        "₦" +
+        revenue.toLocaleString();
+
+}
+
+
+/* ======================
+   SECURITY HELPERS
+====================== */
+
+function escapeHTML(value){
+
+    const div =
+        document.createElement("div");
+
+    div.textContent =
+        String(value ?? "");
+
+    return div.innerHTML;
+
+}
+
+
+function escapeAttribute(value){
+
+    return String(value ?? "")
+    .replace(/\\/g,"\\\\")
+    .replace(/'/g,"\\'");
+
+}
+
+
+/* ======================
+   START
+====================== */
+
+renderProducts();
+
+renderOrders();
+
+renderUser();
+
+</script>
+
+</body>
+</html>

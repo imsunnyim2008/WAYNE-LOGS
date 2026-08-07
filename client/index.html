@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>WAYNE LOGS - Digital Marketplace</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+/* ==============================
+   WAYNE LOGS
+================================ */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:#f6f9fc;
+    color:#172033;
+}
+
+a{
+    text-decoration:none;
+}
+
+/* HEADER */
+
+header{
+    background:white;
+    width:100%;
+    height:82px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 8%;
+
+    position:sticky;
+    top:0;
+    z-index:1000;
+
+    box-shadow:0 4px 20px rgba(0,0,0,.06);
+}
+
+.logo h2{
+    color:#0785df;
+    font-size:27px;
+    font-weight:800;
+}
+
+.logo span{
+    color:#718096;
+    font-size:13px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+}
+
+nav{
+    display:flex;
+    align-items:center;
+    gap:28px;
+}
+
+nav a{
+    color:#485568;
+    font-size:15px;
+    font-weight:500;
+    transition:.3s;
+}
+
+nav a:hover{
+    color:#0785df;
+}
+
+.login-btn{
+    background:#0785df;
+    color:white !important;
+    padding:11px 22px;
+    border-radius:9px;
+}
+
+/* HERO */
+
+.hero{
+    min-height:570px;
+
+    padding:70px 8%;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:60px;
+
+    background:
+        radial-gradient(circle at 90% 20%, #dff3ff, transparent 30%),
+        linear-gradient(135deg,#ffffff,#f2f8fd);
+}
+
+.hero-left{
+    flex:1;
+    max-width:620px;
+}
+
+.hero-badge{
+    display:inline-block;
+
+    background:#e6f5ff;
+    color:#0785df;
+
+    padding:8px 16px;
+    border-radius:30px;
+
+    font-size:13px;
+    font-weight:700;
+
+    margin-bottom:20px;
+}
+
+.hero h1{
+    font-size:58px;
+    line-height:1.08;
+    letter-spacing:-2px;
+
+    margin-bottom:22px;
+}
+
+.hero h1 span{
+    color:#0785df;
+}
+
+.hero p{
+    max-width:570px;
+
+    color:#697586;
+    font-size:17px;
+    line-height:1.8;
+
+    margin-bottom:30px;
+}
+
+.hero-buttons{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+}
+
+.primary-btn{
+    display:inline-block;
+
+    background:#0785df;
+    color:white;
+
+    border:none;
+    padding:15px 28px;
+
+    border-radius:10px;
+
+    font-size:16px;
+    font-weight:600;
+
+    cursor:pointer;
+
+    box-shadow:0 10px 25px rgba(7,133,223,.25);
+
+    transition:.3s;
+}
+
+.primary-btn:hover{
+    transform:translateY(-3px);
+    background:#006fc0;
+}
+
+.secondary-btn{
+    display:inline-block;
+
+    padding:14px 27px;
+
+    border:1px solid #d6e2eb;
+    border-radius:10px;
+
+    background:white;
+    color:#354052;
+
+    font-weight:600;
+}
+
+/* HERO DISPLAY */
+
+.hero-right{
+    flex:1;
+
+    display:flex;
+    justify-content:center;
+}
+
+.dashboard-preview{
+    width:430px;
+
+    background:white;
+
+    padding:22px;
+
+    border-radius:25px;
+
+    box-shadow:0 30px 80px rgba(26,76,110,.17);
+
+    transform:rotate(2deg);
+}
+
+.preview-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    margin-bottom:18px;
+}
+
+.preview-logo{
+    color:#0785df;
+    font-weight:800;
+}
+
+.preview-avatar{
+    width:40px;
+    height:40px;
+
+    border-radius:50%;
+
+    background:#e4f4ff;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:#0785df;
+}
+
+.wallet-preview{
+    background:linear-gradient(135deg,#0785df,#05a2f5);
+
+    color:white;
+
+    padding:25px;
+
+    border-radius:18px;
+
+    margin-bottom:18px;
+}
+
+.wallet-preview p{
+    opacity:.8;
+    font-size:13px;
+}
+
+.wallet-preview h2{
+    font-size:29px;
+    margin:8px 0;
+}
+
+.wallet-preview button{
+    border:none;
+
+    background:white;
+    color:#0785df;
+
+    padding:8px 14px;
+    border-radius:8px;
+
+    font-weight:700;
+}
+
+.quick-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+}
+
+.quick-item{
+    background:#f6f9fc;
+
+    padding:15px 5px;
+
+    border-radius:12px;
+
+    text-align:center;
+
+    font-size:11px;
+
+    color:#586579;
+}
+
+.quick-item i{
+    display:block;
+
+    color:#0785df;
+    font-size:20px;
+
+    margin-bottom:7px;
+}
+
+/* SERVICES */
+
+.services{
+    padding:85px 8%;
+    background:#fff;
+}
+
+.section-heading{
+    text-align:center;
+    max-width:650px;
+    margin:0 auto 45px;
+}
+
+.section-heading span{
+    color:#0785df;
+    font-weight:700;
+    font-size:14px;
+}
+
+.section-heading h2{
+    font-size:38px;
+    margin:8px 0 12px;
+}
+
+.section-heading p{
+    color:#718096;
+    line-height:1.7;
+}
+
+.cards{
+    display:grid;
+
+    grid-template-columns:
+        repeat(auto-fit,minmax(220px,1fr));
+
+    gap:20px;
+}
+
+.card{
+    background:#f9fbfd;
+
+    border:1px solid #edf1f5;
+
+    padding:28px;
+
+    border-radius:17px;
+
+    transition:.3s;
+
+    cursor:pointer;
+}
+
+.card:hover{
+    background:white;
+
+    transform:translateY(-7px);
+
+    box-shadow:0 18px 45px rgba(0,0,0,.09);
+}
+
+.icon-box{
+    width:52px;
+    height:52px;
+
+    border-radius:13px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:#e7f5ff;
+    color:#0785df;
+
+    font-size:23px;
+
+    margin-bottom:18px;
+}
+
+.card h3{
+    margin-bottom:9px;
+}
+
+.card p{
+    color:#718096;
+    font-size:14px;
+    line-height:1.6;
+}
+
+/* MARKETPLACE */
+
+.marketplace-section{
+    padding:85px 8%;
+    background:#f6f9fc;
+}
+
+.social-grid{
+    display:grid;
+    grid-template-columns:
+        repeat(auto-fit,minmax(180px,1fr));
+
+    gap:17px;
+}
+
+.social-card{
+    background:white;
+
+    border-radius:16px;
+
+    padding:24px;
+
+    text-align:center;
+
+    box-shadow:0 5px 20px rgba(0,0,0,.04);
+
+    transition:.3s;
+}
+
+.social-card:hover{
+    transform:translateY(-6px);
+}
+
+.social-card i{
+    font-size:38px;
+
+    margin-bottom:14px;
+}
+
+.social-card h4{
+    margin-bottom:7px;
+}
+
+.social-card p{
+    color:#8a94a5;
+    font-size:12px;
+}
+
+.social-card button{
+    width:100%;
+
+    margin-top:15px;
+
+    border:none;
+
+    background:#0785df;
+    color:white;
+
+    padding:10px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+}
+
+/* CTA */
+
+.cta{
+    margin:80px 8%;
+    padding:55px;
+
+    border-radius:25px;
+
+    background:linear-gradient(135deg,#057bd0,#03a5f5);
+
+    color:white;
+
+    text-align:center;
+}
+
+.cta h2{
+    font-size:36px;
+    margin-bottom:12px;
+}
+
+.cta p{
+    opacity:.9;
+    margin-bottom:25px;
+}
+
+.cta a{
+    background:white;
+    color:#0785df;
+
+    display:inline-block;
+
+    padding:14px 27px;
+    border-radius:10px;
+
+    font-weight:700;
+}
+
+/* FOOTER */
+
+footer{
+    background:#111827;
+    color:white;
+
+    padding:50px 8% 25px;
+}
+
+.footer-content{
+    display:flex;
+    justify-content:space-between;
+    gap:30px;
+    flex-wrap:wrap;
+
+    padding-bottom:30px;
+}
+
+.footer-brand h2{
+    color:#28a9ff;
+}
+
+.footer-brand p{
+    color:#a9b3c1;
+    margin-top:10px;
+
+    max-width:350px;
+    line-height:1.7;
+}
+
+.footer-links a{
+    color:#cbd5e1;
+
+    display:block;
+
+    margin-bottom:10px;
+}
+
+.copyright{
+    border-top:1px solid #273244;
+
+    padding-top:22px;
+
+    text-align:center;
+
+    color:#8792a3;
+    font-size:13px;
+}
+
+/* MOBILE */
+
+.mobile-menu{
+    display:none;
+
+    border:none;
+    background:none;
+
+    color:#253247;
+
+    font-size:23px;
+
+    cursor:pointer;
+}
+
+@media(max-width:900px){
+
+    nav{
+        display:none;
+    }
+
+    nav.active{
+        display:flex;
+
+        position:absolute;
+
+        top:82px;
+        left:0;
+
+        width:100%;
+
+        background:white;
+
+        flex-direction:column;
+
+        padding:25px;
+
+        box-shadow:0 15px 30px rgba(0,0,0,.08);
+    }
+
+    .mobile-menu{
+        display:block;
+    }
+
+    .hero{
+        flex-direction:column;
+        text-align:center;
+    }
+
+    .hero-left{
+        max-width:700px;
+    }
+
+    .hero h1{
+        font-size:44px;
+    }
+
+    .hero p{
+        margin-left:auto;
+        margin-right:auto;
+    }
+
+    .hero-buttons{
+        justify-content:center;
+    }
+
+    .dashboard-preview{
+        width:min(100%,430px);
+    }
+
+}
+
+@media(max-width:520px){
+
+    header{
+        padding:0 5%;
+    }
+
+    .logo h2{
+        font-size:21px;
+    }
+
+    .hero{
+        padding:55px 6%;
+    }
+
+    .hero h1{
+        font-size:38px;
+    }
+
+    .services,
+    .marketplace-section{
+        padding:65px 6%;
+    }
+
+    .quick-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .cta{
+        margin:50px 6%;
+        padding:40px 20px;
+    }
+
+    .cta h2{
+        font-size:28px;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        <h2>WAYNE LOGS</h2>
+        <span>Marketplace</span>
+    </div>
+
+    <nav id="navMenu">
+
+        <a href="index.html">Home</a>
+
+        <a href="#services">
+            Services
+        </a>
+
+        <a href="#marketplace">
+            Marketplace
+        </a>
+
+        <a href="#contact">
+            Contact
+        </a>
+
+        <a href="login.html"
+           class="login-btn">
+            Login
+        </a>
+
+    </nav>
+
+    <button
+        class="mobile-menu"
+        id="mobileMenu">
+
+        <i class="fa-solid fa-bars"></i>
+
+    </button>
+
+</header>
+
+
+<section class="hero">
+
+    <div class="hero-left">
+
+        <div class="hero-badge">
+            ⚡ Welcome to WAYNE LOGS
+        </div>
+
+        <h1>
+            Your Digital
+            <span>Marketplace</span>
+            Made Simple.
+        </h1>
+
+        <p>
+            Buy airtime, data, pay bills and explore
+            digital marketplace products from one
+            simple and secure platform.
+        </p>
+
+        <div class="hero-buttons">
+
+            <a
+                href="register.html"
+                class="primary-btn">
+
+                Create Account
+
+            </a>
+
+            <a
+                href="#services"
+                class="secondary-btn">
+
+                Explore Services
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="hero-right">
+
+        <div class="dashboard-preview">
+
+            <div class="preview-top">
+
+                <div class="preview-logo">
+                    WAYNE LOGS
+                </div>
+
+                <div class="preview-avatar">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+
+            </div>
+
+            <div class="wallet-preview">
+
+                <p>Wallet Balance</p>
+
+                <h2>₦0.00</h2>
+
+                <button>
+                    + Add Funds
+                </button>
+
+            </div>
+
+            <div class="quick-grid">
+
+                <div class="quick-item">
+                    <i class="fa-solid fa-phone"></i>
+                    Airtime
+                </div>
+
+                <div class="quick-item">
+                    <i class="fa-solid fa-wifi"></i>
+                    Data
+                </div>
+
+                <div class="quick-item">
+                    <i class="fa-solid fa-bolt"></i>
+                    Power
+                </div>
+
+                <div class="quick-item">
+                    <i class="fa-solid fa-tv"></i>
+                    Cable
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section
+    class="services"
+    id="services">
+
+    <div class="section-heading">
+
+        <span>WHAT WE OFFER</span>
+
+        <h2>
+            Everything In One Place
+        </h2>
+
+        <p>
+            Access digital services quickly from
+            your WAYNE LOGS account.
+        </p>
+
+    </div>
+
+
+    <div class="cards">
+
+        <div class="card">
+
+            <div class="icon-box">
+                <i class="fa-solid fa-phone"></i>
+            </div>
+
+            <h3>Airtime</h3>
+
+            <p>
+                Recharge MTN, Airtel, Glo and
+                9mobile numbers.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="icon-box">
+                <i class="fa-solid fa-wifi"></i>
+            </div>
+
+            <h3>Data Bundles</h3>
+
+            <p>
+                Purchase affordable internet
+                data bundles.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="icon-box">
+                <i class="fa-solid fa-bolt"></i>
+            </div>
+
+            <h3>Electricity</h3>
+
+            <p>
+                Convenient electricity bill
+                payments.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="icon-box">
+                <i class="fa-solid fa-tv"></i>
+            </div>
+
+            <h3>Cable TV</h3>
+
+            <p>
+                Renew DSTV, GOTV and Startimes
+                subscriptions.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="icon-box">
+                <i class="fa-solid fa-wallet"></i>
+            </div>
+
+            <h3>Digital Wallet</h3>
+
+            <p>
+                Fund your wallet securely and
+                manage transactions.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="icon-box">
+                <i class="fa-solid fa-store"></i>
+            </div>
+
+            <h3>Marketplace</h3>
+
+            <p>
+                Browse available digital
+                marketplace listings.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section
+    class="marketplace-section"
+    id="marketplace">
+
+    <div class="section-heading">
+
+        <span>DIGITAL MARKETPLACE</span>
+
+        <h2>Browse Categories</h2>
+
+        <p>
+            Prices and inventory will later be
+            controlled from your admin panel.
+        </p>
+
+    </div>
+
+
+    <div class="social-grid">
+
+        <div class="social-card">
+
+            <i
+                class="fa-brands fa-instagram"
+                style="color:#d62976">
+            </i>
+
+            <h4>Instagram</h4>
+
+            <p>Marketplace listings</p>
+
+            <button>
+                Browse
+            </button>
+
+        </div>
+
+
+        <div class="social-card">
+
+            <i
+                class="fa-brands fa-facebook"
+                style="color:#1877f2">
+            </i>
+
+            <h4>Facebook</h4>
+
+            <p>Marketplace listings</p>
+
+            <button>
+                Browse
+            </button>
+
+        </div>
+
+
+        <div class="social-card">
+
+            <i
+                class="fa-brands fa-tiktok">
+            </i>
+
+            <h4>TikTok</h4>
+
+            <p>Marketplace listings</p>
+
+            <button>
+                Browse
+            </button>
+
+        </div>
+
+
+        <div class="social-card">
+
+            <i
+                class="fa-brands fa-youtube"
+                style="color:#ff0000">
+            </i>
+
+            <h4>YouTube</h4>
+
+            <p>Marketplace listings</p>
+
+            <button>
+                Browse
+            </button>
+
+        </div>
+
+
+        <div class="social-card">
+
+            <i
+                class="fa-brands fa-telegram"
+                style="color:#229ed9">
+            </i>
+
+            <h4>Telegram</h4>
+
+            <p>Marketplace listings</p>
+
+            <button>
+                Browse
+            </button>
+
+        </div>
+
+
+        <div class="social-card">
+
+            <i class="fa-brands fa-x-twitter"></i>
+
+            <h4>X / Twitter</h4>
+
+            <p>Marketplace listings</p>
+
+            <button>
+                Browse
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="cta">
+
+    <h2>
+        Ready To Get Started?
+    </h2>
+
+    <p>
+        Create your WAYNE LOGS account and
+        access all available services.
+    </p>
+
+    <a href="register.html">
+        Create Free Account
+    </a>
+
+</section>
+
+
+<footer id="contact">
+
+    <div class="footer-content">
+
+        <div class="footer-brand">
+
+            <h2>WAYNE LOGS</h2>
+
+            <p>
+                Your digital marketplace for
+                convenient online services.
+            </p>
+
+        </div>
+
+        <div class="footer-links">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="login.html">
+                Login
+            </a>
+
+            <a href="register.html">
+                Register
+            </a>
+
+            <a href="#marketplace">
+                Marketplace
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="copyright">
+
+        © 2026 WAYNE LOGS.
+        All Rights Reserved.
+
+    </div>
+
+</footer>
+
+
+<script>
+
+const mobileMenu =
+    document.getElementById("mobileMenu");
+
+const navMenu =
+    document.getElementById("navMenu");
+
+mobileMenu.addEventListener(
+    "click",
+    function(){
+
+        navMenu.classList.toggle("active");
+
+    }
+);
+
+</script>
+
+</body>
+</html>

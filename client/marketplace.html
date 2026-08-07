@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Marketplace - WAYNE LOGS</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:#f5f8fc;
+    color:#1f2937;
+}
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+.sidebar{
+    position:fixed;
+    top:0;
+    left:0;
+    width:250px;
+    height:100vh;
+    background:#fff;
+    border-right:1px solid #e8edf3;
+    padding:24px 18px;
+    transition:.3s;
+    z-index:2000;
+    overflow-y:auto;
+}
+
+.brand{
+    padding:0 12px 28px;
+}
+
+.brand h2{
+    color:#0785df;
+    font-size:25px;
+}
+
+.brand p{
+    font-size:11px;
+    color:#8995a6;
+    letter-spacing:2px;
+    text-transform:uppercase;
+}
+
+.menu-title{
+    font-size:11px;
+    color:#9aa4b2;
+    font-weight:bold;
+    padding:10px 12px;
+    text-transform:uppercase;
+}
+
+.menu a{
+    display:flex;
+    align-items:center;
+    gap:13px;
+    padding:13px 14px;
+    margin-bottom:5px;
+    border-radius:10px;
+    color:#556276;
+    font-size:14px;
+}
+
+.menu a:hover,
+.menu a.active{
+    background:#eaf6ff;
+    color:#0785df;
+}
+
+.main{
+    margin-left:250px;
+    min-height:100vh;
+}
+
+.topbar{
+    height:78px;
+    background:#fff;
+    border-bottom:1px solid #edf0f4;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 30px;
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
+
+.mobile-toggle{
+    display:none;
+    border:none;
+    background:none;
+    font-size:22px;
+    cursor:pointer;
+}
+
+.page-title h1{
+    font-size:21px;
+}
+
+.page-title p{
+    font-size:12px;
+    color:#8a95a4;
+    margin-top:3px;
+}
+
+.top-actions{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.icon-btn{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    border:1px solid #e5e9ef;
+    background:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.avatar{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:#0785df;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+}
+
+.content{
+    padding:30px;
+    max-width:1250px;
+    margin:auto;
+}
+
+.hero{
+    background:linear-gradient(135deg,#067fd7,#0aa0f4);
+    color:white;
+    padding:30px;
+    border-radius:22px;
+    margin-bottom:22px;
+    box-shadow:0 20px 45px rgba(7,133,223,.18);
+}
+
+.hero h1{
+    font-size:29px;
+    margin-bottom:8px;
+}
+
+.hero p{
+    font-size:14px;
+    opacity:.9;
+    line-height:1.6;
+}
+
+.notice{
+    background:#fff8e7;
+    border:1px solid #f5dda3;
+    color:#6f5717;
+    padding:14px 16px;
+    border-radius:12px;
+    font-size:13px;
+    line-height:1.5;
+    margin-bottom:20px;
+}
+
+.tools{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-bottom:22px;
+}
+
+.search{
+    flex:1;
+    min-width:230px;
+    position:relative;
+}
+
+.search i{
+    position:absolute;
+    top:50%;
+    left:15px;
+    transform:translateY(-50%);
+    color:#8995a5;
+}
+
+.search input{
+    width:100%;
+    height:48px;
+    border:1px solid #dfe6ee;
+    border-radius:11px;
+    background:white;
+    padding:0 15px 0 42px;
+    outline:none;
+}
+
+.search input:focus{
+    border-color:#0785df;
+    box-shadow:0 0 0 4px rgba(7,133,223,.08);
+}
+
+.filter{
+    height:48px;
+    border:1px solid #dfe6ee;
+    border-radius:11px;
+    background:white;
+    padding:0 15px;
+    outline:none;
+}
+
+.products{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+}
+
+.product-card{
+    background:white;
+    border:1px solid #edf0f4;
+    border-radius:18px;
+    padding:20px;
+    transition:.25s;
+}
+
+.product-card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 14px 35px rgba(0,0,0,.07);
+}
+
+.product-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:17px;
+}
+
+.platform-icon{
+    width:54px;
+    height:54px;
+    border-radius:14px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#f3f7fb;
+    font-size:26px;
+}
+
+.stock{
+    padding:6px 9px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:bold;
+}
+
+.available{
+    background:#eaf8ef;
+    color:#15803d;
+}
+
+.out{
+    background:#fff1f2;
+    color:#be123c;
+}
+
+.product-card h3{
+    font-size:17px;
+    margin-bottom:7px;
+}
+
+.product-description{
+    color:#7e8998;
+    font-size:13px;
+    line-height:1.6;
+    min-height:42px;
+}
+
+.meta{
+    display:flex;
+    gap:7px;
+    flex-wrap:wrap;
+    margin:14px 0;
+}
+
+.badge{
+    background:#f3f6f9;
+    padding:6px 8px;
+    border-radius:8px;
+    color:#687487;
+    font-size:11px;
+}
+
+.bottom{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding-top:16px;
+    border-top:1px solid #eef1f4;
+}
+
+.price{
+    color:#0785df;
+    font-size:20px;
+    font-weight:800;
+}
+
+.buy-btn{
+    border:none;
+    background:#0785df;
+    color:white;
+    padding:10px 16px;
+    border-radius:9px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.buy-btn:hover{
+    background:#006fc0;
+}
+
+.buy-btn:disabled{
+    background:#b7c2ce;
+    cursor:not-allowed;
+}
+
+.empty{
+    display:none;
+    background:white;
+    border:1px solid #edf0f4;
+    border-radius:18px;
+    padding:55px 20px;
+    text-align:center;
+    color:#8792a1;
+}
+
+.empty i{
+    font-size:42px;
+    color:#ccd5df;
+    margin-bottom:12px;
+}
+
+.empty h3{
+    color:#566276;
+    margin-bottom:7px;
+}
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(17,24,39,.55);
+    z-index:4000;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.modal.active{
+    display:flex;
+}
+
+.modal-card{
+    background:white;
+    width:100%;
+    max-width:440px;
+    border-radius:20px;
+    padding:28px;
+}
+
+.modal-card h2{
+    margin-bottom:7px;
+}
+
+.modal-card > p{
+    color:#7d8898;
+    font-size:13px;
+    margin-bottom:20px;
+}
+
+.summary{
+    background:#f8fafc;
+    border-radius:12px;
+    padding:16px;
+}
+
+.summary-row{
+    display:flex;
+    justify-content:space-between;
+    gap:15px;
+    padding:7px 0;
+    font-size:13px;
+}
+
+.summary-row span{
+    color:#7e8998;
+}
+
+.modal-actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-top:20px;
+}
+
+.cancel-btn,
+.continue-btn{
+    height:45px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.cancel-btn{
+    border:1px solid #dfe6ee;
+    background:white;
+    color:#566276;
+}
+
+.continue-btn{
+    border:none;
+    background:#0785df;
+    color:white;
+}
+
+.overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(17,24,39,.4);
+    z-index:1500;
+}
+
+@media(max-width:1050px){
+
+    .products{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+@media(max-width:850px){
+
+    .sidebar{
+        transform:translateX(-100%);
+    }
+
+    .sidebar.active{
+        transform:translateX(0);
+    }
+
+    .overlay.active{
+        display:block;
+    }
+
+    .main{
+        margin-left:0;
+    }
+
+    .mobile-toggle{
+        display:block;
+    }
+
+}
+
+@media(max-width:600px){
+
+    .content{
+        padding:20px 14px;
+    }
+
+    .topbar{
+        padding:0 15px;
+    }
+
+    .page-title p{
+        display:none;
+    }
+
+    .products{
+        grid-template-columns:1fr;
+    }
+
+    .modal-actions{
+        grid-template-columns:1fr;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="overlay" id="overlay"></div>
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="brand">
+        <h2>WAYNE LOGS</h2>
+        <p>Marketplace</p>
+    </div>
+
+    <div class="menu">
+
+        <div class="menu-title">Menu</div>
+
+        <a href="dashboard.html">
+            <i class="fa-solid fa-house"></i>
+            Dashboard
+        </a>
+
+        <a href="wallet.html">
+            <i class="fa-solid fa-wallet"></i>
+            Wallet
+        </a>
+
+        <a href="airtime.html">
+            <i class="fa-solid fa-phone"></i>
+            Airtime
+        </a>
+
+        <a href="data.html">
+            <i class="fa-solid fa-wifi"></i>
+            Data
+        </a>
+
+        <a href="electricity.html">
+            <i class="fa-solid fa-bolt"></i>
+            Electricity
+        </a>
+
+        <a href="cable.html">
+            <i class="fa-solid fa-tv"></i>
+            Cable TV
+        </a>
+
+        <a href="marketplace.html" class="active">
+            <i class="fa-solid fa-store"></i>
+            Marketplace
+        </a>
+
+        <a href="orders.html">
+            <i class="fa-solid fa-box"></i>
+            My Orders
+        </a>
+
+        <div class="menu-title">Account</div>
+
+        <a href="profile.html">
+            <i class="fa-solid fa-user"></i>
+            Profile
+        </a>
+
+        <a href="referrals.html">
+            <i class="fa-solid fa-users"></i>
+            Referrals
+        </a>
+
+        <a href="notifications.html">
+            <i class="fa-solid fa-bell"></i>
+            Notifications
+        </a>
+
+        <a href="settings.html">
+            <i class="fa-solid fa-gear"></i>
+            Settings
+        </a>
+
+        <a href="login.html">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            Logout
+        </a>
+
+    </div>
+
+</aside>
+
+<main class="main">
+
+    <div class="topbar">
+
+        <button class="mobile-toggle" id="mobileToggle">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <div class="page-title">
+            <h1>Marketplace</h1>
+            <p>Browse available WAYNE LOGS listings.</p>
+        </div>
+
+        <div class="top-actions">
+
+            <a href="notifications.html" class="icon-btn">
+                <i class="fa-regular fa-bell"></i>
+            </a>
+
+            <div class="avatar">
+                W
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <section class="content">
+
+        <div class="hero">
+
+            <h1>
+                <i class="fa-solid fa-store"></i>
+                Digital Marketplace
+            </h1>
+
+            <p>
+                Products displayed here are now controlled from
+                your WAYNE LOGS Admin Dashboard.
+            </p>
+
+        </div>
+
+
+        <div class="notice">
+
+            <i class="fa-solid fa-circle-info"></i>
+
+            Listings should only contain digital products or accounts
+            that can legally and contractually be transferred.
+
+        </div>
+
+
+        <div class="tools">
+
+            <div class="search">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search products...">
+
+            </div>
+
+
+            <select
+                class="filter"
+                id="platformFilter">
+
+                <option value="all">
+                    All Platforms
+                </option>
+
+                <option value="Instagram">
+                    Instagram
+                </option>
+
+                <option value="Facebook">
+                    Facebook
+                </option>
+
+                <option value="TikTok">
+                    TikTok
+                </option>
+
+                <option value="YouTube">
+                    YouTube
+                </option>
+
+                <option value="Telegram">
+                    Telegram
+                </option>
+
+                <option value="X / Twitter">
+                    X / Twitter
+                </option>
+
+                <option value="Snapchat">
+                    Snapchat
+                </option>
+
+                <option value="Discord">
+                    Discord
+                </option>
+
+                <option value="LinkedIn">
+                    LinkedIn
+                </option>
+
+                <option value="Reddit">
+                    Reddit
+                </option>
+
+                <option value="Other">
+                    Other
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div
+            class="products"
+            id="productContainer">
+        </div>
+
+
+        <div
+            class="empty"
+            id="emptyState">
+
+            <i class="fa-solid fa-box-open"></i>
+
+            <h3>No products found</h3>
+
+            <p>
+                There are currently no matching products.
+            </p>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- PURCHASE MODAL -->
+
+<div class="modal" id="purchaseModal">
+
+    <div class="modal-card">
+
+        <h2>Confirm Purchase</h2>
+
+        <p>
+            Review the product before continuing to checkout.
+        </p>
+
+        <div class="summary">
+
+            <div class="summary-row">
+
+                <span>Product</span>
+
+                <strong id="modalProduct">
+                    —
+                </strong>
+
+            </div>
+
+            <div class="summary-row">
+
+                <span>Platform</span>
+
+                <strong id="modalPlatform">
+                    —
+                </strong>
+
+            </div>
+
+            <div class="summary-row">
+
+                <span>Price</span>
+
+                <strong id="modalPrice">
+                    ₦0
+                </strong>
+
+            </div>
+
+        </div>
+
+        <div class="modal-actions">
+
+            <button
+                class="cancel-btn"
+                id="cancelPurchase">
+
+                Cancel
+
+            </button>
+
+            <button
+                class="continue-btn"
+                id="continuePurchase">
+
+                Continue to Checkout
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   MOBILE MENU
+========================= */
+
+const sidebar =
+    document.getElementById("sidebar");
+
+const mobileToggle =
+    document.getElementById("mobileToggle");
+
+const overlay =
+    document.getElementById("overlay");
+
+
+mobileToggle.addEventListener(
+    "click",
+    function(){
+
+        sidebar.classList.add("active");
+        overlay.classList.add("active");
+
+    }
+);
+
+
+overlay.addEventListener(
+    "click",
+    function(){
+
+        sidebar.classList.remove("active");
+        overlay.classList.remove("active");
+
+    }
+);
+
+
+/* =========================
+   PRODUCTS FROM ADMIN
+========================= */
+
+let products =
+    JSON.parse(
+        localStorage.getItem(
+            "wayneProducts"
+        )
+    ) || [];
+
+
+const productContainer =
+    document.getElementById(
+        "productContainer"
+    );
+
+const emptyState =
+    document.getElementById(
+        "emptyState"
+    );
+
+const searchInput =
+    document.getElementById(
+        "searchInput"
+    );
+
+const platformFilter =
+    document.getElementById(
+        "platformFilter"
+    );
+
+
+/* =========================
+   PLATFORM ICONS
+========================= */
+
+function getPlatformIcon(platform){
+
+    const icons = {
+
+        "Instagram":
+            '<i class="fa-brands fa-instagram" style="color:#d62976"></i>',
+
+        "Facebook":
+            '<i class="fa-brands fa-facebook" style="color:#1877f2"></i>',
+
+        "TikTok":
+            '<i class="fa-brands fa-tiktok"></i>',
+
+        "YouTube":
+            '<i class="fa-brands fa-youtube" style="color:#ff0000"></i>',
+
+        "Telegram":
+            '<i class="fa-brands fa-telegram" style="color:#229ed9"></i>',
+
+        "X / Twitter":
+            '<i class="fa-brands fa-x-twitter"></i>',
+
+        "Snapchat":
+            '<i class="fa-brands fa-snapchat" style="color:#c9bd00"></i>',
+
+        "Discord":
+            '<i class="fa-brands fa-discord" style="color:#5865f2"></i>',
+
+        "LinkedIn":
+            '<i class="fa-brands fa-linkedin" style="color:#0a66c2"></i>',
+
+        "Reddit":
+            '<i class="fa-brands fa-reddit" style="color:#ff4500"></i>'
+
+    };
+
+
+    return icons[platform] ||
+        '<i class="fa-solid fa-box"></i>';
+
+}
+
+
+/* =========================
+   ESCAPE TEXT
+========================= */
+
+function escapeHTML(value){
+
+    const div =
+        document.createElement("div");
+
+    div.textContent =
+        String(value ?? "");
+
+    return div.innerHTML;
+
+}
+
+
+/* =========================
+   RENDER PRODUCTS
+========================= */
+
+function renderProducts(){
+
+    const search =
+        searchInput.value
+        .toLowerCase()
+        .trim();
+
+
+    const selectedPlatform =
+        platformFilter.value;
+
+
+    productContainer.innerHTML = "";
+
+
+    const filtered =
+        products.filter(
+            function(product){
+
+                const name =
+                    String(
+                        product.name || ""
+                    ).toLowerCase();
+
+
+                const platform =
+                    String(
+                        product.platform || ""
+                    );
+
+
+                const description =
+                    String(
+                        product.description || ""
+                    ).toLowerCase();
+
+
+                const matchesSearch =
+                    name.includes(search)
+                    ||
+                    description.includes(search)
+                    ||
+                    platform
+                    .toLowerCase()
+                    .includes(search);
+
+
+                const matchesPlatform =
+                    selectedPlatform ===
+                    "all"
+                    ||
+                    platform ===
+                    selectedPlatform;
+
+
+                return (
+                    matchesSearch &&
+                    matchesPlatform
+                );
+
+            }
+        );
+
+
+    if(filtered.length === 0){
+
+        emptyState.style.display =
+            "block";
+
+        return;
+
+    }
+
+
+    emptyState.style.display =
+        "none";
+
+
+    filtered.forEach(
+        function(product){
+
+            const available =
+                product.status ===
+                "Available"
+                &&
+                Number(product.stock) > 0;
+
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.className =
+                "product-card";
+
+
+            card.innerHTML = `
+
+                <div class="product-top">
+
+                    <div class="platform-icon">
+
+                        ${getPlatformIcon(product.platform)}
+
+                    </div>
+
+
+                    <span class="stock ${available ? "available" : "out"}">
+
+                        ${
+                            available
+                            ?
+                            "Available"
+                            :
+                            "Out of Stock"
+                        }
+
+                    </span>
+
+                </div>
+
+
+                <h3>
+                    ${escapeHTML(product.name)}
+                </h3>
+
+
+                <p class="product-description">
+
+                    ${
+                        escapeHTML(
+                            product.description ||
+                            "Digital marketplace listing."
+                        )
+                    }
+
+                </p>
+
+
+                <div class="meta">
+
+                    <span class="badge">
+                        ${escapeHTML(product.platform)}
+                    </span>
+
+                    <span class="badge">
+                        Stock: ${Number(product.stock || 0)}
+                    </span>
+
+                </div>
+
+
+                <div class="bottom">
+
+                    <div class="price">
+
+                        ₦${Number(product.price || 0).toLocaleString()}
+
+                    </div>
+
+
+                    <button
+                        class="buy-btn"
+                        ${available ? "" : "disabled"}>
+
+                        ${
+                            available
+                            ?
+                            "Buy"
+                            :
+                            "Unavailable"
+                        }
+
+                    </button>
+
+                </div>
+
+            `;
+
+
+            if(available){
+
+                card
+                .querySelector(
+                    ".buy-btn"
+                )
+                .addEventListener(
+                    "click",
+                    function(){
+
+                        openPurchase(
+                            product
+                        );
+
+                    }
+                );
+
+            }
+
+
+            productContainer.appendChild(
+                card
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================
+   SEARCH / FILTER
+========================= */
+
+searchInput.addEventListener(
+    "input",
+    renderProducts
+);
+
+
+platformFilter.addEventListener(
+    "change",
+    renderProducts
+);
+
+
+/* =========================
+   PURCHASE MODAL
+========================= */
+
+const purchaseModal =
+    document.getElementById(
+        "purchaseModal"
+    );
+
+let selectedProduct = null;
+
+
+function openPurchase(product){
+
+    selectedProduct =
+        product;
+
+
+    document.getElementById(
+        "modalProduct"
+    ).textContent =
+        product.name;
+
+
+    document.getElementById(
+        "modalPlatform"
+    ).textContent =
+        product.platform;
+
+
+    document.getElementById(
+        "modalPrice"
+    ).textContent =
+        "₦" +
+        Number(
+            product.price
+        ).toLocaleString();
+
+
+    purchaseModal.classList.add(
+        "active"
+    );
+
+}
+
+
+document.getElementById(
+    "cancelPurchase"
+)
+.addEventListener(
+    "click",
+    function(){
+
+        purchaseModal.classList.remove(
+            "active"
+        );
+
+        selectedProduct = null;
+
+    }
+);
+
+
+/* =========================
+   CHECKOUT
+========================= */
+
+document.getElementById(
+    "continuePurchase"
+)
+.addEventListener(
+    "click",
+    function(){
+
+        if(!selectedProduct){
+            return;
+        }
+
+
+        localStorage.setItem(
+            "wayneSelectedProduct",
+            selectedProduct.name
+        );
+
+
+        localStorage.setItem(
+            "wayneSelectedPrice",
+            selectedProduct.price
+        );
+
+
+        localStorage.setItem(
+            "wayneSelectedProductId",
+            selectedProduct.id
+        );
+
+
+        localStorage.setItem(
+            "wayneSelectedPlatform",
+            selectedProduct.platform
+        );
+
+
+        window.location.href =
+            "checkout.html";
+
+    }
+);
+
+
+/* =========================
+   START
+========================= */
+
+renderProducts();
+
+
+/*
+If admin.html changes localStorage
+while marketplace is open in another tab,
+refresh automatically.
+*/
+
+window.addEventListener(
+    "storage",
+    function(event){
+
+        if(
+            event.key ===
+            "wayneProducts"
+        ){
+
+            products =
+                JSON.parse(
+                    localStorage.getItem(
+                        "wayneProducts"
+                    )
+                ) || [];
+
+
+            renderProducts();
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>

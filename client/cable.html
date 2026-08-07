@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cable TV - WAYNE LOGS</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:#f5f8fc;
+    color:#1f2937;
+}
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+.sidebar{
+    position:fixed;
+    top:0;
+    left:0;
+    width:250px;
+    height:100vh;
+    background:#fff;
+    border-right:1px solid #e8edf3;
+    padding:24px 18px;
+    transition:.3s;
+    z-index:2000;
+}
+
+.brand{
+    padding:0 12px 28px;
+}
+
+.brand h2{
+    color:#0785df;
+    font-size:25px;
+}
+
+.brand p{
+    font-size:11px;
+    color:#8995a6;
+    letter-spacing:2px;
+    text-transform:uppercase;
+}
+
+.menu-title{
+    font-size:11px;
+    color:#9aa4b2;
+    font-weight:bold;
+    padding:10px 12px;
+    text-transform:uppercase;
+}
+
+.menu a{
+    display:flex;
+    align-items:center;
+    gap:13px;
+    padding:13px 14px;
+    margin-bottom:5px;
+    border-radius:10px;
+    color:#556276;
+    font-size:14px;
+}
+
+.menu a:hover,
+.menu a.active{
+    background:#eaf6ff;
+    color:#0785df;
+}
+
+.main{
+    margin-left:250px;
+    min-height:100vh;
+}
+
+.topbar{
+    height:78px;
+    background:#fff;
+    border-bottom:1px solid #edf0f4;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 30px;
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
+
+.mobile-toggle{
+    display:none;
+    border:none;
+    background:none;
+    font-size:22px;
+    cursor:pointer;
+}
+
+.page-title h1{
+    font-size:21px;
+}
+
+.page-title p{
+    font-size:12px;
+    color:#8a95a4;
+    margin-top:3px;
+}
+
+.top-actions{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.icon-btn{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    border:1px solid #e5e9ef;
+    background:#fff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.avatar{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:#0785df;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-weight:bold;
+}
+
+.content{
+    padding:30px;
+    max-width:1000px;
+    margin:auto;
+}
+
+.hero-card{
+    background:linear-gradient(135deg,#067fd7,#0aa0f4);
+    color:white;
+    border-radius:20px;
+    padding:28px;
+    margin-bottom:25px;
+    box-shadow:0 20px 45px rgba(7,133,223,.18);
+}
+
+.hero-card h1{
+    font-size:27px;
+    margin-bottom:8px;
+}
+
+.hero-card p{
+    opacity:.9;
+    font-size:14px;
+}
+
+.form-card{
+    background:#fff;
+    border:1px solid #edf0f4;
+    border-radius:18px;
+    padding:28px;
+}
+
+.form-card h2{
+    font-size:20px;
+    margin-bottom:5px;
+}
+
+.form-card > p{
+    color:#8893a3;
+    font-size:13px;
+    margin-bottom:24px;
+}
+
+.providers{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-bottom:24px;
+}
+
+.provider{
+    border:1px solid #dfe6ee;
+    background:#fff;
+    border-radius:13px;
+    padding:18px 10px;
+    text-align:center;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.provider:hover{
+    border-color:#0785df;
+    transform:translateY(-2px);
+}
+
+.provider.active{
+    border:2px solid #0785df;
+    background:#eef8ff;
+}
+
+.provider-logo{
+    width:55px;
+    height:55px;
+    border-radius:14px;
+    margin:0 auto 10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    font-weight:bold;
+}
+
+.dstv{
+    background:#1976d2;
+}
+
+.gotv{
+    background:#ef6c00;
+}
+
+.startimes{
+    background:#6a1b9a;
+}
+
+.provider strong{
+    font-size:14px;
+}
+
+.form-group{
+    margin-bottom:18px;
+}
+
+.form-group label{
+    display:block;
+    margin-bottom:8px;
+    font-size:13px;
+    font-weight:600;
+}
+
+.form-group input,
+.form-group select{
+    width:100%;
+    height:50px;
+    border:1px solid #dfe6ee;
+    background:#f9fbfd;
+    border-radius:11px;
+    padding:0 15px;
+    font-size:15px;
+    outline:none;
+}
+
+.form-group input:focus,
+.form-group select:focus{
+    border-color:#0785df;
+    background:#fff;
+    box-shadow:0 0 0 4px rgba(7,133,223,.09);
+}
+
+.package-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-bottom:20px;
+}
+
+.package-card{
+    border:1px solid #dfe6ee;
+    background:#fff;
+    border-radius:12px;
+    padding:16px;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.package-card:hover{
+    border-color:#0785df;
+    transform:translateY(-2px);
+}
+
+.package-card.active{
+    border:2px solid #0785df;
+    background:#eef8ff;
+}
+
+.package-card h4{
+    font-size:15px;
+    margin-bottom:5px;
+}
+
+.package-card p{
+    font-size:12px;
+    color:#7d8898;
+}
+
+.package-card strong{
+    display:block;
+    color:#0785df;
+    margin-top:8px;
+}
+
+.summary{
+    background:#f8fafc;
+    border-radius:12px;
+    padding:16px;
+    margin:20px 0;
+}
+
+.summary-row{
+    display:flex;
+    justify-content:space-between;
+    gap:15px;
+    padding:6px 0;
+    font-size:13px;
+}
+
+.summary-row span:first-child{
+    color:#7d8898;
+}
+
+.summary-row strong{
+    text-align:right;
+}
+
+.pay-btn{
+    width:100%;
+    height:52px;
+    border:none;
+    border-radius:11px;
+    background:#0785df;
+    color:white;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.pay-btn:hover{
+    background:#006fc0;
+}
+
+.notice{
+    text-align:center;
+    color:#8a95a4;
+    font-size:12px;
+    margin-top:13px;
+}
+
+.notice i{
+    color:#159455;
+}
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(17,24,39,.5);
+    z-index:3000;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.modal.active{
+    display:flex;
+}
+
+.modal-card{
+    width:100%;
+    max-width:420px;
+    background:#fff;
+    border-radius:18px;
+    padding:28px;
+    text-align:center;
+}
+
+.modal-icon{
+    width:65px;
+    height:65px;
+    margin:0 auto 15px;
+    border-radius:50%;
+    background:#eaf6ff;
+    color:#0785df;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:27px;
+}
+
+.modal-card h3{
+    margin-bottom:8px;
+}
+
+.modal-card p{
+    color:#7b8797;
+    line-height:1.6;
+    font-size:14px;
+}
+
+.modal-card button{
+    margin-top:20px;
+    width:100%;
+    height:45px;
+    border:none;
+    border-radius:10px;
+    background:#0785df;
+    color:white;
+    cursor:pointer;
+}
+
+.overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(17,24,39,.4);
+    z-index:1500;
+}
+
+@media(max-width:850px){
+    .sidebar{
+        transform:translateX(-100%);
+    }
+
+    .sidebar.active{
+        transform:translateX(0);
+    }
+
+    .overlay.active{
+        display:block;
+    }
+
+    .main{
+        margin-left:0;
+    }
+
+    .mobile-toggle{
+        display:block;
+    }
+}
+
+@media(max-width:600px){
+    .content{
+        padding:20px 14px;
+    }
+
+    .topbar{
+        padding:0 15px;
+    }
+
+    .page-title p{
+        display:none;
+    }
+
+    .providers{
+        grid-template-columns:1fr;
+    }
+
+    .package-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .form-card{
+        padding:22px 17px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="overlay" id="overlay"></div>
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="brand">
+        <h2>WAYNE LOGS</h2>
+        <p>Marketplace</p>
+    </div>
+
+    <div class="menu">
+
+        <div class="menu-title">Menu</div>
+
+        <a href="dashboard.html">
+            <i class="fa-solid fa-house"></i>
+            Dashboard
+        </a>
+
+        <a href="wallet.html">
+            <i class="fa-solid fa-wallet"></i>
+            Wallet
+        </a>
+
+        <a href="airtime.html">
+            <i class="fa-solid fa-phone"></i>
+            Airtime
+        </a>
+
+        <a href="data.html">
+            <i class="fa-solid fa-wifi"></i>
+            Data
+        </a>
+
+        <a href="electricity.html">
+            <i class="fa-solid fa-bolt"></i>
+            Electricity
+        </a>
+
+        <a href="cable.html" class="active">
+            <i class="fa-solid fa-tv"></i>
+            Cable TV
+        </a>
+
+        <a href="marketplace.html">
+            <i class="fa-solid fa-store"></i>
+            Marketplace
+        </a>
+
+        <div class="menu-title">Account</div>
+
+        <a href="profile.html">
+            <i class="fa-solid fa-user"></i>
+            Profile
+        </a>
+
+        <a href="referrals.html">
+            <i class="fa-solid fa-users"></i>
+            Referrals
+        </a>
+
+        <a href="settings.html">
+            <i class="fa-solid fa-gear"></i>
+            Settings
+        </a>
+
+        <a href="login.html">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            Logout
+        </a>
+
+    </div>
+
+</aside>
+
+<main class="main">
+
+    <div class="topbar">
+
+        <button class="mobile-toggle" id="mobileToggle">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <div class="page-title">
+            <h1>Cable TV</h1>
+            <p>Renew your television subscription.</p>
+        </div>
+
+        <div class="top-actions">
+            <div class="icon-btn">
+                <i class="fa-regular fa-bell"></i>
+            </div>
+            <div class="avatar">W</div>
+        </div>
+
+    </div>
+
+    <section class="content">
+
+        <div class="hero-card">
+            <h1>
+                <i class="fa-solid fa-tv"></i>
+                Cable TV Subscription
+            </h1>
+
+            <p>
+                Select your provider, enter your smart card number
+                and choose a package.
+            </p>
+        </div>
+
+        <div class="form-card">
+
+            <h2>Renew Subscription</h2>
+
+            <p>
+                Choose your television provider below.
+            </p>
+
+            <div class="providers">
+
+                <div class="provider" data-provider="DSTV">
+                    <div class="provider-logo dstv">DStv</div>
+                    <strong>DSTV</strong>
+                </div>
+
+                <div class="provider" data-provider="GOTV">
+                    <div class="provider-logo gotv">GOtv</div>
+                    <strong>GOTV</strong>
+                </div>
+
+                <div class="provider" data-provider="Startimes">
+                    <div class="provider-logo startimes">ST</div>
+                    <strong>Startimes</strong>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>
+                    Smart Card / IUC Number
+                </label>
+
+                <input
+                    type="text"
+                    id="smartcard"
+                    placeholder="Enter smart card or IUC number">
+
+            </div>
+
+            <label style="font-size:13px;font-weight:600;display:block;margin-bottom:9px;">
+                Select Package
+            </label>
+
+            <div class="package-grid">
+
+                <div class="package-card"
+                data-package="Basic"
+                data-price="2500">
+
+                    <h4>Basic</h4>
+                    <p>Starter package</p>
+                    <strong>₦2,500</strong>
+
+                </div>
+
+                <div class="package-card"
+                data-package="Compact"
+                data-price="5500">
+
+                    <h4>Compact</h4>
+                    <p>Popular package</p>
+                    <strong>₦5,500</strong>
+
+                </div>
+
+                <div class="package-card"
+                data-package="Premium"
+                data-price="12000">
+
+                    <h4>Premium</h4>
+                    <p>Full entertainment</p>
+                    <strong>₦12,000</strong>
+
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>
+                    Phone Number
+                </label>
+
+                <input
+                    type="tel"
+                    id="phone"
+                    maxlength="11"
+                    placeholder="08012345678">
+
+            </div>
+
+            <div class="summary">
+
+                <div class="summary-row">
+                    <span>Provider</span>
+                    <strong id="providerSummary">
+                        Not selected
+                    </strong>
+                </div>
+
+                <div class="summary-row">
+                    <span>Smart Card</span>
+                    <strong id="cardSummary">—</strong>
+                </div>
+
+                <div class="summary-row">
+                    <span>Package</span>
+                    <strong id="packageSummary">
+                        Not selected
+                    </strong>
+                </div>
+
+                <div class="summary-row">
+                    <span>Amount</span>
+                    <strong id="amountSummary">
+                        ₦0
+                    </strong>
+                </div>
+
+                <div class="summary-row">
+                    <span>Payment</span>
+                    <strong>Wallet</strong>
+                </div>
+
+            </div>
+
+            <button class="pay-btn" id="payBtn">
+
+                <i class="fa-solid fa-lock"></i>
+
+                Pay Subscription
+
+            </button>
+
+            <div class="notice">
+
+                <i class="fa-solid fa-shield-halved"></i>
+
+                Secure WAYNE LOGS transaction.
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<div class="modal" id="modal">
+
+    <div class="modal-card">
+
+        <div class="modal-icon">
+            <i class="fa-solid fa-tv"></i>
+        </div>
+
+        <h3>
+            Cable TV Form Working
+        </h3>
+
+        <p id="modalText"></p>
+
+        <button id="closeModal">
+            Continue
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+
+const sidebar =
+    document.getElementById("sidebar");
+
+const mobileToggle =
+    document.getElementById("mobileToggle");
+
+const overlay =
+    document.getElementById("overlay");
+
+mobileToggle.addEventListener(
+    "click",
+    function(){
+
+        sidebar.classList.add("active");
+        overlay.classList.add("active");
+
+    }
+);
+
+overlay.addEventListener(
+    "click",
+    function(){
+
+        sidebar.classList.remove("active");
+        overlay.classList.remove("active");
+
+    }
+);
+
+
+let selectedProvider = "";
+let selectedPackage = "";
+let selectedPrice = 0;
+
+const providers =
+    document.querySelectorAll(".provider");
+
+const packages =
+    document.querySelectorAll(".package-card");
+
+const smartcard =
+    document.getElementById("smartcard");
+
+const phone =
+    document.getElementById("phone");
+
+const providerSummary =
+    document.getElementById("providerSummary");
+
+const cardSummary =
+    document.getElementById("cardSummary");
+
+const packageSummary =
+    document.getElementById("packageSummary");
+
+const amountSummary =
+    document.getElementById("amountSummary");
+
+
+providers.forEach(function(card){
+
+    card.addEventListener("click", function(){
+
+        providers.forEach(function(item){
+            item.classList.remove("active");
+        });
+
+        card.classList.add("active");
+
+        selectedProvider =
+            card.dataset.provider;
+
+        providerSummary.textContent =
+            selectedProvider;
+
+    });
+
+});
+
+
+packages.forEach(function(card){
+
+    card.addEventListener("click", function(){
+
+        packages.forEach(function(item){
+            item.classList.remove("active");
+        });
+
+        card.classList.add("active");
+
+        selectedPackage =
+            card.dataset.package;
+
+        selectedPrice =
+            Number(card.dataset.price);
+
+        packageSummary.textContent =
+            selectedPackage;
+
+        amountSummary.textContent =
+            "₦" +
+            selectedPrice.toLocaleString();
+
+    });
+
+});
+
+
+smartcard.addEventListener(
+    "input",
+    function(){
+
+        cardSummary.textContent =
+            smartcard.value || "—";
+
+    }
+);
+
+
+const modal =
+    document.getElementById("modal");
+
+const modalText =
+    document.getElementById("modalText");
+
+
+document.getElementById("payBtn")
+.addEventListener("click", function(){
+
+    const cardValue =
+        smartcard.value.trim();
+
+    const phoneValue =
+        phone.value.trim();
+
+    if(!selectedProvider){
+
+        alert("Please select a cable provider.");
+
+        return;
+    }
+
+    if(cardValue.length < 5){
+
+        alert(
+            "Please enter a valid smart card or IUC number."
+        );
+
+        return;
+    }
+
+    if(!selectedPackage){
+
+        alert("Please select a package.");
+
+        return;
+    }
+
+    if(
+        phoneValue.length !== 11 ||
+        !/^[0-9]+$/.test(phoneValue)
+    ){
+
+        alert(
+            "Please enter a valid 11-digit phone number."
+        );
+
+        return;
+    }
+
+    modalText.textContent =
+        "You selected " +
+        selectedProvider +
+        " " +
+        selectedPackage +
+        " for smart card " +
+        cardValue +
+        " at ₦" +
+        selectedPrice.toLocaleString() +
+        ". The real cable TV API will be connected later.";
+
+    modal.classList.add("active");
+
+});
+
+
+document.getElementById("closeModal")
+.addEventListener("click", function(){
+
+    modal.classList.remove("active");
+
+});
+
+</script>
+
+</body>
+</html>
