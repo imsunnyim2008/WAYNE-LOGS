@@ -37,12 +37,26 @@ app.use(
 
 
 // ==========================================
+// REQUEST LOGGING
+//
+// MUST be before the webhook so Render
+// shows POST /api/paystack/webhook
+// ==========================================
+
+app.use(
+    morgan("dev")
+);
+
+
+// ==========================================
 // PAYSTACK WEBHOOK
 //
 // IMPORTANT:
-// This MUST stay BEFORE express.json().
-// Paystack signature verification uses
-// the original webhook request body.
+// Keep this BEFORE express.json().
+//
+// express.raw() preserves the webhook body
+// as a Buffer so we can verify Paystack's
+// x-paystack-signature securely.
 // ==========================================
 
 app.post(
@@ -59,6 +73,8 @@ app.post(
 
 // ==========================================
 // NORMAL BODY PARSERS
+//
+// These come AFTER the Paystack webhook.
 // ==========================================
 
 app.use(
@@ -72,15 +88,6 @@ app.use(
         extended: true,
         limit: "10mb"
     })
-);
-
-
-// ==========================================
-// LOGGING
-// ==========================================
-
-app.use(
-    morgan("dev")
 );
 
 
@@ -183,6 +190,28 @@ app.get(
                 "Protected route is working",
             user:
                 req.user
+        });
+
+    }
+);
+
+
+// ==========================================
+// OPTIONAL WEBHOOK BROWSER CHECK
+//
+// Paystack itself uses POST.
+// This GET route only makes it easier for
+// us to confirm the URL exists in a browser.
+// ==========================================
+
+app.get(
+    "/api/paystack/webhook",
+    (req, res) => {
+
+        res.json({
+            success: true,
+            message:
+                "WAYNE LOGS Paystack webhook endpoint is online. Paystack events use POST."
         });
 
     }
