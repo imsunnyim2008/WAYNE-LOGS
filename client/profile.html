@@ -1,682 +1,443 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - WAYNE LOGS</title>
 
-<title>Profile - WAYNE LOGS</title>
+    <style>
+        *{
+            box-sizing:border-box;
+            margin:0;
+            padding:0;
+        }
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+        body{
+            font-family:Arial,Helvetica,sans-serif;
+            background:#f3f7fc;
+            color:#172033;
+            min-height:100vh;
+        }
 
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
+        header{
+            background:white;
+            min-height:90px;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            padding:20px 30px;
+            border-bottom:1px solid #e8edf4;
+            position:sticky;
+            top:0;
+            z-index:20;
+        }
 
-body{
-    font-family:Arial, Helvetica, sans-serif;
-    background:#f5f8fc;
-    color:#1f2937;
-}
+        .menu{
+            font-size:35px;
+            color:#3486df;
+            cursor:pointer;
+        }
 
-a{
-    text-decoration:none;
-    color:inherit;
-}
+        header h1{
+            font-size:28px;
+        }
 
-.sidebar{
-    position:fixed;
-    top:0;
-    left:0;
-    width:250px;
-    height:100vh;
-    background:#fff;
-    border-right:1px solid #e8edf3;
-    padding:24px 18px;
-    z-index:2000;
-    transition:.3s;
-    overflow-y:auto;
-}
+        .header-right{
+            display:flex;
+            align-items:center;
+            gap:15px;
+        }
 
-.brand{
-    padding:0 12px 28px;
-}
+        .bell,
+        .avatar-small{
+            width:55px;
+            height:55px;
+            border-radius:50%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+        }
 
-.brand h2{
-    color:#0785df;
-    font-size:25px;
-}
+        .bell{
+            border:2px solid #e5ebf2;
+            font-size:25px;
+        }
 
-.brand p{
-    color:#8995a6;
-    font-size:11px;
-    letter-spacing:2px;
-    text-transform:uppercase;
-}
+        .avatar-small{
+            background:#3486df;
+            color:white;
+            font-size:24px;
+            font-weight:bold;
+        }
 
-.menu-title{
-    font-size:11px;
-    color:#9aa4b2;
-    font-weight:bold;
-    padding:10px 12px;
-    text-transform:uppercase;
-}
+        .container{
+            max-width:900px;
+            margin:auto;
+            padding:30px;
+        }
 
-.menu a,
-.menu button{
-    width:100%;
-    border:none;
-    background:none;
-    display:flex;
-    align-items:center;
-    gap:13px;
-    padding:13px 14px;
-    margin-bottom:5px;
-    border-radius:10px;
-    color:#556276;
-    font-size:14px;
-    cursor:pointer;
-    text-align:left;
-}
+        .message{
+            display:none;
+            padding:18px 22px;
+            border-radius:16px;
+            margin-bottom:25px;
+            font-size:17px;
+        }
 
-.menu a:hover,
-.menu a.active,
-.menu button:hover{
-    background:#eaf6ff;
-    color:#0785df;
-}
+        .message.error{
+            display:block;
+            background:#fff0f0;
+            color:#c53030;
+        }
 
-.main{
-    margin-left:250px;
-    min-height:100vh;
-}
+        .message.success{
+            display:block;
+            background:#edfff2;
+            color:#16873c;
+        }
 
-.topbar{
-    height:78px;
-    background:#fff;
-    border-bottom:1px solid #edf0f4;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:0 30px;
-    position:sticky;
-    top:0;
-    z-index:1000;
-}
+        .profile-card{
+            background:linear-gradient(135deg,#347fd2,#49a0eb);
+            border-radius:30px;
+            padding:55px 25px;
+            text-align:center;
+            color:white;
+            margin-bottom:30px;
+        }
 
-.mobile-toggle{
-    display:none;
-    border:none;
-    background:none;
-    font-size:22px;
-    cursor:pointer;
-}
+        .avatar-large{
+            width:150px;
+            height:150px;
+            border-radius:50%;
+            background:white;
+            color:#3486df;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            margin:0 auto 25px;
+            font-size:60px;
+            font-weight:bold;
+        }
 
-.page-title h1{
-    font-size:21px;
-}
+        #fullName{
+            font-size:38px;
+            margin-bottom:10px;
+        }
 
-.page-title p{
-    font-size:12px;
-    color:#8a95a4;
-    margin-top:3px;
-}
+        #profileEmail{
+            font-size:19px;
+            opacity:.9;
+        }
 
-.user-area{
-    display:flex;
-    align-items:center;
-    gap:12px;
-}
+        .status{
+            display:inline-block;
+            background:rgba(255,255,255,.18);
+            padding:10px 18px;
+            border-radius:30px;
+            margin-top:20px;
+        }
 
-.icon-btn{
-    width:42px;
-    height:42px;
-    border-radius:50%;
-    border:1px solid #e5e9ef;
-    background:white;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-}
+        .card{
+            background:white;
+            padding:35px;
+            border-radius:28px;
+            margin-bottom:25px;
+            box-shadow:0 8px 30px rgba(0,0,0,.04);
+        }
 
-.avatar{
-    width:42px;
-    height:42px;
-    border-radius:50%;
-    background:#0785df;
-    color:white;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-weight:bold;
-}
+        .card h2{
+            font-size:30px;
+            margin-bottom:8px;
+        }
 
-.content{
-    padding:30px;
-    max-width:1100px;
-    margin:auto;
-}
+        .card-subtitle{
+            color:#8a95a7;
+            margin-bottom:28px;
+            font-size:17px;
+        }
 
-.loading{
-    background:white;
-    border:1px solid #edf0f4;
-    border-radius:14px;
-    padding:16px;
-    margin-bottom:20px;
-    color:#667085;
-    font-size:14px;
-}
+        .grid{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:22px;
+        }
 
-.profile-header{
-    background:linear-gradient(135deg,#067fd7,#0aa0f4);
-    border-radius:22px;
-    padding:30px;
-    color:white;
-    display:flex;
-    align-items:center;
-    gap:20px;
-    margin-bottom:24px;
-    box-shadow:0 20px 45px rgba(7,133,223,.18);
-}
+        .field{
+            margin-bottom:20px;
+        }
 
-.big-avatar{
-    width:90px;
-    height:90px;
-    border-radius:50%;
-    background:white;
-    color:#0785df;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:34px;
-    font-weight:bold;
-    border:4px solid rgba(255,255,255,.35);
-}
+        .field.full{
+            grid-column:1 / -1;
+        }
 
-.profile-info h2{
-    font-size:26px;
-    margin-bottom:5px;
-}
+        label{
+            display:block;
+            font-size:17px;
+            font-weight:700;
+            margin-bottom:10px;
+        }
 
-.profile-info p{
-    opacity:.9;
-    font-size:14px;
-}
+        input{
+            width:100%;
+            border:2px solid #e1e8f0;
+            border-radius:15px;
+            padding:17px;
+            font-size:17px;
+            background:#f9fbfd;
+            color:#172033;
+            outline:none;
+        }
 
-.badge{
-    display:inline-block;
-    margin-top:10px;
-    background:rgba(255,255,255,.17);
-    padding:6px 10px;
-    border-radius:20px;
-    font-size:12px;
-}
+        input:focus{
+            border-color:#3486df;
+        }
 
-.grid{
-    display:grid;
-    grid-template-columns:1.4fr .7fr;
-    gap:20px;
-}
+        input[readonly]{
+            background:#f3f6f9;
+            color:#657084;
+        }
 
-.card{
-    background:white;
-    border:1px solid #edf0f4;
-    border-radius:18px;
-    padding:26px;
-}
+        .wallet-box{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:20px;
+            padding:22px;
+            background:#f5f9ff;
+            border-radius:18px;
+            margin-top:10px;
+        }
 
-.card h2{
-    font-size:20px;
-    margin-bottom:6px;
-}
+        .wallet-box strong{
+            font-size:28px;
+            color:#3486df;
+        }
 
-.muted{
-    color:#8893a3;
-    font-size:13px;
-    margin-bottom:22px;
-}
+        .role{
+            text-transform:capitalize;
+        }
 
-.form-row{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:15px;
-}
+        .actions{
+            display:flex;
+            gap:15px;
+            flex-wrap:wrap;
+        }
 
-.form-group{
-    margin-bottom:18px;
-}
+        button,
+        .link-btn{
+            border:none;
+            border-radius:14px;
+            padding:15px 22px;
+            font-size:16px;
+            font-weight:700;
+            cursor:pointer;
+            text-decoration:none;
+        }
 
-.form-group label{
-    display:block;
-    margin-bottom:8px;
-    font-size:13px;
-    font-weight:600;
-}
+        .primary{
+            background:#3486df;
+            color:white;
+        }
 
-.form-group input{
-    width:100%;
-    height:50px;
-    border:1px solid #dfe6ee;
-    background:#f9fbfd;
-    border-radius:11px;
-    padding:0 15px;
-    outline:none;
-    font-size:15px;
-}
+        .secondary{
+            background:#eef4fb;
+            color:#3486df;
+        }
 
-.form-group input:focus{
-    border-color:#0785df;
-    background:white;
-    box-shadow:0 0 0 4px rgba(7,133,223,.09);
-}
+        .danger{
+            background:#fff0f0;
+            color:#c53030;
+        }
 
-.save-btn{
-    width:100%;
-    height:50px;
-    border:none;
-    border-radius:11px;
-    background:#0785df;
-    color:white;
-    font-size:15px;
-    font-weight:bold;
-    cursor:pointer;
-}
+        .loading-overlay{
+            position:fixed;
+            inset:0;
+            background:rgba(255,255,255,.92);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            z-index:100;
+        }
 
-.save-btn:disabled{
-    opacity:.6;
-    cursor:not-allowed;
-}
+        .loading-box{
+            text-align:center;
+            color:#3486df;
+        }
 
-.message{
-    display:none;
-    margin-bottom:18px;
-    padding:12px;
-    border-radius:10px;
-    font-size:13px;
-}
+        .spinner{
+            width:55px;
+            height:55px;
+            border:6px solid #dceaff;
+            border-top-color:#3486df;
+            border-radius:50%;
+            animation:spin 1s linear infinite;
+            margin:0 auto 20px;
+        }
 
-.success{
-    display:block;
-    background:#e9f7ef;
-    color:#18794e;
-}
+        @keyframes spin{
+            to{transform:rotate(360deg);}
+        }
 
-.error{
-    display:block;
-    background:#fff0f0;
-    color:#c62828;
-}
+        @media(max-width:650px){
+            header{
+                padding:17px 20px;
+            }
 
-.info-item{
-    border-bottom:1px solid #eef1f4;
-    padding:15px 0;
-}
+            header h1{
+                font-size:23px;
+            }
 
-.info-item:last-child{
-    border-bottom:none;
-}
+            .container{
+                padding:22px 16px;
+            }
 
-.info-item span{
-    display:block;
-    color:#8a95a4;
-    font-size:12px;
-    margin-bottom:5px;
-}
+            .grid{
+                grid-template-columns:1fr;
+            }
 
-.info-item strong{
-    font-size:14px;
-}
+            .field.full{
+                grid-column:auto;
+            }
 
-.stat-box{
-    background:#f8fafc;
-    border-radius:12px;
-    padding:16px;
-    margin-bottom:12px;
-}
+            .profile-card{
+                padding:45px 20px;
+            }
 
-.stat-box span{
-    color:#8893a3;
-    font-size:12px;
-}
+            #fullName{
+                font-size:31px;
+            }
 
-.stat-box h3{
-    margin-top:6px;
-    font-size:21px;
-}
+            .card{
+                padding:27px 22px;
+            }
 
-.overlay{
-    display:none;
-    position:fixed;
-    inset:0;
-    background:rgba(17,24,39,.4);
-    z-index:1500;
-}
-
-@media(max-width:900px){
-    .sidebar{
-        transform:translateX(-100%);
-    }
-
-    .sidebar.active{
-        transform:translateX(0);
-    }
-
-    .overlay.active{
-        display:block;
-    }
-
-    .main{
-        margin-left:0;
-    }
-
-    .mobile-toggle{
-        display:block;
-    }
-
-    .grid{
-        grid-template-columns:1fr;
-    }
-}
-
-@media(max-width:600px){
-    .content{
-        padding:20px 14px;
-    }
-
-    .topbar{
-        padding:0 15px;
-    }
-
-    .page-title p{
-        display:none;
-    }
-
-    .profile-header{
-        flex-direction:column;
-        text-align:center;
-    }
-
-    .form-row{
-        grid-template-columns:1fr;
-        gap:0;
-    }
-}
-</style>
+            .bell{
+                display:none;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="overlay" id="overlay"></div>
-
-<aside class="sidebar" id="sidebar">
-
-    <div class="brand">
-        <h2>WAYNE LOGS</h2>
-        <p>Marketplace</p>
+<div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-box">
+        <div class="spinner"></div>
+        <h2>Loading your profile...</h2>
     </div>
+</div>
 
-    <div class="menu">
+<header>
+    <div class="menu" onclick="window.location.href='dashboard.html'">☰</div>
 
-        <div class="menu-title">Menu</div>
+    <h1>My Profile</h1>
 
-        <a href="dashboard.html">
-            <i class="fa-solid fa-house"></i>
-            Dashboard
-        </a>
-
-        <a href="wallet.html">
-            <i class="fa-solid fa-wallet"></i>
-            Wallet
-        </a>
-
-        <a href="airtime.html">
-            <i class="fa-solid fa-phone"></i>
-            Airtime
-        </a>
-
-        <a href="data.html">
-            <i class="fa-solid fa-wifi"></i>
-            Data
-        </a>
-
-        <a href="electricity.html">
-            <i class="fa-solid fa-bolt"></i>
-            Electricity
-        </a>
-
-        <a href="cable.html">
-            <i class="fa-solid fa-tv"></i>
-            Cable TV
-        </a>
-
-        <a href="marketplace.html">
-            <i class="fa-solid fa-store"></i>
-            Marketplace
-        </a>
-
-        <a href="orders.html">
-            <i class="fa-solid fa-box"></i>
-            My Orders
-        </a>
-
-        <div class="menu-title">Account</div>
-
-        <a href="profile.html" class="active">
-            <i class="fa-solid fa-user"></i>
-            Profile
-        </a>
-
-        <a href="referrals.html">
-            <i class="fa-solid fa-users"></i>
-            Referrals
-        </a>
-
-        <a href="notifications.html">
-            <i class="fa-solid fa-bell"></i>
-            Notifications
-        </a>
-
-        <a href="settings.html">
-            <i class="fa-solid fa-gear"></i>
-            Settings
-        </a>
-
-        <button id="logoutBtn">
-            <i class="fa-solid fa-right-from-bracket"></i>
-            Logout
-        </button>
-
+    <div class="header-right">
+        <div class="bell">🔔</div>
+        <div class="avatar-small" id="smallAvatar">W</div>
     </div>
+</header>
 
-</aside>
+<main class="container">
 
-<main class="main">
+    <div id="message" class="message"></div>
 
-    <div class="topbar">
+    <section class="profile-card">
 
-        <button class="mobile-toggle" id="mobileToggle">
-            <i class="fa-solid fa-bars"></i>
-        </button>
-
-        <div class="page-title">
-            <h1>My Profile</h1>
-            <p>Manage your real WAYNE LOGS account information.</p>
+        <div class="avatar-large" id="largeAvatar">
+            W
         </div>
 
-        <div class="user-area">
+        <h2 id="fullName">Loading...</h2>
 
-            <a href="notifications.html" class="icon-btn">
-                <i class="fa-regular fa-bell"></i>
-            </a>
+        <p id="profileEmail">Loading...</p>
 
-            <div class="avatar" id="topAvatar">
-                W
-            </div>
-
+        <div class="status">
+            ✓ Active Account
         </div>
 
-    </div>
+    </section>
 
-    <section class="content">
+    <section class="card">
 
-        <div class="loading" id="loadingMessage">
-            Loading your profile from WAYNE LOGS...
-        </div>
+        <h2>Personal Information</h2>
 
-        <div class="profile-header">
-
-            <div class="big-avatar" id="bigAvatar">
-                W
-            </div>
-
-            <div class="profile-info">
-
-                <h2 id="headerName">
-                    Loading...
-                </h2>
-
-                <p id="headerEmail">
-                    Loading...
-                </p>
-
-                <div class="badge">
-                    <i class="fa-solid fa-circle-check"></i>
-                    Active Account
-                </div>
-
-            </div>
-
-        </div>
+        <p class="card-subtitle">
+            Your account information is loaded securely from WAYNE LOGS.
+        </p>
 
         <div class="grid">
 
-            <div class="card">
-
-                <h2>Personal Information</h2>
-
-                <p class="muted">
-                    Your information is loaded from MongoDB.
-                </p>
-
-                <div id="message" class="message"></div>
-
-                <form id="profileForm">
-
-                    <div class="form-row">
-
-                        <div class="form-group">
-
-                            <label>First Name</label>
-
-                            <input
-                                type="text"
-                                id="firstName"
-                                required>
-
-                        </div>
-
-                        <div class="form-group">
-
-                            <label>Last Name</label>
-
-                            <input
-                                type="text"
-                                id="lastName"
-                                required>
-
-                        </div>
-
-                    </div>
-
-                    <div class="form-group">
-
-                        <label>Email Address</label>
-
-                        <input
-                            type="email"
-                            id="email"
-                            readonly>
-
-                    </div>
-
-                    <div class="form-group">
-
-                        <label>Phone Number</label>
-
-                        <input
-                            type="tel"
-                            id="phone"
-                            required>
-
-                    </div>
-
-                    <button
-                        type="submit"
-                        class="save-btn"
-                        id="saveBtn">
-
-                        <i class="fa-solid fa-floppy-disk"></i>
-                        Save Changes
-
-                    </button>
-
-                </form>
-
+            <div class="field">
+                <label>First Name</label>
+                <input id="firstName" readonly>
             </div>
 
-            <div>
-
-                <div class="card" style="margin-bottom:20px;">
-
-                    <h2>Account Details</h2>
-
-                    <p class="muted">
-                        Information from your real account.
-                    </p>
-
-                    <div class="info-item">
-                        <span>User ID</span>
-                        <strong id="userId">—</strong>
-                    </div>
-
-                    <div class="info-item">
-                        <span>Role</span>
-                        <strong id="userRole">User</strong>
-                    </div>
-
-                    <div class="info-item">
-                        <span>Account Status</span>
-                        <strong style="color:#159455;">
-                            Active
-                        </strong>
-                    </div>
-
-                </div>
-
-                <div class="card">
-
-                    <h2>Account Summary</h2>
-
-                    <p class="muted">
-                        Your current WAYNE LOGS account.
-                    </p>
-
-                    <div class="stat-box">
-                        <span>Wallet Balance</span>
-                        <h3 id="walletBalance">₦0.00</h3>
-                    </div>
-
-                    <div class="stat-box">
-                        <span>Total Orders</span>
-                        <h3 id="orderCount">0</h3>
-                    </div>
-
-                </div>
-
+            <div class="field">
+                <label>Last Name</label>
+                <input id="lastName" readonly>
             </div>
+
+            <div class="field full">
+                <label>Email Address</label>
+                <input id="email" readonly>
+            </div>
+
+            <div class="field full">
+                <label>Phone Number</label>
+                <input id="phone" readonly>
+            </div>
+
+            <div class="field">
+                <label>Account Role</label>
+                <input id="role" class="role" readonly>
+            </div>
+
+            <div class="field">
+                <label>Account Status</label>
+                <input id="accountStatus" value="Active" readonly>
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="card">
+
+        <h2>Wallet</h2>
+
+        <p class="card-subtitle">
+            Your current WAYNE LOGS wallet balance.
+        </p>
+
+        <div class="wallet-box">
+            <span>Available Balance</span>
+            <strong id="walletBalance">₦0.00</strong>
+        </div>
+
+    </section>
+
+    <section class="card">
+
+        <h2>Account Actions</h2>
+
+        <div class="actions">
+
+            <a class="link-btn secondary" href="dashboard.html">
+                Dashboard
+            </a>
+
+            <a class="link-btn secondary" href="wallet.html">
+                Wallet
+            </a>
+
+            <a class="link-btn secondary" href="settings.html">
+                Settings
+            </a>
+
+            <button class="danger" id="logoutButton">
+                Logout
+            </button>
 
         </div>
 
@@ -686,74 +447,101 @@ a{
 
 <script>
 
-const token =
-    localStorage.getItem("wayneToken");
+const API_URL = "https://wayne-logs.onrender.com";
 
-if(!token){
-    window.location.replace("login.html");
+const token = localStorage.getItem("wayneToken");
+
+const loadingOverlay =
+    document.getElementById("loadingOverlay");
+
+const messageBox =
+    document.getElementById("message");
+
+
+function showMessage(text, type){
+
+    messageBox.textContent = text;
+    messageBox.className = "message " + type;
+
 }
 
 
-/* MOBILE MENU */
+function logout(){
 
-const sidebar =
-    document.getElementById("sidebar");
+    localStorage.removeItem("wayneToken");
+    localStorage.removeItem("wayneUser");
 
-const mobileToggle =
-    document.getElementById("mobileToggle");
+    window.location.replace("login.html");
 
-const overlay =
-    document.getElementById("overlay");
+}
 
 
-mobileToggle.addEventListener("click", function(){
-
-    sidebar.classList.add("active");
-    overlay.classList.add("active");
-
-});
+document
+    .getElementById("logoutButton")
+    .addEventListener("click", logout);
 
 
-overlay.addEventListener("click", function(){
+if(!token){
 
-    sidebar.classList.remove("active");
-    overlay.classList.remove("active");
+    logout();
 
-});
+}
 
-
-/* LOAD PROFILE */
 
 async function loadProfile(){
 
     try{
 
-        const response =
-            await fetch(
-                "http://localhost:5000/api/auth/me",
-                {
-                    headers:{
-                        "Authorization":
+        const response = await fetch(
+            API_URL + "/api/protected",
+            {
+                method:"GET",
+
+                headers:{
+                    "Authorization":
                         "Bearer " + token
-                    }
                 }
+            }
+        );
+
+
+        let data;
+
+        try{
+
+            data = await response.json();
+
+        }catch(error){
+
+            throw new Error(
+                "Invalid server response."
             );
 
-
-        const data =
-            await response.json();
+        }
 
 
-        if(!response.ok){
+        if(
+            response.status === 401 ||
+            response.status === 403
+        ){
 
-            logoutUser();
+            logout();
             return;
 
         }
 
 
-        const user =
-            data.user;
+        if(!response.ok || !data.success){
+
+            throw new Error(
+                data.message ||
+                "Could not load profile."
+            );
+
+        }
+
+
+        const user = data.user;
 
 
         localStorage.setItem(
@@ -762,163 +550,111 @@ async function loadProfile(){
         );
 
 
-        fillProfile(user);
+        const firstName =
+            user.firstName || "";
+
+        const lastName =
+            user.lastName || "";
+
+        const fullName =
+            `${firstName} ${lastName}`.trim();
 
 
         document.getElementById(
-            "loadingMessage"
-        ).style.display =
-            "none";
+            "fullName"
+        ).textContent =
+            fullName || "WAYNE LOGS User";
+
+
+        document.getElementById(
+            "profileEmail"
+        ).textContent =
+            user.email || "";
+
+
+        document.getElementById(
+            "firstName"
+        ).value =
+            firstName;
+
+
+        document.getElementById(
+            "lastName"
+        ).value =
+            lastName;
+
+
+        document.getElementById(
+            "email"
+        ).value =
+            user.email || "";
+
+
+        document.getElementById(
+            "phone"
+        ).value =
+            user.phone || "";
+
+
+        document.getElementById(
+            "role"
+        ).value =
+            user.role || "user";
+
+
+        const balance =
+            Number(user.walletBalance || 0);
+
+
+        document.getElementById(
+            "walletBalance"
+        ).textContent =
+            "₦" +
+            balance.toLocaleString(
+                "en-NG",
+                {
+                    minimumFractionDigits:2,
+                    maximumFractionDigits:2
+                }
+            );
+
+
+        const initial =
+            firstName
+                ? firstName.charAt(0).toUpperCase()
+                : "W";
+
+
+        document.getElementById(
+            "largeAvatar"
+        ).textContent =
+            initial;
+
+
+        document.getElementById(
+            "smallAvatar"
+        ).textContent =
+            initial;
 
 
     }catch(error){
 
-        document.getElementById(
-            "loadingMessage"
-        ).textContent =
-            "Could not connect to the WAYNE LOGS server.";
+        console.error(error);
+
+        showMessage(
+            "Could not connect to the WAYNE LOGS server. Please try again.",
+            "error"
+        );
+
+    }finally{
+
+        loadingOverlay.style.display =
+            "none";
 
     }
 
 }
 
-
-function fillProfile(user){
-
-    document.getElementById("firstName").value =
-        user.firstName || "";
-
-    document.getElementById("lastName").value =
-        user.lastName || "";
-
-    document.getElementById("email").value =
-        user.email || "";
-
-    document.getElementById("phone").value =
-        user.phone || "";
-
-
-    const fullName =
-        (
-            (user.firstName || "") +
-            " " +
-            (user.lastName || "")
-        ).trim();
-
-
-    document.getElementById("headerName").textContent =
-        fullName || "WAYNE User";
-
-
-    document.getElementById("headerEmail").textContent =
-        user.email || "";
-
-
-    const letter =
-        user.firstName
-        ? user.firstName.charAt(0).toUpperCase()
-        : "W";
-
-
-    document.getElementById("bigAvatar").textContent =
-        letter;
-
-    document.getElementById("topAvatar").textContent =
-        letter;
-
-
-    document.getElementById("userId").textContent =
-        user._id || user.id || "—";
-
-
-    document.getElementById("userRole").textContent =
-        user.role || "user";
-
-
-    const balance =
-        Number(user.walletBalance || 0);
-
-
-    document.getElementById("walletBalance").textContent =
-        "₦" +
-        balance.toLocaleString(
-            "en-NG",
-            {
-                minimumFractionDigits:2,
-                maximumFractionDigits:2
-            }
-        );
-
-}
-
-
-/* ORDER COUNT */
-
-const orders =
-    JSON.parse(
-        localStorage.getItem("wayneOrders")
-    ) || [];
-
-
-document.getElementById("orderCount").textContent =
-    orders.length;
-
-
-/*
-The form is ready, but the backend update route
-will be added next.
-*/
-
-document.getElementById("profileForm")
-.addEventListener("submit", function(event){
-
-    event.preventDefault();
-
-    showMessage(
-        "Profile loading is now real. The next step will connect Save Changes to MongoDB.",
-        "success"
-    );
-
-});
-
-
-function showMessage(text,type){
-
-    const message =
-        document.getElementById("message");
-
-    message.textContent = text;
-
-    message.className =
-        "message " + type;
-
-}
-
-
-/* LOGOUT */
-
-function logoutUser(){
-
-    localStorage.removeItem(
-        "wayneToken"
-    );
-
-    localStorage.removeItem(
-        "wayneUser"
-    );
-
-    window.location.replace(
-        "login.html"
-    );
-
-}
-
-
-document.getElementById("logoutBtn")
-.addEventListener("click", logoutUser);
-
-
-/* START */
 
 loadProfile();
 
