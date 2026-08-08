@@ -1,8 +1,11 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
+
+// PROTECT LOGGED-IN USERS
 exports.protect = async (req, res, next) => {
     try {
+
         let token;
 
         if (
@@ -24,7 +27,9 @@ exports.protect = async (req, res, next) => {
             process.env.JWT_SECRET
         );
 
-        const user = await User.findById(decoded.id).select("-password");
+        const user = await User
+            .findById(decoded.id)
+            .select("-password");
 
         if (!user) {
             return res.status(401).json({
@@ -45,9 +50,32 @@ exports.protect = async (req, res, next) => {
         next();
 
     } catch (error) {
+
         return res.status(401).json({
             success: false,
             message: "Invalid or expired login token."
         });
+
     }
+};
+
+
+// ADMIN ONLY
+exports.adminOnly = (req, res, next) => {
+
+    if (!req.user) {
+        return res.status(401).json({
+            success: false,
+            message: "Please login."
+        });
+    }
+
+    if (req.user.role !== "admin") {
+        return res.status(403).json({
+            success: false,
+            message: "Admin access only."
+        });
+    }
+
+    next();
 };

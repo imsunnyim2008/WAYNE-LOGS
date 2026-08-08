@@ -6,21 +6,66 @@ const {
     updateProfile
 } = require("../controllers/authController");
 
-const { protect } = require("../middleware/authMiddleware");
+const {
+    protect,
+    adminOnly
+} = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-router.post("/register", registerUser);
 
-router.post("/login", loginUser);
+// REGISTER
+router.post(
+    "/register",
+    registerUser
+);
 
-router.get("/me", protect, (req, res) => {
-    res.json({
-        success: true,
-        user: req.user
-    });
-});
 
-router.put("/profile", protect, updateProfile);
+// LOGIN
+router.post(
+    "/login",
+    loginUser
+);
+
+
+// CURRENT LOGGED-IN USER
+router.get(
+    "/me",
+    protect,
+    (req, res) => {
+
+        res.json({
+            success: true,
+            user: req.user
+        });
+
+    }
+);
+
+
+// UPDATE PROFILE
+router.put(
+    "/profile",
+    protect,
+    updateProfile
+);
+
+
+// CHECK ADMIN ACCESS
+router.get(
+    "/admin",
+    protect,
+    adminOnly,
+    (req, res) => {
+
+        res.json({
+            success: true,
+            message: "Admin access granted.",
+            user: req.user
+        });
+
+    }
+);
+
 
 module.exports = router;
