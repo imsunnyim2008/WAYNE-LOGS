@@ -65,6 +65,19 @@ const productSchema = new mongoose.Schema(
             default: false
         },
 
+        /*
+         * PRIVATE FULFILLMENT CONTENT
+         *
+         * select:false is important:
+         * normal product queries will NOT return this field.
+         * Only protected admin/order code should explicitly request it.
+         */
+        privateDelivery: {
+            type: String,
+            default: "",
+            select: false
+        },
+
         createdBy: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User"

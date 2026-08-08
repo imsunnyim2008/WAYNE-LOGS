@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Admin - WAYNE LOGS</title>
+<title>WAYNE LOGS Admin</title>
 
 <style>
 *{
@@ -20,8 +20,7 @@
     --text:#172033;
     --muted:#8792a5;
     --border:#e4eaf2;
-    --white:#ffffff;
-    --danger:#d83a3a;
+    --danger:#c53030;
     --sidebar:290px;
 }
 
@@ -32,101 +31,91 @@ body{
     min-height:100vh;
 }
 
-button,
-input,
-select,
-textarea{
+button,input,select,textarea{
     font:inherit;
 }
 
-/* =========================
-   SIDEBAR
-========================= */
+/* SIDEBAR */
 
 .sidebar{
     position:fixed;
-    left:0;
     top:0;
+    left:0;
     bottom:0;
     width:var(--sidebar);
-    background:#fff;
+    background:white;
     border-right:1px solid var(--border);
-    z-index:100;
     overflow-y:auto;
+    z-index:100;
     transition:.25s;
 }
 
 .sidebar-brand{
-    padding:28px 25px;
+    padding:28px 24px;
     border-bottom:1px solid var(--border);
 }
 
 .sidebar-brand h1{
     color:var(--blue);
-    font-size:28px;
+    font-size:27px;
 }
 
 .sidebar-brand p{
-    margin-top:5px;
     color:var(--muted);
+    font-size:12px;
     letter-spacing:2px;
-    font-size:13px;
+    margin-top:5px;
 }
 
 .menu-group{
-    padding:22px 16px 8px;
+    padding:20px 15px 5px;
 }
 
 .menu-title{
-    padding:0 12px;
     color:#a0a9b8;
-    font-weight:700;
     font-size:12px;
+    font-weight:bold;
     letter-spacing:1px;
-    margin-bottom:10px;
+    margin:0 12px 10px;
 }
 
 .menu-item{
     width:100%;
+    border:0;
+    background:transparent;
     display:flex;
     align-items:center;
-    gap:14px;
-    border:none;
-    background:transparent;
-    padding:14px 15px;
+    gap:13px;
+    padding:14px;
+    margin-bottom:4px;
     border-radius:13px;
+    text-decoration:none;
     color:#59667a;
-    font-size:16px;
     cursor:pointer;
     text-align:left;
-    margin-bottom:5px;
-    text-decoration:none;
 }
 
-.menu-item:hover{
-    background:#f3f8fe;
+.menu-item:hover,
+.menu-item.active{
+    background:#eaf4ff;
     color:var(--blue);
 }
 
 .menu-item.active{
-    background:#eaf4ff;
-    color:var(--blue);
-    font-weight:700;
+    font-weight:bold;
 }
 
 .menu-icon{
-    width:26px;
+    width:25px;
     text-align:center;
-    font-size:20px;
+    font-size:19px;
 }
 
-.logout-item{
+.logout{
     color:var(--danger);
 }
 
-/* =========================
-   MAIN
-========================= */
+/* MAIN */
 
 .main{
     margin-left:var(--sidebar);
@@ -135,11 +124,11 @@ textarea{
 
 .topbar{
     height:90px;
-    background:#fff;
+    background:white;
     border-bottom:1px solid var(--border);
     display:flex;
-    align-items:center;
     justify-content:space-between;
+    align-items:center;
     padding:0 30px;
     position:sticky;
     top:0;
@@ -153,10 +142,10 @@ textarea{
 }
 
 .mobile-menu{
-    border:none;
+    border:0;
     background:transparent;
     color:var(--blue);
-    font-size:30px;
+    font-size:31px;
     cursor:pointer;
     display:none;
 }
@@ -167,26 +156,26 @@ textarea{
 
 .page-title p{
     color:var(--muted);
-    margin-top:4px;
+    margin-top:5px;
 }
 
-.admin-avatar{
-    width:55px;
-    height:55px;
+.avatar{
+    width:56px;
+    height:56px;
     border-radius:50%;
+    background:var(--blue);
+    color:white;
     display:flex;
     align-items:center;
     justify-content:center;
-    background:var(--blue);
-    color:#fff;
-    font-weight:800;
     font-size:22px;
+    font-weight:bold;
 }
 
 .content{
-    padding:30px;
     max-width:1400px;
     margin:auto;
+    padding:30px;
 }
 
 .section{
@@ -197,15 +186,13 @@ textarea{
     display:block;
 }
 
-/* =========================
-   COMMON COMPONENTS
-========================= */
+/* COMMON */
 
 .hero{
     background:linear-gradient(135deg,#10213f,#3989dc);
-    color:#fff;
-    border-radius:28px;
+    color:white;
     padding:38px;
+    border-radius:28px;
     margin-bottom:28px;
 }
 
@@ -215,9 +202,8 @@ textarea{
 
 .hero p{
     margin-top:12px;
-    font-size:17px;
     line-height:1.6;
-    opacity:.92;
+    font-size:17px;
 }
 
 .stats{
@@ -227,8 +213,8 @@ textarea{
     margin-bottom:28px;
 }
 
-.stat-card{
-    background:#fff;
+.stat{
+    background:white;
     border:1px solid var(--border);
     border-radius:22px;
     padding:24px;
@@ -240,51 +226,44 @@ textarea{
     border-radius:15px;
     background:#edf6ff;
     display:flex;
-    align-items:center;
     justify-content:center;
-    font-size:23px;
-    margin-bottom:20px;
+    align-items:center;
+    font-size:22px;
+    margin-bottom:18px;
 }
 
-.stat-label{
+.stat span{
     color:var(--muted);
 }
 
-.stat-value{
+.stat strong{
     display:block;
-    font-size:31px;
     margin-top:10px;
+    font-size:31px;
 }
 
 .card{
-    background:#fff;
+    background:white;
     border:1px solid var(--border);
     border-radius:24px;
     padding:28px;
-    margin-bottom:24px;
-}
-
-.card-header{
-    display:flex;
-    justify-content:space-between;
-    gap:15px;
-    align-items:flex-start;
-    margin-bottom:24px;
+    margin-bottom:25px;
 }
 
 .card h3{
-    font-size:24px;
+    font-size:23px;
 }
 
-.subtext{
+.sub{
     color:var(--muted);
     margin-top:6px;
+    margin-bottom:23px;
     line-height:1.5;
 }
 
 .message{
     display:none;
-    padding:16px 18px;
+    padding:16px;
     border-radius:13px;
     margin-bottom:20px;
 }
@@ -302,33 +281,31 @@ textarea{
 }
 
 .btn{
-    border:none;
-    border-radius:12px;
+    border:0;
     padding:13px 18px;
-    font-weight:700;
+    border-radius:12px;
     cursor:pointer;
+    font-weight:bold;
     text-decoration:none;
     display:inline-block;
 }
 
-.btn-primary{
+.primary{
     background:var(--blue);
-    color:#fff;
+    color:white;
 }
 
-.btn-secondary{
-    background:#eef5fc;
+.secondary{
+    background:#edf5fd;
     color:var(--blue);
 }
 
-.btn-danger{
+.danger{
     background:#fff0f0;
-    color:#c53030;
+    color:var(--danger);
 }
 
-/* =========================
-   PRODUCTS
-========================= */
+/* FORM */
 
 .form-grid{
     display:grid;
@@ -342,8 +319,8 @@ textarea{
 
 label{
     display:block;
+    font-weight:bold;
     margin-bottom:8px;
-    font-weight:700;
 }
 
 input,
@@ -352,8 +329,8 @@ textarea{
     width:100%;
     padding:14px;
     border:2px solid #e1e8f0;
-    background:#fbfcfe;
     border-radius:12px;
+    background:#fbfcfe;
     outline:none;
 }
 
@@ -364,21 +341,41 @@ textarea:focus{
 }
 
 textarea{
-    min-height:110px;
     resize:vertical;
+    min-height:110px;
+}
+
+.private-box{
+    border:2px solid #ffdca6;
+    background:#fffaf1;
+    padding:18px;
+    border-radius:17px;
+}
+
+.private-box textarea{
+    min-height:170px;
+    background:white;
+    font-family:monospace;
+}
+
+.private-note{
+    color:#8a6a34;
+    margin-top:10px;
+    font-size:14px;
+    line-height:1.5;
 }
 
 .image-box{
     border:2px dashed #cad7e6;
-    border-radius:17px;
     padding:20px;
+    border-radius:17px;
     background:#f8fbff;
 }
 
-.image-help{
-    margin-top:10px;
+.help{
     color:var(--muted);
     font-size:14px;
+    margin-top:10px;
 }
 
 .preview-wrap{
@@ -387,19 +384,21 @@ textarea{
 }
 
 .preview{
-    width:150px;
-    height:150px;
-    object-fit:cover;
+    width:160px;
+    height:160px;
     border-radius:15px;
+    object-fit:cover;
     border:1px solid var(--border);
 }
 
-.form-actions{
+.actions{
     display:flex;
     gap:10px;
     flex-wrap:wrap;
     margin-top:20px;
 }
+
+/* PRODUCTS */
 
 .product-list{
     display:grid;
@@ -417,7 +416,7 @@ textarea{
 
 .product-info{
     display:flex;
-    gap:16px;
+    gap:15px;
 }
 
 .product-image{
@@ -431,7 +430,7 @@ textarea{
 
 .product-name{
     font-size:19px;
-    font-weight:800;
+    font-weight:bold;
     margin-bottom:7px;
 }
 
@@ -441,109 +440,75 @@ textarea{
 }
 
 .product-price{
-    font-size:20px;
+    font-size:21px;
     color:var(--blue);
-    font-weight:800;
+    font-weight:bold;
     white-space:nowrap;
 }
 
-/* =========================
-   TABLES
-========================= */
-
-.table-wrap{
-    overflow-x:auto;
-}
-
-table{
-    width:100%;
-    border-collapse:collapse;
-}
-
-th,
-td{
-    padding:16px;
-    text-align:left;
-    border-bottom:1px solid var(--border);
-}
-
-th{
-    color:#7d899a;
-    font-size:14px;
-}
-
-.status-badge{
+.private-saved{
     display:inline-block;
-    padding:7px 11px;
+    margin-top:8px;
+    background:#fff4df;
+    color:#956b20;
+    padding:6px 10px;
     border-radius:20px;
-    background:#eaf9ee;
-    color:#278546;
-    font-size:13px;
-    font-weight:700;
+    font-size:12px;
 }
 
-/* =========================
-   EMPTY MODULE
-========================= */
+/* EMPTY MODULE */
 
-.module-empty{
+.empty{
     text-align:center;
     padding:55px 20px;
 }
 
-.module-icon{
+.empty-icon{
     width:80px;
     height:80px;
     border-radius:22px;
     background:#edf6ff;
     display:flex;
-    align-items:center;
     justify-content:center;
+    align-items:center;
     margin:0 auto 20px;
-    font-size:34px;
+    font-size:33px;
 }
 
-.module-empty h3{
-    font-size:24px;
-}
-
-.module-empty p{
+.empty p{
     max-width:550px;
     margin:12px auto 0;
     color:var(--muted);
     line-height:1.6;
 }
 
-/* =========================
-   SETTINGS
-========================= */
-
-.setting-row{
+.setting{
     display:flex;
     justify-content:space-between;
-    gap:20px;
     align-items:center;
+    gap:20px;
     padding:20px 0;
     border-bottom:1px solid var(--border);
 }
 
-.setting-row:last-child{
-    border-bottom:none;
-}
-
-.setting-row p{
+.setting p{
     color:var(--muted);
     margin-top:5px;
 }
 
-/* =========================
-   LOADING
-========================= */
+.status{
+    padding:7px 11px;
+    border-radius:20px;
+    background:#eaf9ee;
+    color:#278546;
+    font-size:13px;
+    font-weight:bold;
+}
 
 .loading{
     position:fixed;
     inset:0;
-    background:#fff;
+    background:white;
     z-index:999;
     display:flex;
     align-items:center;
@@ -551,10 +516,6 @@ th{
     color:var(--blue);
     font-size:22px;
 }
-
-/* =========================
-   MOBILE
-========================= */
 
 .overlay{
     display:none;
@@ -581,7 +542,7 @@ th{
     .overlay{
         position:fixed;
         inset:0;
-        background:rgba(0,0,0,.38);
+        background:rgba(0,0,0,.4);
         z-index:90;
     }
 
@@ -596,12 +557,12 @@ th{
 
 @media(max-width:650px){
 
-    .content{
-        padding:20px 15px;
-    }
-
     .topbar{
         padding:0 18px;
+    }
+
+    .content{
+        padding:20px 15px;
     }
 
     .page-title p{
@@ -739,7 +700,7 @@ th{
             My Profile
         </a>
 
-        <button class="menu-item logout-item" id="logoutButton">
+        <button class="menu-item logout" id="logoutButton">
             <span class="menu-icon">⏻</span>
             Logout
         </button>
@@ -751,565 +712,539 @@ th{
 
 <main class="main">
 
-    <header class="topbar">
+<header class="topbar">
 
-        <div class="top-left">
+    <div class="top-left">
 
-            <button class="mobile-menu" id="mobileMenu">
-                ☰
+        <button class="mobile-menu" id="mobileMenu">
+            ☰
+        </button>
+
+        <div class="page-title">
+            <h2 id="pageTitle">Admin Overview</h2>
+            <p id="pageSubtitle">
+                Manage WAYNE LOGS from one place.
+            </p>
+        </div>
+
+    </div>
+
+    <div class="avatar" id="avatar">A</div>
+
+</header>
+
+
+<div class="content">
+
+<div id="message" class="message"></div>
+
+
+<!-- OVERVIEW -->
+
+<section class="section active" id="overview">
+
+    <div class="hero">
+
+        <h2>🛡 Admin Dashboard</h2>
+
+        <p>
+            Manage products, orders, customers, payments
+            and WAYNE LOGS operations.
+        </p>
+
+    </div>
+
+    <div class="stats">
+
+        <div class="stat">
+            <div class="stat-icon">📦</div>
+            <span>Products</span>
+            <strong id="overviewProducts">0</strong>
+        </div>
+
+        <div class="stat">
+            <div class="stat-icon">🛒</div>
+            <span>Orders</span>
+            <strong>0</strong>
+        </div>
+
+        <div class="stat">
+            <div class="stat-icon">👥</div>
+            <span>Users</span>
+            <strong>—</strong>
+        </div>
+
+        <div class="stat">
+            <div class="stat-icon">₦</div>
+            <span>Revenue</span>
+            <strong>₦0</strong>
+        </div>
+
+    </div>
+
+    <div class="card">
+
+        <h3>Quick Actions</h3>
+
+        <p class="sub">
+            Common administrator actions.
+        </p>
+
+        <div class="actions">
+
+            <button
+                class="btn primary"
+                onclick="openSection('products')"
+            >
+                Add Product
             </button>
 
-            <div class="page-title">
-                <h2 id="pageTitle">Admin Overview</h2>
-                <p id="pageSubtitle">
-                    Manage WAYNE LOGS from one place.
-                </p>
-            </div>
+            <button
+                class="btn secondary"
+                onclick="openSection('orders')"
+            >
+                Orders
+            </button>
+
+            <button
+                class="btn secondary"
+                onclick="openSection('users')"
+            >
+                Users
+            </button>
 
         </div>
 
-        <div class="admin-avatar" id="avatar">
-            A
+    </div>
+
+</section>
+
+
+<!-- PRODUCTS -->
+
+<section class="section" id="products">
+
+    <div class="stats">
+
+        <div class="stat">
+            <div class="stat-icon">📦</div>
+            <span>Products</span>
+            <strong id="productCount">0</strong>
         </div>
 
-    </header>
+        <div class="stat">
+            <div class="stat-icon">✓</div>
+            <span>Active</span>
+            <strong id="activeCount">0</strong>
+        </div>
+
+        <div class="stat">
+            <div class="stat-icon">📊</div>
+            <span>Total Stock</span>
+            <strong id="stockCount">0</strong>
+        </div>
+
+    </div>
 
 
-    <div class="content">
+    <div class="card">
 
-        <div id="message" class="message"></div>
+        <h3 id="productFormTitle">
+            Add Product
+        </h3>
 
-
-        <!-- OVERVIEW -->
-
-        <section class="section active" id="overview">
-
-            <div class="hero">
-
-                <h2>🛡 Admin Dashboard</h2>
-
-                <p>
-                    Manage products, customers, orders, payments,
-                    transactions and WAYNE LOGS operations.
-                </p>
-
-            </div>
+        <p class="sub">
+            Create and manage marketplace products.
+        </p>
 
 
-            <div class="stats">
+        <form id="productForm">
 
-                <div class="stat-card">
-                    <div class="stat-icon">📦</div>
-                    <span class="stat-label">Products</span>
-                    <strong class="stat-value" id="overviewProducts">0</strong>
+            <input type="hidden" id="productId">
+
+            <div class="form-grid">
+
+                <div class="field">
+                    <label>Product Name</label>
+                    <input id="name" required>
                 </div>
 
-                <div class="stat-card">
-                    <div class="stat-icon">🛒</div>
-                    <span class="stat-label">Orders</span>
-                    <strong class="stat-value" id="overviewOrders">0</strong>
+                <div class="field">
+                    <label>Category</label>
+                    <input id="category" required>
                 </div>
 
-                <div class="stat-card">
-                    <div class="stat-icon">👥</div>
-                    <span class="stat-label">Users</span>
-                    <strong class="stat-value" id="overviewUsers">—</strong>
+                <div class="field">
+                    <label>Platform</label>
+                    <input id="platform">
                 </div>
 
-                <div class="stat-card">
-                    <div class="stat-icon">₦</div>
-                    <span class="stat-label">Revenue</span>
-                    <strong class="stat-value" id="overviewRevenue">₦0</strong>
+                <div class="field">
+                    <label>Price (₦)</label>
+                    <input id="price" type="number" min="0" required>
                 </div>
 
-            </div>
+                <div class="field">
+                    <label>Stock</label>
+                    <input id="stock" type="number" min="0" value="0">
+                </div>
+
+                <div class="field">
+                    <label>Status</label>
+
+                    <select id="status">
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Delivery</label>
+
+                    <select id="deliveryType">
+                        <option value="manual">Manual</option>
+                        <option value="instant">Instant</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Featured</label>
+
+                    <select id="isFeatured">
+                        <option value="false">No</option>
+                        <option value="true">Yes</option>
+                    </select>
+                </div>
 
 
-            <div class="card">
+                <div class="field full">
 
-                <div class="card-header">
+                    <label>Product Image</label>
 
-                    <div>
-                        <h3>Quick Actions</h3>
-                        <p class="subtext">
-                            Common administrator actions.
+                    <div class="image-box">
+
+                        <input
+                            type="file"
+                            id="productImage"
+                            accept="image/*"
+                        >
+
+                        <p class="help">
+                            Choose a photo from your phone or computer.
                         </p>
-                    </div>
 
-                </div>
+                        <div class="preview-wrap" id="previewWrap">
 
-                <div class="form-actions">
+                            <img
+                                class="preview"
+                                id="preview"
+                                alt="Product preview"
+                            >
 
-                    <button
-                        class="btn btn-primary"
-                        onclick="openSection('products')"
-                    >
-                        Add Product
-                    </button>
+                            <div class="actions">
 
-                    <button
-                        class="btn btn-secondary"
-                        onclick="openSection('orders')"
-                    >
-                        View Orders
-                    </button>
-
-                    <button
-                        class="btn btn-secondary"
-                        onclick="openSection('users')"
-                    >
-                        Manage Users
-                    </button>
-
-                    <a
-                        class="btn btn-secondary"
-                        href="marketplace.html"
-                    >
-                        View Marketplace
-                    </a>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- PRODUCTS -->
-
-        <section class="section" id="products">
-
-            <div class="stats">
-
-                <div class="stat-card">
-                    <div class="stat-icon">📦</div>
-                    <span class="stat-label">All Products</span>
-                    <strong class="stat-value" id="productCount">0</strong>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-icon">✓</div>
-                    <span class="stat-label">Active</span>
-                    <strong class="stat-value" id="activeCount">0</strong>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-icon">📊</div>
-                    <span class="stat-label">Total Stock</span>
-                    <strong class="stat-value" id="stockCount">0</strong>
-                </div>
-
-            </div>
-
-
-            <div class="card">
-
-                <div class="card-header">
-
-                    <div>
-                        <h3 id="productFormTitle">
-                            Add Product
-                        </h3>
-
-                        <p class="subtext">
-                            Create products and upload images directly from your device.
-                        </p>
-                    </div>
-
-                </div>
-
-
-                <form id="productForm">
-
-                    <input type="hidden" id="productId">
-
-                    <div class="form-grid">
-
-                        <div class="field">
-                            <label>Product Name</label>
-                            <input id="name" required>
-                        </div>
-
-                        <div class="field">
-                            <label>Category</label>
-                            <input id="category" required>
-                        </div>
-
-                        <div class="field">
-                            <label>Platform</label>
-                            <input id="platform">
-                        </div>
-
-                        <div class="field">
-                            <label>Price (₦)</label>
-                            <input id="price" type="number" min="0" required>
-                        </div>
-
-                        <div class="field">
-                            <label>Stock</label>
-                            <input id="stock" type="number" min="0" value="0">
-                        </div>
-
-                        <div class="field">
-                            <label>Status</label>
-
-                            <select id="status">
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
-                            </select>
-                        </div>
-
-                        <div class="field">
-                            <label>Delivery</label>
-
-                            <select id="deliveryType">
-                                <option value="manual">Manual</option>
-                                <option value="instant">Instant</option>
-                            </select>
-                        </div>
-
-                        <div class="field">
-                            <label>Featured</label>
-
-                            <select id="isFeatured">
-                                <option value="false">No</option>
-                                <option value="true">Yes</option>
-                            </select>
-                        </div>
-
-                        <div class="field full">
-
-                            <label>Product Image</label>
-
-                            <div class="image-box">
-
-                                <input
-                                    type="file"
-                                    id="productImage"
-                                    accept="image/*"
+                                <button
+                                    type="button"
+                                    class="btn danger"
+                                    id="removeImage"
                                 >
-
-                                <p class="image-help">
-                                    Choose a photo from your phone or computer.
-                                </p>
-
-                                <div class="preview-wrap" id="previewWrap">
-
-                                    <img
-                                        id="preview"
-                                        class="preview"
-                                        alt="Preview"
-                                    >
-
-                                    <div class="form-actions">
-
-                                        <button
-                                            type="button"
-                                            class="btn btn-danger"
-                                            id="removeImage"
-                                        >
-                                            Remove Image
-                                        </button>
-
-                                    </div>
-
-                                </div>
+                                    Remove Image
+                                </button>
 
                             </div>
 
                         </div>
 
-                        <div class="field full">
-
-                            <label>Description</label>
-
-                            <textarea id="description"></textarea>
-
-                        </div>
-
                     </div>
 
-
-                    <div class="form-actions">
-
-                        <button
-                            type="submit"
-                            class="btn btn-primary"
-                            id="saveProductButton"
-                        >
-                            Create Product
-                        </button>
-
-                        <button
-                            type="button"
-                            class="btn btn-secondary"
-                            id="cancelEdit"
-                            style="display:none"
-                        >
-                            Cancel Edit
-                        </button>
-
-                    </div>
-
-                </form>
-
-            </div>
+                </div>
 
 
-            <div class="card">
+                <div class="field full">
 
-                <div class="card-header">
+                    <label>Public Description</label>
 
-                    <div>
-                        <h3>Product List</h3>
+                    <textarea
+                        id="description"
+                        placeholder="Customers can see this before purchasing."
+                    ></textarea>
 
-                        <p class="subtext">
-                            Products currently stored in MongoDB.
+                </div>
+
+
+                <div class="field full">
+
+                    <div class="private-box">
+
+                        <label>
+                            🔒 Private Fulfillment Content
+                        </label>
+
+                        <textarea
+                            id="privateDelivery"
+                            placeholder="Example: license key, download instructions, redemption details, or other authorized digital fulfillment information."
+                        ></textarea>
+
+                        <p class="private-note">
+                            This field is not included in the public Marketplace API.
+                            It will only be delivered through the protected Order system
+                            after we connect successful purchases.
                         </p>
+
                     </div>
-
-                </div>
-
-                <div class="product-list" id="productList"></div>
-
-            </div>
-
-        </section>
-
-
-        <!-- ORDERS -->
-
-        <section class="section" id="orders">
-
-            <div class="card">
-
-                <div class="module-empty">
-
-                    <div class="module-icon">🛒</div>
-
-                    <h3>Order Management</h3>
-
-                    <p>
-                        This section will show real customer purchases,
-                        order status, fulfillment and delivery information.
-                        We will connect this to the MongoDB Order system next.
-                    </p>
 
                 </div>
 
             </div>
 
-        </section>
 
+            <div class="actions">
 
-        <!-- USERS -->
+                <button
+                    type="submit"
+                    class="btn primary"
+                    id="saveProductButton"
+                >
+                    Create Product
+                </button>
 
-        <section class="section" id="users">
-
-            <div class="card">
-
-                <div class="module-empty">
-
-                    <div class="module-icon">👥</div>
-
-                    <h3>User Management</h3>
-
-                    <p>
-                        This section will allow administrators to view users,
-                        inspect accounts, disable accounts and manage customer access.
-                    </p>
-
-                </div>
+                <button
+                    type="button"
+                    class="btn secondary"
+                    id="cancelEdit"
+                    style="display:none"
+                >
+                    Cancel Edit
+                </button>
 
             </div>
 
-        </section>
-
-
-        <!-- PAYMENTS -->
-
-        <section class="section" id="payments">
-
-            <div class="card">
-
-                <div class="module-empty">
-
-                    <div class="module-icon">💳</div>
-
-                    <h3>Payments</h3>
-
-                    <p>
-                        Paystack deposits, successful payments, failed payments
-                        and payment verification will appear here once the payment
-                        backend is connected.
-                    </p>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- TRANSACTIONS -->
-
-        <section class="section" id="transactions">
-
-            <div class="card">
-
-                <div class="module-empty">
-
-                    <div class="module-icon">↔</div>
-
-                    <h3>Transaction History</h3>
-
-                    <p>
-                        Wallet funding, purchases, refunds and administrative
-                        adjustments will be tracked here.
-                    </p>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- NOTIFICATIONS -->
-
-        <section class="section" id="notifications">
-
-            <div class="card">
-
-                <div class="module-empty">
-
-                    <div class="module-icon">🔔</div>
-
-                    <h3>Notifications</h3>
-
-                    <p>
-                        Send announcements and account notifications to WAYNE LOGS users.
-                    </p>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- SETTINGS -->
-
-        <section class="section" id="settings">
-
-            <div class="card">
-
-                <div class="card-header">
-
-                    <div>
-                        <h3>Admin Settings</h3>
-                        <p class="subtext">
-                            Administration and marketplace configuration.
-                        </p>
-                    </div>
-
-                </div>
-
-
-                <div class="setting-row">
-
-                    <div>
-                        <strong>Marketplace</strong>
-                        <p>Control marketplace availability.</p>
-                    </div>
-
-                    <select style="width:160px">
-                        <option>Enabled</option>
-                        <option>Disabled</option>
-                    </select>
-
-                </div>
-
-
-                <div class="setting-row">
-
-                    <div>
-                        <strong>Maintenance Mode</strong>
-                        <p>Temporarily disable customer operations.</p>
-                    </div>
-
-                    <select style="width:160px">
-                        <option>Off</option>
-                        <option>On</option>
-                    </select>
-
-                </div>
-
-
-                <div class="setting-row">
-
-                    <div>
-                        <strong>Default Currency</strong>
-                        <p>Currency used by WAYNE LOGS.</p>
-                    </div>
-
-                    <strong>NGN (₦)</strong>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- SYSTEM -->
-
-        <section class="section" id="system">
-
-            <div class="card">
-
-                <div class="setting-row">
-
-                    <div>
-                        <strong>Frontend</strong>
-                        <p>Vercel production deployment</p>
-                    </div>
-
-                    <span class="status-badge">Online</span>
-
-                </div>
-
-                <div class="setting-row">
-
-                    <div>
-                        <strong>Backend API</strong>
-                        <p>Render WAYNE LOGS API</p>
-                    </div>
-
-                    <span class="status-badge" id="backendStatus">
-                        Checking...
-                    </span>
-
-                </div>
-
-                <div class="setting-row">
-
-                    <div>
-                        <strong>Database</strong>
-                        <p>MongoDB Atlas</p>
-                    </div>
-
-                    <span class="status-badge">
-                        Connected
-                    </span>
-
-                </div>
-
-            </div>
-
-        </section>
+        </form>
 
     </div>
+
+
+    <div class="card">
+
+        <h3>Product List</h3>
+
+        <p class="sub">
+            Products stored in MongoDB.
+        </p>
+
+        <div
+            class="product-list"
+            id="productList"
+        ></div>
+
+    </div>
+
+</section>
+
+
+<!-- ORDERS -->
+
+<section class="section" id="orders">
+
+    <div class="card">
+
+        <div class="empty">
+
+            <div class="empty-icon">🛒</div>
+
+            <h3>Order Management</h3>
+
+            <p>
+                Next we will connect real customer orders,
+                payment status, fulfillment and protected delivery.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- USERS -->
+
+<section class="section" id="users">
+
+    <div class="card">
+
+        <div class="empty">
+
+            <div class="empty-icon">👥</div>
+
+            <h3>User Management</h3>
+
+            <p>
+                View customer accounts, account status and administrative controls.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- PAYMENTS -->
+
+<section class="section" id="payments">
+
+    <div class="card">
+
+        <div class="empty">
+
+            <div class="empty-icon">💳</div>
+
+            <h3>Payments</h3>
+
+            <p>
+                Paystack payment verification and payment records will appear here.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- TRANSACTIONS -->
+
+<section class="section" id="transactions">
+
+    <div class="card">
+
+        <div class="empty">
+
+            <div class="empty-icon">↔</div>
+
+            <h3>Transactions</h3>
+
+            <p>
+                Wallet funding, purchases and refunds will be recorded here.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- NOTIFICATIONS -->
+
+<section class="section" id="notifications">
+
+    <div class="card">
+
+        <div class="empty">
+
+            <div class="empty-icon">🔔</div>
+
+            <h3>Notifications</h3>
+
+            <p>
+                Customer and system notifications will be managed here.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- SETTINGS -->
+
+<section class="section" id="settings">
+
+    <div class="card">
+
+        <h3>Admin Settings</h3>
+
+        <p class="sub">
+            WAYNE LOGS administrative configuration.
+        </p>
+
+        <div class="setting">
+
+            <div>
+                <strong>Marketplace</strong>
+                <p>Marketplace availability.</p>
+            </div>
+
+            <span class="status">Enabled</span>
+
+        </div>
+
+        <div class="setting">
+
+            <div>
+                <strong>Currency</strong>
+                <p>Default marketplace currency.</p>
+            </div>
+
+            <strong>NGN ₦</strong>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- SYSTEM -->
+
+<section class="section" id="system">
+
+    <div class="card">
+
+        <div class="setting">
+
+            <div>
+                <strong>Frontend</strong>
+                <p>Vercel deployment</p>
+            </div>
+
+            <span class="status">Online</span>
+
+        </div>
+
+        <div class="setting">
+
+            <div>
+                <strong>Backend API</strong>
+                <p>Render</p>
+            </div>
+
+            <span class="status" id="backendStatus">
+                Checking...
+            </span>
+
+        </div>
+
+        <div class="setting">
+
+            <div>
+                <strong>Database</strong>
+                <p>MongoDB Atlas</p>
+            </div>
+
+            <span class="status">
+                Connected
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+</div>
 
 </main>
 
@@ -1326,6 +1261,7 @@ let products = [];
 
 let currentImageData = "";
 
+
 const sectionInfo = {
 
     overview:[
@@ -1335,17 +1271,17 @@ const sectionInfo = {
 
     products:[
         "Products",
-        "Create and manage marketplace products."
+        "Manage marketplace products and fulfillment."
     ],
 
     orders:[
         "Orders",
-        "Manage customer purchases and fulfillment."
+        "Manage customer orders and delivery."
     ],
 
     users:[
         "Users",
-        "Manage WAYNE LOGS customer accounts."
+        "Manage customer accounts."
     ],
 
     payments:[
@@ -1355,12 +1291,12 @@ const sectionInfo = {
 
     transactions:[
         "Transactions",
-        "Review wallet and purchase transactions."
+        "Review marketplace transactions."
     ],
 
     notifications:[
         "Notifications",
-        "Manage customer notifications."
+        "Manage notifications."
     ],
 
     settings:[
@@ -1403,7 +1339,7 @@ function closeSidebar(){
 
 
 window.openSection =
-function(sectionName){
+function(name){
 
     document
         .querySelectorAll(".section")
@@ -1412,8 +1348,9 @@ function(sectionName){
                 section.classList.remove("active")
         );
 
+
     const target =
-        document.getElementById(sectionName);
+        document.getElementById(name);
 
     if(target){
         target.classList.add("active");
@@ -1421,7 +1358,9 @@ function(sectionName){
 
 
     document
-        .querySelectorAll(".menu-item[data-section]")
+        .querySelectorAll(
+            ".menu-item[data-section]"
+        )
         .forEach(
             item =>
                 item.classList.remove("active")
@@ -1430,8 +1369,9 @@ function(sectionName){
 
     const menu =
         document.querySelector(
-            `[data-section="${sectionName}"]`
+            `[data-section="${name}"]`
         );
+
 
     if(menu){
         menu.classList.add("active");
@@ -1439,19 +1379,23 @@ function(sectionName){
 
 
     const info =
-        sectionInfo[sectionName];
+        sectionInfo[name];
+
 
     if(info){
 
         document.getElementById(
             "pageTitle"
-        ).textContent = info[0];
+        ).textContent =
+            info[0];
 
         document.getElementById(
             "pageSubtitle"
-        ).textContent = info[1];
+        ).textContent =
+            info[1];
 
     }
+
 
     closeSidebar();
 
@@ -1459,19 +1403,18 @@ function(sectionName){
 
 
 document
-.querySelectorAll(".menu-item[data-section]")
+.querySelectorAll(
+    ".menu-item[data-section]"
+)
 .forEach(
     item => {
 
         item.addEventListener(
             "click",
-            function(){
-
+            () =>
                 openSection(
                     item.dataset.section
-                );
-
-            }
+                )
         );
 
     }
@@ -1506,9 +1449,13 @@ document
 
 function logout(){
 
-    localStorage.removeItem("wayneToken");
+    localStorage.removeItem(
+        "wayneToken"
+    );
 
-    localStorage.removeItem("wayneUser");
+    localStorage.removeItem(
+        "wayneUser"
+    );
 
     window.location.replace(
         "login.html"
@@ -1568,15 +1515,11 @@ async function checkAdmin(){
         }
 
 
-        const user =
-            data.user || {};
-
-
         document.getElementById(
             "avatar"
         ).textContent =
             (
-                user.firstName ||
+                data.user?.firstName ||
                 "A"
             )
             .charAt(0)
@@ -1606,16 +1549,19 @@ function compressImage(file){
         (resolve,reject) => {
 
             if(
-                !file.type.startsWith("image/")
+                !file.type.startsWith(
+                    "image/"
+                )
             ){
 
                 reject(
                     new Error(
-                        "Please choose an image."
+                        "Choose an image file."
                     )
                 );
 
                 return;
+
             }
 
 
@@ -1640,7 +1586,7 @@ function compressImage(file){
                                 image.height;
 
                             const max =
-                                1000;
+                                800;
 
 
                             if(
@@ -1672,6 +1618,7 @@ function compressImage(file){
                                     "canvas"
                                 );
 
+
                             canvas.width =
                                 width;
 
@@ -1679,29 +1626,34 @@ function compressImage(file){
                                 height;
 
 
-                            const ctx =
-                                canvas.getContext(
-                                    "2d"
+                            canvas
+                                .getContext("2d")
+                                .drawImage(
+                                    image,
+                                    0,
+                                    0,
+                                    width,
+                                    height
                                 );
-
-
-                            ctx.drawImage(
-                                image,
-                                0,
-                                0,
-                                width,
-                                height
-                            );
 
 
                             resolve(
                                 canvas.toDataURL(
                                     "image/jpeg",
-                                    .78
+                                    .65
                                 )
                             );
 
                         };
+
+
+                    image.onerror =
+                        () =>
+                            reject(
+                                new Error(
+                                    "Could not read image."
+                                )
+                            );
 
 
                     image.src =
@@ -1728,6 +1680,7 @@ document
 
         const file =
             event.target.files[0];
+
 
         if(!file){
             return;
@@ -1825,7 +1778,7 @@ async function loadProducts(){
             data.products || [];
 
 
-        updateProductStats();
+        updateStats();
 
         renderProducts();
 
@@ -1842,12 +1795,13 @@ async function loadProducts(){
 }
 
 
-function updateProductStats(){
+function updateStats(){
 
     const active =
         products.filter(
             product =>
-                product.status === "active"
+                product.status ===
+                "active"
         ).length;
 
 
@@ -1925,8 +1879,8 @@ function renderProducts(){
 
         box.innerHTML =
             `
-            <div class="module-empty">
-                <div class="module-icon">📦</div>
+            <div class="empty">
+                <div class="empty-icon">📦</div>
                 <h3>No products yet</h3>
                 <p>Create your first product above.</p>
             </div>
@@ -1966,6 +1920,18 @@ function renderProducts(){
                 `;
 
 
+            const privateIndicator =
+                product.privateDelivery
+                ?
+                `
+                <span class="private-saved">
+                    🔒 Private fulfillment saved
+                </span>
+                `
+                :
+                "";
+
+
             row.innerHTML =
                 `
                 <div class="product-info">
@@ -1980,7 +1946,12 @@ function renderProducts(){
 
                         <div class="product-meta">
 
-                            ${escapeHtml(product.platform || product.category)}
+                            ${
+                                escapeHtml(
+                                    product.platform ||
+                                    product.category
+                                )
+                            }
 
                             <br>
 
@@ -1988,21 +1959,24 @@ function renderProducts(){
                             ${Number(product.stock || 0)}
 
                             ·
+
                             ${escapeHtml(product.status)}
 
                         </div>
 
-                        <div class="form-actions">
+                        ${privateIndicator}
+
+                        <div class="actions">
 
                             <button
-                                class="btn btn-secondary"
+                                class="btn secondary"
                                 onclick="editProduct('${product._id}')"
                             >
                                 Edit
                             </button>
 
                             <button
-                                class="btn btn-danger"
+                                class="btn danger"
                                 onclick="deleteProduct('${product._id}')"
                             >
                                 Delete
@@ -2013,7 +1987,6 @@ function renderProducts(){
                     </div>
 
                 </div>
-
 
                 <div class="product-price">
                     ${money(product.price)}
@@ -2096,7 +2069,12 @@ document
             description:
                 document.getElementById(
                     "description"
-                ).value.trim()
+                ).value.trim(),
+
+            privateDelivery:
+                document.getElementById(
+                    "privateDelivery"
+                ).value
 
         };
 
@@ -2119,6 +2097,16 @@ document
 
 
         try{
+
+            const button =
+                document.getElementById(
+                    "saveProductButton"
+                );
+
+
+            button.disabled =
+                true;
+
 
             const response =
                 await fetch(
@@ -2165,7 +2153,17 @@ document
             await loadProducts();
 
 
+            button.disabled =
+                false;
+
+
         }catch(error){
+
+            document.getElementById(
+                "saveProductButton"
+            ).disabled =
+                false;
+
 
             showMessage(
                 error.message,
@@ -2241,14 +2239,16 @@ function(id){
     document.getElementById(
         "deliveryType"
     ).value =
-        product.deliveryType || "manual";
+        product.deliveryType ||
+        "manual";
 
 
     document.getElementById(
         "isFeatured"
     ).value =
         String(
-            product.isFeatured || false
+            product.isFeatured ||
+            false
         );
 
 
@@ -2256,6 +2256,12 @@ function(id){
         "description"
     ).value =
         product.description || "";
+
+
+    document.getElementById(
+        "privateDelivery"
+    ).value =
+        product.privateDelivery || "";
 
 
     currentImageData =
@@ -2274,6 +2280,13 @@ function(id){
             "previewWrap"
         ).style.display =
             "block";
+
+    }else{
+
+        document.getElementById(
+            "previewWrap"
+        ).style.display =
+            "none";
 
     }
 
@@ -2387,6 +2400,11 @@ function resetProductForm(){
 
 
     document.getElementById(
+        "privateDelivery"
+    ).value = "";
+
+
+    document.getElementById(
         "productFormTitle"
     ).textContent =
         "Add Product";
@@ -2439,27 +2457,18 @@ async function checkSystem(){
 
         const response =
             await fetch(
-                API_URL + "/api/test"
+                API_URL +
+                "/api/test"
             );
 
 
-        const badge =
-            document.getElementById(
-                "backendStatus"
-            );
+        document.getElementById(
+            "backendStatus"
+        ).textContent =
+            response.ok
+                ? "Online"
+                : "Problem";
 
-
-        if(response.ok){
-
-            badge.textContent =
-                "Online";
-
-        }else{
-
-            badge.textContent =
-                "Problem";
-
-        }
 
     }catch(error){
 

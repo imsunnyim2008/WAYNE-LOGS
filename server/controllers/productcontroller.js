@@ -2,7 +2,10 @@ const mongoose = require("mongoose");
 const Product = require("../models/product");
 
 
-// GET PUBLIC ACTIVE PRODUCTS
+// ==========================================
+// PUBLIC - GET ACTIVE MARKETPLACE PRODUCTS
+// privateDelivery is NEVER returned here
+// ==========================================
 exports.getProducts = async (req, res) => {
     try {
 
@@ -39,11 +42,15 @@ exports.getProducts = async (req, res) => {
             success: false,
             message: "Could not load products."
         });
+
     }
 };
 
 
-// GET ONE PRODUCT
+// ==========================================
+// PUBLIC - GET ONE PRODUCT
+// privateDelivery is NEVER returned here
+// ==========================================
 exports.getProductById = async (req, res) => {
     try {
 
@@ -82,16 +89,21 @@ exports.getProductById = async (req, res) => {
             success: false,
             message: "Could not load product."
         });
+
     }
 };
 
 
-// ADMIN GET ALL PRODUCTS
+// ==========================================
+// ADMIN - GET ALL PRODUCTS
+// Admin is allowed to see privateDelivery
+// ==========================================
 exports.adminGetProducts = async (req, res) => {
     try {
 
         const products = await Product
             .find()
+            .select("+privateDelivery")
             .sort({ createdAt: -1 });
 
         return res.json({
@@ -112,11 +124,14 @@ exports.adminGetProducts = async (req, res) => {
             message:
                 "Could not load admin products."
         });
+
     }
 };
 
 
-// ADMIN CREATE PRODUCT
+// ==========================================
+// ADMIN - CREATE PRODUCT
+// ==========================================
 exports.createProduct = async (req, res) => {
     try {
 
@@ -130,7 +145,8 @@ exports.createProduct = async (req, res) => {
             imageUrl,
             status,
             deliveryType,
-            isFeatured
+            isFeatured,
+            privateDelivery
         } = req.body;
 
 
@@ -203,16 +219,31 @@ exports.createProduct = async (req, res) => {
                     deliveryType || "manual",
                 isFeatured:
                     featured,
+
+                // PRIVATE - hidden from public product APIs
+                privateDelivery:
+                    privateDelivery || "",
+
                 createdBy:
                     req.user._id
             });
+
+
+        /*
+         * Fetch again explicitly with privateDelivery
+         * because the schema normally hides it.
+         */
+        const adminProduct =
+            await Product
+                .findById(product._id)
+                .select("+privateDelivery");
 
 
         return res.status(201).json({
             success: true,
             message:
                 "Product created successfully.",
-            product
+            product: adminProduct
         });
 
     } catch (error) {
@@ -227,11 +258,14 @@ exports.createProduct = async (req, res) => {
             message:
                 "Could not create product."
         });
+
     }
 };
 
 
-// ADMIN UPDATE PRODUCT
+// ==========================================
+// ADMIN - UPDATE PRODUCT
+// ==========================================
 exports.updateProduct = async (req, res) => {
     try {
 
@@ -247,8 +281,13 @@ exports.updateProduct = async (req, res) => {
         }
 
 
+        /*
+         * Admin explicitly requests privateDelivery.
+         */
         const product =
-            await Product.findById(id);
+            await Product
+                .findById(id)
+                .select("+privateDelivery");
 
 
         if (!product) {
@@ -273,12 +312,26 @@ exports.updateProduct = async (req, res) => {
 
         textFields.forEach((field) => {
 
-            if (req.body[field] !== undefined) {
+            if (
+                req.body[field] !== undefined
+            ) {
                 product[field] =
                     req.body[field];
             }
 
         });
+
+
+        if (
+            req.body.privateDelivery !== undefined
+        ) {
+
+            product.privateDelivery =
+                String(
+                    req.body.privateDelivery
+                );
+
+        }
 
 
         if (
@@ -288,13 +341,17 @@ exports.updateProduct = async (req, res) => {
             product.isFeatured =
                 req.body.isFeatured === true ||
                 req.body.isFeatured === "true";
+
         }
 
 
-        if (req.body.price !== undefined) {
+        if (
+            req.body.price !== undefined
+        ) {
 
             const price =
                 Number(req.body.price);
+
 
             if (
                 Number.isNaN(price) ||
@@ -307,14 +364,20 @@ exports.updateProduct = async (req, res) => {
                 });
             }
 
-            product.price = price;
+
+            product.price =
+                price;
+
         }
 
 
-        if (req.body.stock !== undefined) {
+        if (
+            req.body.stock !== undefined
+        ) {
 
             const stock =
                 Number(req.body.stock);
+
 
             if (
                 Number.isNaN(stock) ||
@@ -327,7 +390,10 @@ exports.updateProduct = async (req, res) => {
                 });
             }
 
-            product.stock = stock;
+
+            product.stock =
+                stock;
+
         }
 
 
@@ -353,11 +419,14 @@ exports.updateProduct = async (req, res) => {
             message:
                 "Could not update product."
         });
+
     }
 };
 
 
-// ADMIN DELETE PRODUCT
+// ==========================================
+// ADMIN - DELETE PRODUCT
+// ==========================================
 exports.deleteProduct = async (req, res) => {
     try {
 
@@ -407,5 +476,6 @@ exports.deleteProduct = async (req, res) => {
             message:
                 "Could not delete product."
         });
+
     }
 };
