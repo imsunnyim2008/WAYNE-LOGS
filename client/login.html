@@ -1,442 +1,548 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Login - WAYNE LOGS</title>
+    <title>Login - WAYNE LOGS</title>
 
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-body{
-    font-family:Arial, Helvetica, sans-serif;
-    background:#f5f8fc;
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-}
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f3f6fb;
+            color: #172033;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 15px;
+        }
 
-.login-box{
-    width:100%;
-    max-width:430px;
-    background:white;
-    padding:32px;
-    border-radius:20px;
-    box-shadow:0 18px 50px rgba(0,0,0,.08);
-}
+        .page {
+            width: 100%;
+            max-width: 520px;
+        }
 
-.logo{
-    text-align:center;
-    margin-bottom:25px;
-}
+        .brand {
+            text-align: center;
+            margin-bottom: 30px;
+        }
 
-.logo h1{
-    color:#0785df;
-    font-size:28px;
-}
+        .brand h1 {
+            color: #3278d1;
+            font-size: 42px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
 
-.logo p{
-    color:#8a95a4;
-    font-size:12px;
-    margin-top:4px;
-}
+        .brand p {
+            color: #8994a8;
+            font-size: 18px;
+            margin-top: 8px;
+        }
 
-.form-group{
-    margin-bottom:17px;
-}
+        .card {
+            background: white;
+            border-radius: 28px;
+            padding: 35px;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.06);
+        }
 
-label{
-    display:block;
-    margin-bottom:7px;
-    font-size:13px;
-    font-weight:bold;
-}
+        .card h2 {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
 
-input{
-    width:100%;
-    height:49px;
-    border:1px solid #dfe6ee;
-    border-radius:10px;
-    padding:0 14px;
-    background:#f9fbfd;
-    outline:none;
-    font-size:14px;
-}
+        .subtitle {
+            color: #8b95a7;
+            margin-bottom: 28px;
+            font-size: 17px;
+        }
 
-input:focus{
-    border-color:#0785df;
-    background:white;
-    box-shadow:0 0 0 4px rgba(7,133,223,.08);
-}
+        .message {
+            display: none;
+            padding: 16px;
+            border-radius: 14px;
+            margin-bottom: 24px;
+            font-size: 17px;
+            line-height: 1.4;
+        }
 
-.password-box{
-    position:relative;
-}
+        .message.error {
+            display: block;
+            background: #fff0f0;
+            color: #c93434;
+        }
 
-.password-box input{
-    padding-right:65px;
-}
+        .message.success {
+            display: block;
+            background: #edfff2;
+            color: #16873c;
+        }
 
-.show-btn{
-    position:absolute;
-    right:12px;
-    top:50%;
-    transform:translateY(-50%);
-    border:none;
-    background:none;
-    color:#0785df;
-    font-weight:bold;
-    cursor:pointer;
-}
+        .field {
+            margin-bottom: 22px;
+        }
 
-.login-btn{
-    width:100%;
-    height:50px;
-    border:none;
-    border-radius:10px;
-    background:#0785df;
-    color:white;
-    font-size:15px;
-    font-weight:bold;
-    cursor:pointer;
-    margin-top:4px;
-}
+        label {
+            display: block;
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
 
-.login-btn:hover{
-    background:#006fc0;
-}
+        input[type="email"],
+        input[type="password"],
+        input[type="text"] {
+            width: 100%;
+            border: 2px solid #e1e7ef;
+            border-radius: 15px;
+            padding: 17px 18px;
+            font-size: 18px;
+            outline: none;
+            background: #fbfcfe;
+        }
 
-.login-btn:disabled{
-    opacity:.6;
-    cursor:not-allowed;
-}
+        input:focus {
+            border-color: #3278d1;
+        }
 
-.message{
-    display:none;
-    padding:12px;
-    border-radius:9px;
-    font-size:13px;
-    margin-bottom:16px;
-}
+        .password-box {
+            position: relative;
+        }
 
-.success{
-    display:block;
-    background:#eaf8ef;
-    color:#16804a;
-}
+        .password-box input {
+            padding-right: 80px;
+        }
 
-.error{
-    display:block;
-    background:#fff0f0;
-    color:#c62828;
-}
+        .show-btn {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            color: #3278d1;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+        }
 
-.options{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:10px;
-    margin-bottom:17px;
-    font-size:12px;
-    color:#7d8898;
-}
+        .options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin: 8px 0 26px;
+            flex-wrap: wrap;
+        }
 
-.remember{
-    display:flex;
-    align-items:center;
-    gap:6px;
-}
+        .remember {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            color: #7c8799;
+            font-weight: 600;
+        }
 
-.remember input{
-    width:auto;
-    height:auto;
-}
+        .remember input {
+            width: 20px;
+            height: 20px;
+        }
 
-.options a{
-    color:#0785df;
-    text-decoration:none;
-}
+        .forgot {
+            color: #3278d1;
+            text-decoration: none;
+        }
 
-.register-link{
-    text-align:center;
-    margin-top:20px;
-    color:#7d8898;
-    font-size:13px;
-}
+        .login-btn {
+            width: 100%;
+            border: none;
+            border-radius: 15px;
+            padding: 17px;
+            font-size: 19px;
+            font-weight: 700;
+            background: #3278d1;
+            color: white;
+            cursor: pointer;
+        }
 
-.register-link a{
-    color:#0785df;
-    font-weight:bold;
-    text-decoration:none;
-}
+        .login-btn:hover {
+            background: #2869bd;
+        }
 
-.home-link{
-    text-align:center;
-    margin-top:14px;
-}
+        .login-btn:disabled {
+            opacity: .65;
+            cursor: not-allowed;
+        }
 
-.home-link a{
-    color:#7d8898;
-    font-size:12px;
-    text-decoration:none;
-}
-</style>
+        .bottom {
+            text-align: center;
+            margin-top: 27px;
+            color: #8994a8;
+            font-size: 17px;
+        }
+
+        .bottom a {
+            color: #3278d1;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .home {
+            text-align: center;
+            margin-top: 25px;
+        }
+
+        .home a {
+            color: #8994a8;
+            text-decoration: none;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                align-items: flex-start;
+                padding-top: 45px;
+            }
+
+            .brand h1 {
+                font-size: 36px;
+            }
+
+            .card {
+                padding: 27px 22px;
+                border-radius: 24px;
+            }
+
+            .card h2 {
+                font-size: 31px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="login-box">
+<div class="page">
 
-    <div class="logo">
+    <div class="brand">
         <h1>WAYNE LOGS</h1>
         <p>Login to your marketplace account</p>
     </div>
 
-    <div id="message" class="message"></div>
+    <div class="card">
 
-    <form id="loginForm">
+        <h2>Welcome Back</h2>
+        <p class="subtitle">
+            Enter your account details to continue.
+        </p>
 
-        <div class="form-group">
-            <label>Email Address</label>
+        <div id="message" class="message"></div>
 
-            <input
-                type="email"
-                id="email"
-                placeholder="you@example.com"
-                required>
-        </div>
+        <form id="loginForm">
 
-        <div class="form-group">
-
-            <label>Password</label>
-
-            <div class="password-box">
-
+            <div class="field">
+                <label for="email">Email Address</label>
                 <input
-                    type="password"
-                    id="password"
-                    placeholder="Enter your password"
-                    required>
+                    type="email"
+                    id="email"
+                    autocomplete="email"
+                    placeholder="you@example.com"
+                    required
+                >
+            </div>
 
-                <button
-                    type="button"
-                    class="show-btn"
-                    id="showPassword">
-                    Show
-                </button>
+            <div class="field">
+                <label for="password">Password</label>
+
+                <div class="password-box">
+                    <input
+                        type="password"
+                        id="password"
+                        autocomplete="current-password"
+                        placeholder="Enter your password"
+                        required
+                    >
+
+                    <button
+                        type="button"
+                        class="show-btn"
+                        id="showPassword"
+                    >
+                        Show
+                    </button>
+                </div>
+            </div>
+
+            <div class="options">
+
+                <label class="remember">
+                    <input type="checkbox" id="rememberMe">
+                    Remember me
+                </label>
+
+                <a href="#" class="forgot">
+                    Forgot password?
+                </a>
 
             </div>
 
+            <button
+                type="submit"
+                class="login-btn"
+                id="loginButton"
+            >
+                Login
+            </button>
+
+        </form>
+
+        <div class="bottom">
+            Don't have an account?
+            <a href="register.html">Create Account</a>
         </div>
 
-        <div class="options">
-
-            <label class="remember">
-                <input type="checkbox" id="rememberMe">
-                Remember me
-            </label>
-
-            <a href="#">
-                Forgot password?
-            </a>
-
+        <div class="home">
+            <a href="index.html">← Back to Home</a>
         </div>
 
-        <button
-            type="submit"
-            class="login-btn"
-            id="loginBtn">
-            Login
-        </button>
-
-    </form>
-
-    <div class="register-link">
-        Don't have an account?
-        <a href="register.html">Create Account</a>
-    </div>
-
-    <div class="home-link">
-        <a href="index.html">← Back to Home</a>
     </div>
 
 </div>
 
 <script>
 
-const loginForm =
-    document.getElementById("loginForm");
+const API_URL = "https://wayne-logs.onrender.com";
 
-const email =
-    document.getElementById("email");
-
-const password =
-    document.getElementById("password");
-
-const loginBtn =
-    document.getElementById("loginBtn");
-
-const message =
-    document.getElementById("message");
-
-const showPassword =
-    document.getElementById("showPassword");
+const loginForm = document.getElementById("loginForm");
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
+const rememberMe = document.getElementById("rememberMe");
+const loginButton = document.getElementById("loginButton");
+const messageBox = document.getElementById("message");
+const showPassword = document.getElementById("showPassword");
 
 
-showPassword.addEventListener(
-    "click",
-    function(){
+/* LOAD REMEMBERED EMAIL */
 
-        if(password.type === "password"){
+const rememberedEmail = localStorage.getItem("wayneRememberedEmail");
 
-            password.type = "text";
-            showPassword.textContent = "Hide";
-
-        }else{
-
-            password.type = "password";
-            showPassword.textContent = "Show";
-
-        }
-
-    }
-);
+if (rememberedEmail) {
+    emailInput.value = rememberedEmail;
+    rememberMe.checked = true;
+}
 
 
-loginForm.addEventListener(
-    "submit",
-    async function(event){
+/* SHOW / HIDE PASSWORD */
 
-        event.preventDefault();
+showPassword.addEventListener("click", function () {
 
+    if (passwordInput.type === "password") {
 
-        const emailValue =
-            email.value.trim();
+        passwordInput.type = "text";
+        showPassword.textContent = "Hide";
 
-        const passwordValue =
-            password.value;
+    } else {
 
-
-        loginBtn.disabled = true;
-
-        loginBtn.textContent =
-            "Logging in...";
-
-
-        try{
-
-            const response =
-                await fetch(
-                    "http://localhost:5000/api/auth/login",
-                    {
-                        method:"POST",
-
-                        headers:{
-                            "Content-Type":
-                            "application/json"
-                        },
-
-                        body:JSON.stringify({
-                            email:emailValue,
-                            password:passwordValue
-                        })
-                    }
-                );
-
-
-            const data =
-                await response.json();
-
-
-            if(!response.ok){
-
-                showMessage(
-                    data.message ||
-                    "Login failed.",
-                    "error"
-                );
-
-                loginBtn.disabled = false;
-
-                loginBtn.textContent =
-                    "Login";
-
-                return;
-
-            }
-
-
-            localStorage.setItem(
-                "wayneToken",
-                data.token
-            );
-
-
-            localStorage.setItem(
-                "wayneUser",
-                JSON.stringify(
-                    data.user
-                )
-            );
-
-
-            showMessage(
-                "Login successful! Redirecting...",
-                "success"
-            );
-
-
-            setTimeout(function(){
-
-                if(data.user.role === "admin"){
-
-                    window.location.href =
-                        "admin.html";
-
-                }else{
-
-                    window.location.href =
-                        "dashboard.html";
-
-                }
-
-            },1200);
-
-
-        }catch(error){
-
-            showMessage(
-                "Could not connect to the WAYNE LOGS server.",
-                "error"
-            );
-
-
-            loginBtn.disabled = false;
-
-            loginBtn.textContent =
-                "Login";
-
-        }
+        passwordInput.type = "password";
+        showPassword.textContent = "Show";
 
     }
-);
+
+});
 
 
-function showMessage(text,type){
+/* DISPLAY MESSAGE */
 
-    message.textContent = text;
+function showMessage(text, type) {
 
-    message.className =
+    messageBox.textContent = text;
+
+    messageBox.className =
         "message " + type;
 
 }
+
+
+/* LOGIN */
+
+loginForm.addEventListener("submit", async function (event) {
+
+    event.preventDefault();
+
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
+
+    if (!email || !password) {
+
+        showMessage(
+            "Please enter your email and password.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    loginButton.disabled = true;
+    loginButton.textContent = "Logging in...";
+
+    showMessage(
+        "Connecting to WAYNE LOGS...",
+        "success"
+    );
+
+
+    try {
+
+        const controller = new AbortController();
+
+        const timeout = setTimeout(function () {
+            controller.abort();
+        }, 90000);
+
+
+        const response = await fetch(
+            API_URL + "/api/auth/login",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    email: email,
+                    password: password
+                }),
+
+                signal: controller.signal
+            }
+        );
+
+
+        clearTimeout(timeout);
+
+
+        let data;
+
+        try {
+            data = await response.json();
+        } catch (error) {
+
+            throw new Error(
+                "The server returned an invalid response."
+            );
+
+        }
+
+
+        if (!response.ok || !data.success) {
+
+            showMessage(
+                data.message || "Login failed.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        /* SAVE LOGIN TOKEN */
+
+        localStorage.setItem(
+            "wayneToken",
+            data.token
+        );
+
+
+        /* SAVE USER */
+
+        localStorage.setItem(
+            "wayneUser",
+            JSON.stringify(data.user)
+        );
+
+
+        /* REMEMBER EMAIL */
+
+        if (rememberMe.checked) {
+
+            localStorage.setItem(
+                "wayneRememberedEmail",
+                email
+            );
+
+        } else {
+
+            localStorage.removeItem(
+                "wayneRememberedEmail"
+            );
+
+        }
+
+
+        showMessage(
+            "Login successful. Redirecting...",
+            "success"
+        );
+
+
+        setTimeout(function () {
+
+            if (
+                data.user &&
+                data.user.role === "admin"
+            ) {
+
+                window.location.href =
+                    "admin.html";
+
+            } else {
+
+                window.location.href =
+                    "dashboard.html";
+
+            }
+
+        }, 700);
+
+
+    } catch (error) {
+
+        console.error(error);
+
+
+        if (error.name === "AbortError") {
+
+            showMessage(
+                "The server took too long to respond. Please try again.",
+                "error"
+            );
+
+        } else {
+
+            showMessage(
+                "Could not connect to the WAYNE LOGS server. Please try again.",
+                "error"
+            );
+
+        }
+
+    } finally {
+
+        loginButton.disabled = false;
+        loginButton.textContent = "Login";
+
+    }
+
+});
 
 </script>
 
