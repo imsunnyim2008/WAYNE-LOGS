@@ -1,11 +1,8 @@
 const mongoose = require("mongoose");
-const Product = require("../models/Product");
+const Product = require("../models/product");
 
 
-// ===============================
-// GET ALL ACTIVE PRODUCTS
-// PUBLIC MARKETPLACE
-// ===============================
+// GET PUBLIC ACTIVE PRODUCTS
 exports.getProducts = async (req, res) => {
     try {
 
@@ -33,20 +30,20 @@ exports.getProducts = async (req, res) => {
 
     } catch (error) {
 
-        console.error("GET PRODUCTS ERROR:", error);
+        console.error(
+            "GET PRODUCTS ERROR:",
+            error
+        );
 
         return res.status(500).json({
             success: false,
             message: "Could not load products."
         });
-
     }
 };
 
 
-// ===============================
 // GET ONE PRODUCT
-// ===============================
 exports.getProductById = async (req, res) => {
     try {
 
@@ -59,7 +56,8 @@ exports.getProductById = async (req, res) => {
             });
         }
 
-        const product = await Product.findById(id);
+        const product =
+            await Product.findById(id);
 
         if (!product) {
             return res.status(404).json({
@@ -75,21 +73,20 @@ exports.getProductById = async (req, res) => {
 
     } catch (error) {
 
-        console.error("GET PRODUCT ERROR:", error);
+        console.error(
+            "GET PRODUCT ERROR:",
+            error
+        );
 
         return res.status(500).json({
             success: false,
             message: "Could not load product."
         });
-
     }
 };
 
 
-// ===============================
-// ADMIN - GET EVERY PRODUCT
-// ACTIVE + INACTIVE
-// ===============================
+// ADMIN GET ALL PRODUCTS
 exports.adminGetProducts = async (req, res) => {
     try {
 
@@ -105,20 +102,21 @@ exports.adminGetProducts = async (req, res) => {
 
     } catch (error) {
 
-        console.error("ADMIN GET PRODUCTS ERROR:", error);
+        console.error(
+            "ADMIN GET PRODUCTS ERROR:",
+            error
+        );
 
         return res.status(500).json({
             success: false,
-            message: "Could not load admin products."
+            message:
+                "Could not load admin products."
         });
-
     }
 };
 
 
-// ===============================
-// ADMIN - CREATE PRODUCT
-// ===============================
+// ADMIN CREATE PRODUCT
 exports.createProduct = async (req, res) => {
     try {
 
@@ -136,16 +134,24 @@ exports.createProduct = async (req, res) => {
         } = req.body;
 
 
-        if (!name || !category || price === undefined) {
+        if (
+            !name ||
+            !category ||
+            price === undefined
+        ) {
             return res.status(400).json({
                 success: false,
-                message: "Name, category and price are required."
+                message:
+                    "Name, category and price are required."
             });
         }
 
 
-        const numericPrice = Number(price);
-        const numericStock = Number(stock || 0);
+        const numericPrice =
+            Number(price);
+
+        const numericStock =
+            Number(stock || 0);
 
 
         if (
@@ -154,7 +160,8 @@ exports.createProduct = async (req, res) => {
         ) {
             return res.status(400).json({
                 success: false,
-                message: "Enter a valid product price."
+                message:
+                    "Enter a valid product price."
             });
         }
 
@@ -165,48 +172,66 @@ exports.createProduct = async (req, res) => {
         ) {
             return res.status(400).json({
                 success: false,
-                message: "Enter a valid stock amount."
+                message:
+                    "Enter a valid stock amount."
             });
         }
 
 
-        const product = await Product.create({
-            name,
-            description: description || "",
-            category,
-            platform: platform || "",
-            price: numericPrice,
-            stock: numericStock,
-            imageUrl: imageUrl || "",
-            status: status || "active",
-            deliveryType: deliveryType || "manual",
-            isFeatured: Boolean(isFeatured),
-            createdBy: req.user._id
-        });
+        const featured =
+            isFeatured === true ||
+            isFeatured === "true";
+
+
+        const product =
+            await Product.create({
+                name,
+                description:
+                    description || "",
+                category,
+                platform:
+                    platform || "",
+                price:
+                    numericPrice,
+                stock:
+                    numericStock,
+                imageUrl:
+                    imageUrl || "",
+                status:
+                    status || "active",
+                deliveryType:
+                    deliveryType || "manual",
+                isFeatured:
+                    featured,
+                createdBy:
+                    req.user._id
+            });
 
 
         return res.status(201).json({
             success: true,
-            message: "Product created successfully.",
+            message:
+                "Product created successfully.",
             product
         });
 
     } catch (error) {
 
-        console.error("CREATE PRODUCT ERROR:", error);
+        console.error(
+            "CREATE PRODUCT ERROR:",
+            error
+        );
 
         return res.status(500).json({
             success: false,
-            message: "Could not create product."
+            message:
+                "Could not create product."
         });
-
     }
 };
 
 
-// ===============================
-// ADMIN - UPDATE PRODUCT
-// ===============================
+// ADMIN UPDATE PRODUCT
 exports.updateProduct = async (req, res) => {
     try {
 
@@ -216,46 +241,60 @@ exports.updateProduct = async (req, res) => {
         if (!mongoose.isValidObjectId(id)) {
             return res.status(400).json({
                 success: false,
-                message: "Invalid product ID."
+                message:
+                    "Invalid product ID."
             });
         }
 
 
-        const product = await Product.findById(id);
+        const product =
+            await Product.findById(id);
 
 
         if (!product) {
             return res.status(404).json({
                 success: false,
-                message: "Product not found."
+                message:
+                    "Product not found."
             });
         }
 
 
-        const allowedFields = [
+        const textFields = [
             "name",
             "description",
             "category",
             "platform",
             "imageUrl",
             "status",
-            "deliveryType",
-            "isFeatured"
+            "deliveryType"
         ];
 
 
-        allowedFields.forEach((field) => {
+        textFields.forEach((field) => {
 
             if (req.body[field] !== undefined) {
-                product[field] = req.body[field];
+                product[field] =
+                    req.body[field];
             }
 
         });
 
 
+        if (
+            req.body.isFeatured !== undefined
+        ) {
+
+            product.isFeatured =
+                req.body.isFeatured === true ||
+                req.body.isFeatured === "true";
+        }
+
+
         if (req.body.price !== undefined) {
 
-            const price = Number(req.body.price);
+            const price =
+                Number(req.body.price);
 
             if (
                 Number.isNaN(price) ||
@@ -263,7 +302,8 @@ exports.updateProduct = async (req, res) => {
             ) {
                 return res.status(400).json({
                     success: false,
-                    message: "Enter a valid product price."
+                    message:
+                        "Enter a valid product price."
                 });
             }
 
@@ -273,7 +313,8 @@ exports.updateProduct = async (req, res) => {
 
         if (req.body.stock !== undefined) {
 
-            const stock = Number(req.body.stock);
+            const stock =
+                Number(req.body.stock);
 
             if (
                 Number.isNaN(stock) ||
@@ -281,7 +322,8 @@ exports.updateProduct = async (req, res) => {
             ) {
                 return res.status(400).json({
                     success: false,
-                    message: "Enter a valid stock amount."
+                    message:
+                        "Enter a valid stock amount."
                 });
             }
 
@@ -294,26 +336,28 @@ exports.updateProduct = async (req, res) => {
 
         return res.json({
             success: true,
-            message: "Product updated successfully.",
+            message:
+                "Product updated successfully.",
             product
         });
 
     } catch (error) {
 
-        console.error("UPDATE PRODUCT ERROR:", error);
+        console.error(
+            "UPDATE PRODUCT ERROR:",
+            error
+        );
 
         return res.status(500).json({
             success: false,
-            message: "Could not update product."
+            message:
+                "Could not update product."
         });
-
     }
 };
 
 
-// ===============================
-// ADMIN - DELETE PRODUCT
-// ===============================
+// ADMIN DELETE PRODUCT
 exports.deleteProduct = async (req, res) => {
     try {
 
@@ -323,18 +367,21 @@ exports.deleteProduct = async (req, res) => {
         if (!mongoose.isValidObjectId(id)) {
             return res.status(400).json({
                 success: false,
-                message: "Invalid product ID."
+                message:
+                    "Invalid product ID."
             });
         }
 
 
-        const product = await Product.findById(id);
+        const product =
+            await Product.findById(id);
 
 
         if (!product) {
             return res.status(404).json({
                 success: false,
-                message: "Product not found."
+                message:
+                    "Product not found."
             });
         }
 
@@ -344,17 +391,21 @@ exports.deleteProduct = async (req, res) => {
 
         return res.json({
             success: true,
-            message: "Product deleted successfully."
+            message:
+                "Product deleted successfully."
         });
 
     } catch (error) {
 
-        console.error("DELETE PRODUCT ERROR:", error);
+        console.error(
+            "DELETE PRODUCT ERROR:",
+            error
+        );
 
         return res.status(500).json({
             success: false,
-            message: "Could not delete product."
+            message:
+                "Could not delete product."
         });
-
     }
 };

@@ -7,7 +7,7 @@ const {
     createProduct,
     updateProduct,
     deleteProduct
-} = require("../controllers/productController");
+} = require("../controllers/productcontroller");
 
 const {
     protect,
@@ -18,22 +18,14 @@ const {
 const router = express.Router();
 
 
-// ===============================
-// PUBLIC MARKETPLACE
-// ===============================
-
-// GET ALL ACTIVE PRODUCTS
+// PUBLIC - GET ACTIVE PRODUCTS
 router.get(
     "/",
     getProducts
 );
 
 
-// ===============================
-// ADMIN PRODUCT MANAGEMENT
-// ===============================
-
-// GET ALL PRODUCTS
+// ADMIN - GET ALL PRODUCTS
 router.get(
     "/admin/all",
     protect,
@@ -42,7 +34,7 @@ router.get(
 );
 
 
-// CREATE PRODUCT
+// ADMIN - CREATE PRODUCT
 router.post(
     "/",
     protect,
@@ -51,7 +43,7 @@ router.post(
 );
 
 
-// UPDATE PRODUCT
+// ADMIN - UPDATE PRODUCT
 router.put(
     "/:id",
     protect,
@@ -60,7 +52,7 @@ router.put(
 );
 
 
-// DELETE PRODUCT
+// ADMIN - DELETE PRODUCT
 router.delete(
     "/:id",
     protect,
@@ -69,11 +61,8 @@ router.delete(
 );
 
 
-// ===============================
-// PUBLIC SINGLE PRODUCT
-// Keep this route LAST
-// ===============================
-
+// PUBLIC - GET ONE PRODUCT
+// KEEP THIS LAST
 router.get(
     "/:id",
     getProductById
