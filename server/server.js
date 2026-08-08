@@ -19,17 +19,47 @@ const {
     protect
 } = require("./middleware/authMiddleware");
 
+const {
+    handlePaystackWebhook
+} = require("./controllers/ordercontroller");
+
 
 const app = express();
 
 
 // ==========================================
-// MIDDLEWARE
+// CORS
 // ==========================================
 
 app.use(
     cors()
 );
+
+
+// ==========================================
+// PAYSTACK WEBHOOK
+//
+// IMPORTANT:
+// This MUST stay BEFORE express.json().
+// Paystack signature verification uses
+// the original webhook request body.
+// ==========================================
+
+app.post(
+    "/api/paystack/webhook",
+
+    express.raw({
+        type: "application/json",
+        limit: "2mb"
+    }),
+
+    handlePaystackWebhook
+);
+
+
+// ==========================================
+// NORMAL BODY PARSERS
+// ==========================================
 
 app.use(
     express.json({
@@ -43,6 +73,11 @@ app.use(
         limit: "10mb"
     })
 );
+
+
+// ==========================================
+// LOGGING
+// ==========================================
 
 app.use(
     morgan("dev")

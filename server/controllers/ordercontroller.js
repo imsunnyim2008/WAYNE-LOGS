@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const crypto = require("crypto");
 
 const Order = require("../models/order");
 const Product = require("../models/product");
@@ -70,7 +71,7 @@ async function paystackRequest(
 
 
 // ==========================================
-// READ PAYSTACK METADATA SAFELY
+// READ PAYSTACK METADATA
 // ==========================================
 function parseMetadata(value) {
 
@@ -100,10 +101,6 @@ function parseMetadata(value) {
 
 // ==========================================
 // FINALIZE VERIFIED PAYMENT
-//
-// IMPORTANT:
-// This function is idempotent.
-// A paid order will not deduct stock twice.
 // ==========================================
 async function finalizePaidOrder(
     orderId,
@@ -112,6 +109,7 @@ async function finalizePaidOrder(
 
     const session =
         await mongoose.startSession();
+
 
     let finalOrder;
 
@@ -139,10 +137,8 @@ async function finalizePaidOrder(
                 }
 
 
-                /*
-                 * Already paid.
-                 * Do NOT deduct stock again.
-                 */
+                // Already paid.
+                // Never deduct stock twice.
                 if (
                     order.paymentStatus ===
                     "paid"
@@ -156,10 +152,6 @@ async function finalizePaidOrder(
                 }
 
 
-                /*
-                 * Atomically make sure stock
-                 * is still available.
-                 */
                 const product =
                     await Product
                         .findOneAndUpdate(
@@ -214,11 +206,10 @@ async function finalizePaidOrder(
                     paymentReference;
 
 
-                /*
-                 * Instant product:
-                 * copy private fulfillment
-                 * into the paid order.
-                 */
+                // ==================================
+                // INSTANT DELIVERY
+                // ==================================
+
                 if (
                     product.deliveryType ===
                     "instant"
@@ -238,12 +229,7 @@ async function finalizePaidOrder(
 
                 } else {
 
-                    /*
-                     * Manual product:
-                     * payment is complete,
-                     * but admin fulfillment
-                     * is still required.
-                     */
+                    // Manual delivery
                     order.status =
                         "processing";
 
@@ -396,10 +382,12 @@ async (req, res) => {
                     product.name,
 
                 productImage:
-                    product.imageUrl || "",
+                    product.imageUrl ||
+                    "",
 
                 platform:
-                    product.platform || "",
+                    product.platform ||
+                    "",
 
                 quantity:
                     orderQuantity,
@@ -493,7 +481,8 @@ async (req, res) => {
         const order =
             await Order.findOne({
 
-                _id: id,
+                _id:
+                    id,
 
                 user:
                     req.user._id
@@ -546,10 +535,6 @@ async (req, res) => {
         }
 
 
-        /*
-         * Recheck product before opening
-         * the Paystack checkout.
-         */
         const product =
             await Product.findOne({
 
@@ -591,9 +576,7 @@ async (req, res) => {
         }
 
 
-        /*
-         * NGN -> Kobo
-         */
+        // NGN -> KOBO
         const amountInKobo =
             Math.round(
                 Number(
@@ -620,10 +603,7 @@ async (req, res) => {
         }
 
 
-        /*
-         * New unique Paystack reference
-         * for this payment attempt.
-         */
+        // Unique reference
         const reference =
             "WL" +
             order._id.toString() +
@@ -635,7 +615,10 @@ async (req, res) => {
                 process.env.FRONTEND_URL ||
                 "https://client-livid-one-87.vercel.app"
             )
-            .replace(/\/$/, "");
+            .replace(
+                /\/$/,
+                ""
+            );
 
 
         const callbackUrl =
@@ -823,7 +806,8 @@ async (req, res) => {
         const order =
             await Order.findOne({
 
-                _id: id,
+                _id:
+                    id,
 
                 user:
                     req.user._id
@@ -844,10 +828,7 @@ async (req, res) => {
         }
 
 
-        /*
-         * If already processed, simply
-         * return the current order.
-         */
+        // Already verified
         if (
             order.paymentStatus ===
             "paid"
@@ -878,10 +859,25 @@ async (req, res) => {
         }
 
 
-        /*
-         * Ask Paystack directly for the
-         * transaction status.
-         */
+        // Make sure callback reference
+        // matches our initialized payment.
+        if (
+            order.paymentReference &&
+            order.paymentReference !==
+            reference
+        ) {
+
+            return res
+                .status(400)
+                .json({
+                    success: false,
+                    message:
+                        "Payment reference mismatch."
+                });
+
+        }
+
+
         const result =
             await paystackRequest(
                 "/transaction/verify/" +
@@ -889,7 +885,8 @@ async (req, res) => {
                     reference
                 ),
                 {
-                    method: "GET"
+                    method:
+                        "GET"
                 }
             );
 
@@ -898,9 +895,6 @@ async (req, res) => {
             result.data;
 
 
-        /*
-         * Paystack must report SUCCESS.
-         */
         if (
             transaction.status !==
             "success"
@@ -923,10 +917,6 @@ async (req, res) => {
         }
 
 
-        /*
-         * Reference must be exactly
-         * what Paystack verified.
-         */
         if (
             transaction.reference !==
             reference
@@ -949,10 +939,6 @@ async (req, res) => {
             );
 
 
-        /*
-         * Paystack transaction must belong
-         * to THIS WAYNE LOGS order.
-         */
         if (
             String(
                 metadata.orderId ||
@@ -991,10 +977,6 @@ async (req, res) => {
         }
 
 
-        /*
-         * Verify amount.
-         * NEVER trust the browser amount.
-         */
         const expectedAmount =
             Math.round(
                 Number(
@@ -1021,9 +1003,6 @@ async (req, res) => {
         }
 
 
-        /*
-         * Verify currency.
-         */
         if (
             String(
                 transaction.currency ||
@@ -1047,10 +1026,6 @@ async (req, res) => {
         }
 
 
-        /*
-         * Everything has been verified.
-         * Now fulfill the paid order.
-         */
         const finalOrder =
             await finalizePaidOrder(
                 order._id,
@@ -1094,7 +1069,7 @@ async (req, res) => {
                 .json({
                     success: false,
                     message:
-                        "Payment was received, but the product became unavailable. Contact support immediately."
+                        "Payment was received, but the product became unavailable. Contact support."
                 });
 
         }
@@ -1269,10 +1244,6 @@ async (req, res) => {
             order.toObject();
 
 
-        /*
-         * Hide delivery unless BOTH
-         * payment and order are complete.
-         */
         if (
             order.paymentStatus !==
             "paid" ||
@@ -1411,13 +1382,9 @@ async (req, res) => {
         const allowedStatuses = [
 
             "pending",
-
             "processing",
-
             "completed",
-
             "cancelled",
-
             "refunded"
 
         ];
@@ -1521,10 +1488,7 @@ async (req, res) => {
 
 
 // ==========================================
-// OLD MANUAL PAYMENT ENDPOINT
-//
-// Disabled intentionally.
-// Payment must now come from Paystack.
+// MANUAL PAYMENT CONFIRMATION DISABLED
 // ==========================================
 exports.adminConfirmPayment =
 async (req, res) => {
@@ -1539,5 +1503,358 @@ async (req, res) => {
                 "Manual payment confirmation is disabled. Verify payment through Paystack."
 
         });
+
+};
+
+
+// ==========================================
+// PAYSTACK WEBHOOK
+// ==========================================
+exports.handlePaystackWebhook =
+async (req, res) => {
+
+    try {
+
+        const secret =
+            process.env.PAYSTACK_SECRET_KEY;
+
+
+        if (!secret) {
+
+            console.error(
+                "PAYSTACK WEBHOOK ERROR: Secret key missing."
+            );
+
+            return res.sendStatus(500);
+
+        }
+
+
+        const signature =
+            req.headers[
+                "x-paystack-signature"
+            ];
+
+
+        if (
+            !signature ||
+            !Buffer.isBuffer(req.body)
+        ) {
+
+            return res.sendStatus(400);
+
+        }
+
+
+        // ==================================
+        // VERIFY PAYSTACK SIGNATURE
+        // ==================================
+
+        const calculatedSignature =
+            crypto
+                .createHmac(
+                    "sha512",
+                    secret
+                )
+                .update(req.body)
+                .digest("hex");
+
+
+        const calculatedBuffer =
+            Buffer.from(
+                calculatedSignature,
+                "utf8"
+            );
+
+
+        const receivedBuffer =
+            Buffer.from(
+                String(signature)
+                    .trim()
+                    .toLowerCase(),
+                "utf8"
+            );
+
+
+        if (
+            calculatedBuffer.length !==
+            receivedBuffer.length
+        ) {
+
+            return res.sendStatus(401);
+
+        }
+
+
+        const validSignature =
+            crypto.timingSafeEqual(
+                calculatedBuffer,
+                receivedBuffer
+            );
+
+
+        if (!validSignature) {
+
+            return res.sendStatus(401);
+
+        }
+
+
+        // ==================================
+        // PARSE EVENT
+        // ==================================
+
+        let event;
+
+
+        try {
+
+            event =
+                JSON.parse(
+                    req.body.toString(
+                        "utf8"
+                    )
+                );
+
+        } catch (error) {
+
+            return res.sendStatus(400);
+
+        }
+
+
+        // ==================================
+        // ONLY CHARGE.SUCCESS
+        // ==================================
+
+        if (
+            event.event !==
+            "charge.success"
+        ) {
+
+            return res.sendStatus(200);
+
+        }
+
+
+        const transaction =
+            event.data || {};
+
+
+        if (
+            transaction.status !==
+            "success" ||
+            !transaction.reference
+        ) {
+
+            return res.sendStatus(200);
+
+        }
+
+
+        const metadata =
+            parseMetadata(
+                transaction.metadata
+            );
+
+
+        // ==================================
+        // FIND ORDER
+        // ==================================
+
+        let order = null;
+
+
+        if (
+            metadata.orderId &&
+            mongoose.isValidObjectId(
+                metadata.orderId
+            )
+        ) {
+
+            order =
+                await Order.findById(
+                    metadata.orderId
+                );
+
+        }
+
+
+        if (!order) {
+
+            order =
+                await Order.findOne({
+
+                    paymentReference:
+                        transaction.reference
+
+                });
+
+        }
+
+
+        if (!order) {
+
+            return res
+                .status(200)
+                .json({
+
+                    success: true,
+
+                    message:
+                        "Webhook received."
+
+                });
+
+        }
+
+
+        // ==================================
+        // ALREADY PAID
+        // ==================================
+
+        if (
+            order.paymentStatus ===
+            "paid"
+        ) {
+
+            return res.sendStatus(200);
+
+        }
+
+
+        // ==================================
+        // VERIFY REFERENCE
+        // ==================================
+
+        if (
+            order.paymentReference &&
+            order.paymentReference !==
+            transaction.reference
+        ) {
+
+            return res.sendStatus(200);
+
+        }
+
+
+        // ==================================
+        // VERIFY USER
+        // ==================================
+
+        if (
+            metadata.userId &&
+            String(
+                metadata.userId
+            ) !==
+            order.user.toString()
+        ) {
+
+            return res.sendStatus(200);
+
+        }
+
+
+        // ==================================
+        // VERIFY ORDER ID
+        // ==================================
+
+        if (
+            metadata.orderId &&
+            String(
+                metadata.orderId
+            ) !==
+            order._id.toString()
+        ) {
+
+            return res.sendStatus(200);
+
+        }
+
+
+        // ==================================
+        // VERIFY AMOUNT
+        // ==================================
+
+        const expectedAmount =
+            Math.round(
+                Number(
+                    order.totalAmount
+                ) * 100
+            );
+
+
+        if (
+            Number(
+                transaction.amount
+            ) !==
+            expectedAmount
+        ) {
+
+            console.error(
+                "PAYSTACK WEBHOOK: Amount mismatch."
+            );
+
+            return res.sendStatus(200);
+
+        }
+
+
+        // ==================================
+        // VERIFY CURRENCY
+        // ==================================
+
+        const expectedCurrency =
+            String(
+                order.currency ||
+                "NGN"
+            ).toUpperCase();
+
+
+        const paidCurrency =
+            String(
+                transaction.currency ||
+                ""
+            ).toUpperCase();
+
+
+        if (
+            expectedCurrency !==
+            paidCurrency
+        ) {
+
+            console.error(
+                "PAYSTACK WEBHOOK: Currency mismatch."
+            );
+
+            return res.sendStatus(200);
+
+        }
+
+
+        // ==================================
+        // FINALIZE PAYMENT
+        // ==================================
+
+        await finalizePaidOrder(
+            order._id,
+            transaction.reference
+        );
+
+
+        return res.sendStatus(200);
+
+
+    } catch (error) {
+
+        console.error(
+            "PAYSTACK WEBHOOK ERROR:",
+            error.message
+        );
+
+
+        return res.sendStatus(500);
+
+    }
 
 };
