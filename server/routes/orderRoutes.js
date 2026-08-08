@@ -2,6 +2,8 @@ const express = require("express");
 
 const {
     createOrder,
+    initializePaystackPayment,
+    verifyPaystackPayment,
     getMyOrders,
     getMyOrderById,
     adminGetOrders,
@@ -17,9 +19,9 @@ const {
 const router = express.Router();
 
 
-// ===============================
+// ==========================================
 // CUSTOMER - CREATE ORDER
-// ===============================
+// ==========================================
 router.post(
     "/",
     protect,
@@ -27,9 +29,9 @@ router.post(
 );
 
 
-// ===============================
+// ==========================================
 // CUSTOMER - MY ORDERS
-// ===============================
+// ==========================================
 router.get(
     "/my",
     protect,
@@ -37,9 +39,29 @@ router.get(
 );
 
 
-// ===============================
-// ADMIN - ALL ORDERS
-// ===============================
+// ==========================================
+// CUSTOMER - START PAYSTACK PAYMENT
+// ==========================================
+router.post(
+    "/:id/paystack/initialize",
+    protect,
+    initializePaystackPayment
+);
+
+
+// ==========================================
+// CUSTOMER - VERIFY PAYSTACK PAYMENT
+// ==========================================
+router.post(
+    "/:id/paystack/verify",
+    protect,
+    verifyPaystackPayment
+);
+
+
+// ==========================================
+// ADMIN - GET ALL ORDERS
+// ==========================================
 router.get(
     "/admin/all",
     protect,
@@ -48,9 +70,9 @@ router.get(
 );
 
 
-// ===============================
+// ==========================================
 // ADMIN - UPDATE ORDER STATUS
-// ===============================
+// ==========================================
 router.patch(
     "/admin/:id/status",
     protect,
@@ -59,11 +81,10 @@ router.patch(
 );
 
 
-// ===============================
-// ADMIN - CONFIRM PAYMENT
-// Temporary until Paystack verification
-// is connected.
-// ===============================
+// ==========================================
+// OLD MANUAL PAYMENT ROUTE
+// Currently disabled by controller.
+// ==========================================
 router.patch(
     "/admin/:id/confirm-payment",
     protect,
@@ -72,10 +93,10 @@ router.patch(
 );
 
 
-// ===============================
-// CUSTOMER - ONE ORDER
+// ==========================================
+// CUSTOMER - GET ONE ORDER
 // KEEP THIS LAST
-// ===============================
+// ==========================================
 router.get(
     "/:id",
     protect,

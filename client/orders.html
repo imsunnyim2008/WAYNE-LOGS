@@ -113,9 +113,10 @@ main{
 
 .message{
     display:none;
-    padding:15px;
-    border-radius:12px;
+    padding:16px;
+    border-radius:13px;
     margin-bottom:20px;
+    line-height:1.5;
 }
 
 .message.error{
@@ -130,10 +131,28 @@ main{
     color:var(--green);
 }
 
+.message.info{
+    display:block;
+    background:#edf6ff;
+    color:var(--blue);
+}
+
 .loading{
     text-align:center;
     color:var(--muted);
     padding:35px;
+}
+
+.verify-box{
+    display:none;
+    background:#edf6ff;
+    color:var(--blue);
+    border:1px solid #cfe5ff;
+    padding:20px;
+    border-radius:16px;
+    margin-bottom:22px;
+    font-weight:bold;
+    line-height:1.6;
 }
 
 .orders{
@@ -188,6 +207,7 @@ main{
     color:var(--muted);
     line-height:1.7;
     font-size:14px;
+    word-break:break-word;
 }
 
 .order-price{
@@ -229,7 +249,8 @@ main{
 }
 
 .failed,
-.cancelled{
+.cancelled,
+.refunded{
     background:#fff0f0;
     color:var(--red);
 }
@@ -242,6 +263,8 @@ main{
     border-radius:11px;
     cursor:pointer;
     font-weight:bold;
+    text-decoration:none;
+    display:inline-block;
 }
 
 .detail-grid{
@@ -341,6 +364,7 @@ main{
 <body>
 
 <header>
+
     <div class="nav">
 
         <a href="index.html" class="logo">
@@ -348,6 +372,7 @@ main{
         </a>
 
         <div class="nav-links">
+
             <a href="dashboard.html" class="nav-link">
                 Dashboard
             </a>
@@ -355,22 +380,40 @@ main{
             <a href="marketplace.html" class="nav-link">
                 Marketplace
             </a>
+
         </div>
 
     </div>
+
 </header>
 
 
 <main>
 
     <div class="hero">
+
         <h1>My Orders</h1>
+
         <p>
-            Track your purchases, payment status and completed digital delivery.
+            Track your purchases, payment status
+            and completed digital delivery.
         </p>
+
     </div>
 
-    <div id="message" class="message"></div>
+
+    <div
+        id="verifyBox"
+        class="verify-box"
+    >
+        Verifying your Paystack payment securely...
+    </div>
+
+
+    <div
+        id="message"
+        class="message"
+    ></div>
 
 
     <section
@@ -398,11 +441,17 @@ main{
             Orders connected to your WAYNE LOGS account.
         </p>
 
-        <div id="loading" class="loading">
+        <div
+            id="loading"
+            class="loading"
+        >
             Loading your orders...
         </div>
 
-        <div id="orders" class="orders"></div>
+        <div
+            id="orders"
+            class="orders"
+        ></div>
 
     </section>
 
@@ -414,16 +463,30 @@ main{
 const API_URL =
     "https://wayne-logs.onrender.com";
 
+
 const token =
-    localStorage.getItem("wayneToken");
+    localStorage.getItem(
+        "wayneToken"
+    );
+
 
 const params =
     new URLSearchParams(
         window.location.search
     );
 
+
 const selectedOrderId =
     params.get("order");
+
+
+const paymentCallback =
+    params.get("payment") ===
+    "callback";
+
+
+const paystackReference =
+    params.get("reference");
 
 
 function money(value){
@@ -448,10 +511,14 @@ function safeText(value){
 function escapeHtml(value){
 
     const div =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
+
 
     div.textContent =
         safeText(value);
+
 
     return div.innerHTML;
 
@@ -468,7 +535,10 @@ function showMessage(
             "message"
         );
 
-    box.textContent = text;
+
+    box.textContent =
+        text;
+
 
     box.className =
         "message " + type;
@@ -482,8 +552,10 @@ function formatDate(value){
         return "—";
     }
 
+
     return new Date(value)
         .toLocaleString();
+
 }
 
 
@@ -495,24 +567,70 @@ function badgeClass(value){
         "completed",
         "processing",
         "failed",
-        "cancelled"
+        "cancelled",
+        "refunded"
     ];
+
 
     return allowed.includes(value)
         ? value
         : "pending";
+
 }
 
 
-async function loadOrders(){
+// ==========================================
+// PAYSTACK CALLBACK VERIFICATION
+// ==========================================
 
-    if(!token){
+async function verifyCallbackPayment(){
 
-        window.location.replace(
-            "login.html"
-        );
+    if(!paymentCallback){
 
         return;
+
+    }
+
+
+    const verifyBox =
+        document.getElementById(
+            "verifyBox"
+        );
+
+
+    verifyBox.style.display =
+        "block";
+
+
+    if(!selectedOrderId){
+
+        verifyBox.style.display =
+            "none";
+
+
+        showMessage(
+            "Payment returned without an order ID."
+        );
+
+
+        return;
+
+    }
+
+
+    if(!paystackReference){
+
+        verifyBox.style.display =
+            "none";
+
+
+        showMessage(
+            "Payment reference was not returned by Paystack."
+        );
+
+
+        return;
+
     }
 
 
@@ -521,12 +639,116 @@ async function loadOrders(){
         const response =
             await fetch(
                 API_URL +
+                "/api/orders/" +
+                encodeURIComponent(
+                    selectedOrderId
+                ) +
+                "/paystack/verify",
+                {
+
+                    method:
+                        "POST",
+
+                    headers:{
+
+                        "Content-Type":
+                            "application/json",
+
+                        Authorization:
+                            "Bearer " +
+                            token
+
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            reference:
+                                paystackReference
+
+                        })
+
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if(
+            !response.ok ||
+            !data.success
+        ){
+
+            throw new Error(
+                data.message ||
+                "Payment could not be verified."
+            );
+
+        }
+
+
+        showMessage(
+            data.message ||
+            "Payment verified successfully.",
+            "success"
+        );
+
+
+        /*
+         * Remove Paystack reference from
+         * browser address after verification.
+         */
+        window.history.replaceState(
+            {},
+            "",
+            "orders.html?order=" +
+            encodeURIComponent(
+                selectedOrderId
+            )
+        );
+
+
+    }catch(error){
+
+        showMessage(
+            error.message ||
+            "Payment verification failed."
+        );
+
+    }finally{
+
+        verifyBox.style.display =
+            "none";
+
+    }
+
+}
+
+
+// ==========================================
+// LOAD CUSTOMER ORDERS
+// ==========================================
+
+async function loadOrders(){
+
+    try{
+
+        const response =
+            await fetch(
+                API_URL +
                 "/api/orders/my",
                 {
+
                     headers:{
+
                         Authorization:
-                            "Bearer " + token
+                            "Bearer " +
+                            token
+
                     }
+
                 }
             );
 
@@ -544,6 +766,7 @@ async function loadOrders(){
                 data.message ||
                 "Could not load orders."
             );
+
         }
 
 
@@ -567,6 +790,7 @@ async function loadOrders(){
             error.message
         );
 
+
     }finally{
 
         document.getElementById(
@@ -579,6 +803,10 @@ async function loadOrders(){
 }
 
 
+// ==========================================
+// RENDER ORDER HISTORY
+// ==========================================
+
 function renderOrders(orders){
 
     const container =
@@ -587,10 +815,13 @@ function renderOrders(orders){
         );
 
 
-    container.innerHTML = "";
+    container.innerHTML =
+        "";
 
 
-    if(orders.length === 0){
+    if(
+        orders.length === 0
+    ){
 
         container.innerHTML =
             `
@@ -600,7 +831,9 @@ function renderOrders(orders){
                     🛒
                 </div>
 
-                <h3>No orders yet</h3>
+                <h3>
+                    No orders yet
+                </h3>
 
                 <p>
                     Products you order will appear here.
@@ -616,127 +849,178 @@ function renderOrders(orders){
             </div>
             `;
 
+
         return;
 
     }
 
 
-    orders.forEach(order => {
+    orders.forEach(
+        order => {
 
-        const row =
-            document.createElement(
-                "div"
-            );
-
-        row.className =
-            "order";
+            const row =
+                document.createElement(
+                    "div"
+                );
 
 
-        let imageHtml;
+            row.className =
+                "order";
 
 
-        if(order.productImage){
+            let imageHtml;
 
-            imageHtml =
+
+            if(
+                order.productImage
+            ){
+
+                imageHtml =
+                    `
+                    <img
+                        src="${order.productImage}"
+                        class="order-image"
+                        alt=""
+                    >
+                    `;
+
+            }else{
+
+                imageHtml =
+                    `
+                    <div class="order-placeholder">
+                        📦
+                    </div>
+                    `;
+
+            }
+
+
+            row.innerHTML =
                 `
-                <img
-                    src="${order.productImage}"
-                    class="order-image"
-                    alt=""
-                >
-                `;
+                <div class="order-main">
 
-        }else{
+                    ${imageHtml}
 
-            imageHtml =
-                `
-                <div class="order-placeholder">
-                    📦
+                    <div>
+
+                        <div class="order-name">
+
+                            ${
+                                escapeHtml(
+                                    order.productName
+                                )
+                            }
+
+                        </div>
+
+
+                        <div class="order-meta">
+
+                            ${
+                                escapeHtml(
+                                    order.platform ||
+                                    "Digital Product"
+                                )
+                            }
+
+                            <br>
+
+                            Order:
+                            ${
+                                escapeHtml(
+                                    order._id
+                                )
+                            }
+
+                            <br>
+
+                            ${
+                                formatDate(
+                                    order.createdAt
+                                )
+                            }
+
+                        </div>
+
+
+                        <div class="badges">
+
+                            <span
+                                class="badge ${
+                                    badgeClass(
+                                        order.paymentStatus
+                                    )
+                                }"
+                            >
+                                Payment:
+                                ${
+                                    escapeHtml(
+                                        order.paymentStatus
+                                    )
+                                }
+                            </span>
+
+
+                            <span
+                                class="badge ${
+                                    badgeClass(
+                                        order.status
+                                    )
+                                }"
+                            >
+                                Order:
+                                ${
+                                    escapeHtml(
+                                        order.status
+                                    )
+                                }
+                            </span>
+
+                        </div>
+
+                    </div>
+
                 </div>
-                `;
 
-        }
-
-
-        row.innerHTML =
-            `
-            <div class="order-main">
-
-                ${imageHtml}
 
                 <div>
 
-                    <div class="order-name">
-                        ${escapeHtml(order.productName)}
-                    </div>
-
-                    <div class="order-meta">
+                    <div class="order-price">
 
                         ${
-                            escapeHtml(
-                                order.platform ||
-                                "Digital Product"
+                            money(
+                                order.totalAmount
                             )
                         }
 
-                        <br>
-
-                        Order:
-                        ${escapeHtml(order._id)}
-
-                        <br>
-
-                        ${formatDate(order.createdAt)}
-
                     </div>
 
-                    <div class="badges">
 
-                        <span
-                            class="badge ${badgeClass(order.paymentStatus)}"
-                        >
-                            Payment:
-                            ${escapeHtml(order.paymentStatus)}
-                        </span>
-
-                        <span
-                            class="badge ${badgeClass(order.status)}"
-                        >
-                            Order:
-                            ${escapeHtml(order.status)}
-                        </span>
-
-                    </div>
+                    <button
+                        class="btn"
+                        onclick="viewOrder('${order._id}')"
+                    >
+                        View Order
+                    </button>
 
                 </div>
-
-            </div>
-
-            <div>
-
-                <div class="order-price">
-                    ${money(order.totalAmount)}
-                </div>
-
-                <button
-                    class="btn"
-                    onclick="viewOrder('${order._id}')"
-                >
-                    View Order
-                </button>
-
-            </div>
-            `;
+                `;
 
 
-        container.appendChild(
-            row
-        );
+            container.appendChild(
+                row
+            );
 
-    });
+        }
+    );
 
 }
 
+
+// ==========================================
+// VIEW ORDER
+// ==========================================
 
 window.viewOrder =
 function(id){
@@ -748,6 +1032,10 @@ function(id){
 };
 
 
+// ==========================================
+// LOAD ONE ORDER
+// ==========================================
+
 async function loadSelectedOrder(id){
 
     try{
@@ -758,10 +1046,15 @@ async function loadSelectedOrder(id){
                 "/api/orders/" +
                 encodeURIComponent(id),
                 {
+
                     headers:{
+
                         Authorization:
-                            "Bearer " + token
+                            "Bearer " +
+                            token
+
                     }
+
                 }
             );
 
@@ -779,6 +1072,7 @@ async function loadSelectedOrder(id){
                 data.message ||
                 "Could not load order."
             );
+
         }
 
 
@@ -798,12 +1092,17 @@ async function loadSelectedOrder(id){
 }
 
 
+// ==========================================
+// RENDER SELECTED ORDER
+// ==========================================
+
 function renderSelectedOrder(order){
 
     const card =
         document.getElementById(
             "selectedOrderCard"
         );
+
 
     const box =
         document.getElementById(
@@ -818,7 +1117,13 @@ function renderSelectedOrder(order){
     let deliveryHtml;
 
 
-    if(order.deliveryContent){
+    if(
+        order.paymentStatus ===
+        "paid" &&
+        order.status ===
+        "completed" &&
+        order.deliveryContent
+    ){
 
         deliveryHtml =
             `
@@ -829,8 +1134,33 @@ function renderSelectedOrder(order){
                 </h3>
 
                 <div class="delivery-content">
-                    ${escapeHtml(order.deliveryContent)}
+                    ${
+                        escapeHtml(
+                            order.deliveryContent
+                        )
+                    }
                 </div>
+
+            </div>
+            `;
+
+    }else if(
+        order.paymentStatus ===
+        "paid" &&
+        order.status ===
+        "processing"
+    ){
+
+        deliveryHtml =
+            `
+            <div class="locked">
+
+                ✅ Payment verified.
+
+                <br><br>
+
+                Your order is currently being processed.
+                Delivery will appear here when completed.
 
             </div>
             `;
@@ -845,8 +1175,10 @@ function renderSelectedOrder(order){
 
                 <br><br>
 
-                It becomes available only after the server
-                confirms payment and the order is completed.
+                It becomes available only after
+                Paystack payment is verified by
+                the WAYNE LOGS server and the
+                order is completed.
 
             </div>
             `;
@@ -859,45 +1191,104 @@ function renderSelectedOrder(order){
         <div class="detail-grid">
 
             <div class="detail">
-                <span>Product</span>
+
+                <span>
+                    Product
+                </span>
+
                 <strong>
-                    ${escapeHtml(order.productName)}
+                    ${
+                        escapeHtml(
+                            order.productName
+                        )
+                    }
                 </strong>
+
             </div>
 
-            <div class="detail">
-                <span>Total</span>
-                <strong>
-                    ${money(order.totalAmount)}
-                </strong>
-            </div>
 
             <div class="detail">
-                <span>Payment Status</span>
+
+                <span>
+                    Total
+                </span>
+
                 <strong>
-                    ${escapeHtml(order.paymentStatus)}
+                    ${
+                        money(
+                            order.totalAmount
+                        )
+                    }
                 </strong>
+
             </div>
 
-            <div class="detail">
-                <span>Order Status</span>
-                <strong>
-                    ${escapeHtml(order.status)}
-                </strong>
-            </div>
 
             <div class="detail">
-                <span>Payment Method</span>
+
+                <span>
+                    Payment Status
+                </span>
+
                 <strong>
-                    ${escapeHtml(order.paymentMethod)}
+                    ${
+                        escapeHtml(
+                            order.paymentStatus
+                        )
+                    }
                 </strong>
+
             </div>
 
+
             <div class="detail">
-                <span>Order Date</span>
+
+                <span>
+                    Order Status
+                </span>
+
                 <strong>
-                    ${formatDate(order.createdAt)}
+                    ${
+                        escapeHtml(
+                            order.status
+                        )
+                    }
                 </strong>
+
+            </div>
+
+
+            <div class="detail">
+
+                <span>
+                    Payment Method
+                </span>
+
+                <strong>
+                    ${
+                        escapeHtml(
+                            order.paymentMethod
+                        )
+                    }
+                </strong>
+
+            </div>
+
+
+            <div class="detail">
+
+                <span>
+                    Order Date
+                </span>
+
+                <strong>
+                    ${
+                        formatDate(
+                            order.createdAt
+                        )
+                    }
+                </strong>
+
             </div>
 
         </div>
@@ -905,16 +1296,48 @@ function renderSelectedOrder(order){
         ${deliveryHtml}
         `;
 
+}
 
-    card.scrollIntoView({
-        behavior:"smooth",
-        block:"start"
-    });
+
+// ==========================================
+// START PAGE
+// ==========================================
+
+async function start(){
+
+    if(!token){
+
+        window.location.replace(
+            "login.html"
+        );
+
+        return;
+
+    }
+
+
+    /*
+     * If the customer is returning
+     * from Paystack, verify first.
+     */
+    if(paymentCallback){
+
+        await verifyCallbackPayment();
+
+    }
+
+
+    /*
+     * Then reload MongoDB orders so
+     * the new paid/completed status
+     * is displayed.
+     */
+    await loadOrders();
 
 }
 
 
-loadOrders();
+start();
 
 </script>
 

@@ -199,6 +199,17 @@ main{
     font-size:14px;
 }
 
+.test-notice{
+    margin-top:14px;
+    background:#fff8e8;
+    border:1px solid #ffe2a8;
+    color:#896518;
+    padding:14px;
+    border-radius:13px;
+    line-height:1.5;
+    font-size:14px;
+}
+
 .message{
     display:none;
     padding:16px;
@@ -296,14 +307,12 @@ main{
         class="checkout-grid hidden"
     >
 
-        <!-- PRODUCT -->
-
         <section class="card">
 
             <h2>Review Product</h2>
 
             <p class="subtitle">
-                Confirm the product before creating your order.
+                Confirm the product before continuing to payment.
             </p>
 
 
@@ -344,14 +353,12 @@ main{
         </section>
 
 
-        <!-- ORDER SUMMARY -->
-
         <aside class="card">
 
             <h2>Order Summary</h2>
 
             <p class="subtitle">
-                Your price comes directly from the WAYNE LOGS server.
+                Price is loaded directly from the WAYNE LOGS server.
             </p>
 
 
@@ -397,17 +404,21 @@ main{
 
             <button
                 class="btn"
-                id="createOrderButton"
+                id="payButton"
             >
-                Create Order
+                Continue to Paystack
             </button>
 
 
             <div class="notice">
+                🔒 Fulfillment remains locked until
+                Paystack payment is verified by the server.
+            </div>
 
-                🔒 Private fulfillment remains locked until
-                payment has been successfully verified.
 
+            <div class="test-notice">
+                🧪 Paystack Test Mode is currently being used.
+                Do not use real money while we are testing.
             </div>
 
         </aside>
@@ -422,18 +433,26 @@ main{
 const API_URL =
     "https://wayne-logs.onrender.com";
 
+
 const token =
-    localStorage.getItem("wayneToken");
+    localStorage.getItem(
+        "wayneToken"
+    );
+
 
 const params =
     new URLSearchParams(
         window.location.search
     );
 
+
 const productId =
     params.get("product");
 
+
 let product = null;
+
+let createdOrderId = null;
 
 
 function money(value){
@@ -455,10 +474,19 @@ function showMessage(
             "message"
         );
 
-    box.textContent = text;
+
+    box.textContent =
+        text;
+
 
     box.className =
         "message " + type;
+
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
 
 }
 
@@ -469,11 +497,14 @@ async function loadProduct(){
 
         document.getElementById(
             "loading"
-        ).style.display = "none";
+        ).style.display =
+            "none";
+
 
         showMessage(
             "No product was selected."
         );
+
 
         return;
 
@@ -514,7 +545,8 @@ async function loadProduct(){
 
 
         if(
-            product.status !== "active"
+            product.status !==
+            "active"
         ){
 
             throw new Error(
@@ -549,7 +581,8 @@ function renderProduct(){
     document.getElementById(
         "productName"
     ).textContent =
-        product.name || "Product";
+        product.name ||
+        "Product";
 
 
     document.getElementById(
@@ -570,20 +603,38 @@ function renderProduct(){
     document.getElementById(
         "productStock"
     ).textContent =
-        Number(product.stock || 0) +
+        Number(
+            product.stock || 0
+        ) +
         " in stock";
 
 
     document.getElementById(
         "summaryPrice"
     ).textContent =
-        money(product.price);
+        money(
+            product.price
+        );
 
 
     document.getElementById(
         "summaryTotal"
     ).textContent =
-        money(product.price);
+        money(
+            product.price
+        );
+
+
+    const button =
+        document.getElementById(
+            "payButton"
+        );
+
+
+    button.textContent =
+        "Pay " +
+        money(product.price) +
+        " with Paystack";
 
 
     const imageBox =
@@ -592,7 +643,8 @@ function renderProduct(){
         );
 
 
-    imageBox.innerHTML = "";
+    imageBox.innerHTML =
+        "";
 
 
     if(product.imageUrl){
@@ -602,14 +654,18 @@ function renderProduct(){
                 "img"
             );
 
+
         image.src =
             product.imageUrl;
+
 
         image.alt =
             product.name || "";
 
+
         image.className =
             "product-image";
+
 
         imageBox.appendChild(
             image
@@ -623,11 +679,14 @@ function renderProduct(){
                 "div"
             );
 
+
         placeholder.className =
             "image-placeholder";
 
+
         placeholder.textContent =
             "📦";
+
 
         imageBox.appendChild(
             placeholder
@@ -636,17 +695,15 @@ function renderProduct(){
     }
 
 
-    const button =
-        document.getElementById(
-            "createOrderButton"
-        );
-
-
     if(
-        Number(product.stock || 0) < 1
+        Number(
+            product.stock || 0
+        ) < 1
     ){
 
-        button.disabled = true;
+        button.disabled =
+            true;
+
 
         button.textContent =
             "Out of Stock";
@@ -669,16 +726,158 @@ function renderProduct(){
 }
 
 
+// ==========================================
+// CREATE ORDER
+// ==========================================
+
 async function createOrder(){
+
+    const response =
+        await fetch(
+            API_URL +
+            "/api/orders",
+            {
+
+                method:
+                    "POST",
+
+                headers:{
+
+                    "Content-Type":
+                        "application/json",
+
+                    Authorization:
+                        "Bearer " +
+                        token
+
+                },
+
+                body:
+                    JSON.stringify({
+
+                        productId:
+                            product._id,
+
+                        quantity:
+                            1
+
+                    })
+
+            }
+        );
+
+
+    const data =
+        await response.json();
+
+
+    if(
+        !response.ok ||
+        !data.success
+    ){
+
+        throw new Error(
+            data.message ||
+            "Could not create order."
+        );
+
+    }
+
+
+    createdOrderId =
+        data.order._id;
+
+
+    return createdOrderId;
+
+}
+
+
+// ==========================================
+// INITIALIZE PAYSTACK
+// ==========================================
+
+async function initializePayment(
+    orderId
+){
+
+    const response =
+        await fetch(
+            API_URL +
+            "/api/orders/" +
+            encodeURIComponent(
+                orderId
+            ) +
+            "/paystack/initialize",
+            {
+
+                method:
+                    "POST",
+
+                headers:{
+
+                    "Content-Type":
+                        "application/json",
+
+                    Authorization:
+                        "Bearer " +
+                        token
+
+                }
+
+            }
+        );
+
+
+    const data =
+        await response.json();
+
+
+    if(
+        !response.ok ||
+        !data.success
+    ){
+
+        throw new Error(
+            data.message ||
+            "Could not start payment."
+        );
+
+    }
+
+
+    if(
+        !data.authorizationUrl
+    ){
+
+        throw new Error(
+            "Paystack payment page was not returned."
+        );
+
+    }
+
+
+    return data;
+
+}
+
+
+// ==========================================
+// PAY BUTTON
+// ==========================================
+
+async function payNow(){
 
     if(!token){
 
         alert(
-            "Please login before placing an order."
+            "Please login before purchasing."
         );
+
 
         window.location.href =
             "login.html";
+
 
         return;
 
@@ -691,6 +890,23 @@ async function createOrder(){
             "Product is not ready."
         );
 
+
+        return;
+
+    }
+
+
+    if(
+        Number(
+            product.stock || 0
+        ) < 1
+    ){
+
+        showMessage(
+            "This product is out of stock."
+        );
+
+
         return;
 
     }
@@ -698,74 +914,46 @@ async function createOrder(){
 
     const button =
         document.getElementById(
-            "createOrderButton"
+            "payButton"
         );
 
 
-    button.disabled = true;
+    button.disabled =
+        true;
+
 
     button.textContent =
-        "Creating Order...";
+        "Preparing secure payment...";
 
 
     try{
 
-        const response =
-            await fetch(
-                API_URL +
-                "/api/orders",
-                {
-                    method:
-                        "POST",
+        /*
+         * If initialization fails,
+         * retrying the button will reuse
+         * the order instead of immediately
+         * creating another one.
+         */
+        if(!createdOrderId){
 
-                    headers:{
-                        "Content-Type":
-                            "application/json",
-
-                        Authorization:
-                            "Bearer " + token
-                    },
-
-                    body:
-                        JSON.stringify({
-                            productId:
-                                product._id,
-
-                            quantity:
-                                1
-                        })
-                }
-            );
-
-
-        const data =
-            await response.json();
-
-
-        if(
-            !response.ok ||
-            !data.success
-        ){
-
-            throw new Error(
-                data.message ||
-                "Could not create order."
-            );
+            await createOrder();
 
         }
 
 
-        showMessage(
-            "Order created successfully.",
-            "success"
-        );
-
-
-        window.location.href =
-            "orders.html?order=" +
-            encodeURIComponent(
-                data.order._id
+        const payment =
+            await initializePayment(
+                createdOrderId
             );
+
+
+        button.textContent =
+            "Opening Paystack...";
+
+
+        window.location.assign(
+            payment.authorizationUrl
+        );
 
 
     }catch(error){
@@ -780,19 +968,24 @@ async function createOrder(){
 
 
         button.textContent =
-            "Create Order";
+            "Pay " +
+            money(
+                product.price
+            ) +
+            " with Paystack";
 
     }
 
 }
 
 
-document.getElementById(
-    "createOrderButton"
+document
+.getElementById(
+    "payButton"
 )
 .addEventListener(
     "click",
-    createOrder
+    payNow
 );
 
 
