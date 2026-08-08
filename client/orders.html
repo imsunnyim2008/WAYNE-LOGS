@@ -4,701 +4,405 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>My Orders - WAYNE LOGS</title>
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<title>My Orders | WAYNE LOGS</title>
 
 <style>
-
 *{
+    box-sizing:border-box;
     margin:0;
     padding:0;
-    box-sizing:border-box;
+}
+
+:root{
+    --blue:#3486df;
+    --dark:#10213f;
+    --bg:#f4f7fb;
+    --text:#172033;
+    --muted:#8792a5;
+    --border:#e4eaf2;
+    --green:#16803c;
+    --orange:#a96800;
+    --red:#c53030;
 }
 
 body{
-    font-family:Arial, Helvetica, sans-serif;
-    background:#f5f8fc;
-    color:#1f2937;
+    font-family:Arial,Helvetica,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
 }
 
 a{
     text-decoration:none;
-    color:inherit;
 }
 
-/* SIDEBAR */
-
-.sidebar{
-    position:fixed;
-    top:0;
-    left:0;
-    width:250px;
-    height:100vh;
-    background:#fff;
-    border-right:1px solid #e8edf3;
-    padding:24px 18px;
-    z-index:2000;
-    transition:.3s;
-}
-
-.brand{
-    padding:0 12px 28px;
-}
-
-.brand h2{
-    color:#0785df;
-    font-size:25px;
-}
-
-.brand p{
-    color:#8995a6;
-    font-size:11px;
-    letter-spacing:2px;
-    text-transform:uppercase;
-}
-
-.menu-title{
-    font-size:11px;
-    color:#9aa4b2;
-    font-weight:bold;
-    padding:10px 12px;
-    text-transform:uppercase;
-}
-
-.menu a{
-    display:flex;
-    align-items:center;
-    gap:13px;
-    padding:13px 14px;
-    margin-bottom:5px;
-    border-radius:10px;
-    color:#556276;
-    font-size:14px;
-}
-
-.menu a:hover,
-.menu a.active{
-    background:#eaf6ff;
-    color:#0785df;
-}
-
-/* MAIN */
-
-.main{
-    margin-left:250px;
-    min-height:100vh;
-}
-
-.topbar{
-    height:78px;
-    background:#fff;
-    border-bottom:1px solid #edf0f4;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 30px;
-    position:sticky;
-    top:0;
-    z-index:1000;
-}
-
-.mobile-toggle{
-    display:none;
-    border:none;
-    background:none;
-    font-size:22px;
-    cursor:pointer;
-}
-
-.page-title h1{
-    font-size:21px;
-}
-
-.page-title p{
-    color:#8a95a4;
-    font-size:12px;
-    margin-top:3px;
-}
-
-.top-actions{
-    display:flex;
-    align-items:center;
-    gap:12px;
-}
-
-.icon-btn{
-    width:42px;
-    height:42px;
-    border-radius:50%;
-    border:1px solid #e5e9ef;
-    background:#fff;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-}
-
-.avatar{
-    width:42px;
-    height:42px;
-    border-radius:50%;
-    background:#0785df;
-    color:#fff;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-weight:bold;
-}
-
-/* CONTENT */
-
-.content{
-    max-width:1200px;
-    margin:auto;
-    padding:30px;
-}
-
-.hero{
-    background:linear-gradient(135deg,#067fd7,#0aa0f4);
-    color:white;
-    border-radius:20px;
-    padding:28px;
-    box-shadow:0 20px 45px rgba(7,133,223,.18);
-    margin-bottom:24px;
-}
-
-.hero h1{
-    font-size:27px;
-    margin-bottom:8px;
-}
-
-.hero p{
-    font-size:14px;
-    opacity:.9;
-}
-
-/* STATS */
-
-.stats{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:15px;
-    margin-bottom:22px;
-}
-
-.stat-card{
+header{
     background:white;
-    border:1px solid #edf0f4;
-    border-radius:16px;
-    padding:20px;
+    border-bottom:1px solid var(--border);
+    padding:18px 24px;
 }
 
-.stat-top{
+.nav{
+    max-width:1150px;
+    margin:auto;
     display:flex;
     justify-content:space-between;
     align-items:center;
+    gap:20px;
 }
 
-.stat-card small{
-    color:#8792a1;
-}
-
-.stat-icon{
-    width:42px;
-    height:42px;
-    border-radius:12px;
-    background:#eaf6ff;
-    color:#0785df;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-}
-
-.stat-card h2{
-    margin-top:12px;
+.logo{
+    color:var(--blue);
     font-size:25px;
+    font-weight:bold;
 }
 
-/* TOOLS */
-
-.tools{
+.nav-links{
     display:flex;
     gap:12px;
     flex-wrap:wrap;
-    margin-bottom:18px;
 }
 
-.search{
-    flex:1;
-    min-width:220px;
-    position:relative;
+.nav-link{
+    color:var(--blue);
+    font-weight:bold;
 }
 
-.search i{
-    position:absolute;
-    top:50%;
-    left:15px;
-    transform:translateY(-50%);
-    color:#8c97a5;
+main{
+    max-width:1150px;
+    margin:auto;
+    padding:35px 20px;
 }
 
-.search input{
-    width:100%;
-    height:46px;
-    border:1px solid #dfe6ee;
+.hero{
+    background:linear-gradient(135deg,#10213f,#3486df);
+    color:white;
+    border-radius:25px;
+    padding:35px;
+    margin-bottom:25px;
+}
+
+.hero h1{
+    font-size:34px;
+}
+
+.hero p{
+    margin-top:10px;
+    line-height:1.6;
+    opacity:.9;
+}
+
+.card{
     background:white;
-    border-radius:11px;
-    padding:0 15px 0 42px;
-    outline:none;
+    border:1px solid var(--border);
+    border-radius:22px;
+    padding:25px;
+    margin-bottom:22px;
 }
 
-.search input:focus{
-    border-color:#0785df;
-    box-shadow:0 0 0 4px rgba(7,133,223,.08);
+.card h2{
+    font-size:23px;
+    margin-bottom:7px;
 }
 
-.filter{
-    height:46px;
-    border:1px solid #dfe6ee;
-    background:white;
-    border-radius:11px;
-    padding:0 15px;
-    outline:none;
+.subtitle{
+    color:var(--muted);
+    margin-bottom:22px;
+    line-height:1.6;
 }
 
-/* ORDERS */
-
-.orders-card{
-    background:#fff;
-    border:1px solid #edf0f4;
-    border-radius:18px;
-    overflow:hidden;
+.message{
+    display:none;
+    padding:15px;
+    border-radius:12px;
+    margin-bottom:20px;
 }
 
-.orders-head{
-    padding:20px;
-    border-bottom:1px solid #edf0f4;
+.message.error{
+    display:block;
+    background:#fff0f0;
+    color:var(--red);
 }
 
-.orders-head h2{
-    font-size:19px;
+.message.success{
+    display:block;
+    background:#edfff2;
+    color:var(--green);
 }
 
-.order-row{
+.loading{
+    text-align:center;
+    color:var(--muted);
+    padding:35px;
+}
+
+.orders{
     display:grid;
-    grid-template-columns:1fr 2fr 1fr 1fr 1fr;
-    gap:15px;
+    gap:16px;
+}
+
+.order{
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:20px;
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:20px;
     align-items:center;
-    padding:17px 20px;
-    border-bottom:1px solid #f0f2f5;
-    font-size:13px;
 }
 
-.order-row:last-child{
-    border-bottom:none;
+.order-main{
+    display:flex;
+    gap:16px;
+    align-items:flex-start;
 }
 
-.order-header{
-    background:#fafbfd;
-    color:#657184;
+.order-image{
+    width:85px;
+    height:85px;
+    border-radius:14px;
+    object-fit:cover;
+    background:#edf3f9;
+    flex-shrink:0;
+}
+
+.order-placeholder{
+    width:85px;
+    height:85px;
+    border-radius:14px;
+    background:#edf3f9;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:30px;
+    flex-shrink:0;
+}
+
+.order-name{
+    font-size:19px;
     font-weight:bold;
+    margin-bottom:7px;
 }
 
-.order-id{
-    color:#0785df;
+.order-meta{
+    color:var(--muted);
+    line-height:1.7;
+    font-size:14px;
+}
+
+.order-price{
+    color:var(--blue);
+    font-size:20px;
     font-weight:bold;
+    margin-bottom:12px;
+    text-align:right;
 }
 
-.price{
-    font-weight:bold;
+.badges{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top:10px;
 }
 
-.status{
-    display:inline-block;
+.badge{
     padding:6px 10px;
     border-radius:20px;
-    font-size:11px;
+    font-size:12px;
     font-weight:bold;
 }
 
 .pending{
-    background:#fff5dc;
-    color:#9a6b00;
+    background:#fff6e8;
+    color:var(--orange);
 }
 
-.success{
-    background:#eaf8ef;
-    color:#14834b;
+.paid,
+.completed{
+    background:#eaf9ee;
+    color:var(--green);
 }
 
-.failed{
+.processing{
+    background:#edf5ff;
+    color:var(--blue);
+}
+
+.failed,
+.cancelled{
     background:#fff0f0;
-    color:#c62828;
+    color:var(--red);
+}
+
+.btn{
+    border:0;
+    background:var(--blue);
+    color:white;
+    padding:11px 15px;
+    border-radius:11px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.detail-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.detail{
+    background:#f8fafc;
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:16px;
+}
+
+.detail span{
+    color:var(--muted);
+    display:block;
+    font-size:13px;
+    margin-bottom:6px;
+}
+
+.delivery{
+    margin-top:20px;
+    background:#effff4;
+    border:1px solid #c8efd4;
+    padding:20px;
+    border-radius:16px;
+}
+
+.delivery h3{
+    color:var(--green);
+    margin-bottom:10px;
+}
+
+.delivery-content{
+    white-space:pre-wrap;
+    word-break:break-word;
+    background:white;
+    border:1px solid #dceee2;
+    border-radius:12px;
+    padding:16px;
+    font-family:monospace;
+    line-height:1.7;
+}
+
+.locked{
+    margin-top:20px;
+    background:#f5f8fc;
+    border:1px solid var(--border);
+    padding:18px;
+    border-radius:15px;
+    color:#607089;
+    line-height:1.6;
 }
 
 .empty{
     text-align:center;
-    padding:55px 20px;
-    color:#8792a1;
+    padding:45px 20px;
 }
 
-.empty i{
+.empty-icon{
     font-size:45px;
-    color:#c9d1dc;
     margin-bottom:15px;
 }
 
-.empty h3{
-    color:#4b586a;
-    margin-bottom:7px;
-}
-
-.empty a{
-    display:inline-block;
-    margin-top:17px;
-    background:#0785df;
-    color:white;
-    padding:11px 18px;
-    border-radius:9px;
-    font-weight:bold;
-}
-
-/* OVERLAY */
-
-.overlay{
-    display:none;
-    position:fixed;
-    inset:0;
-    background:rgba(17,24,39,.4);
-    z-index:1500;
-}
-
-/* RESPONSIVE */
-
-@media(max-width:900px){
-
-    .sidebar{
-        transform:translateX(-100%);
-    }
-
-    .sidebar.active{
-        transform:translateX(0);
-    }
-
-    .overlay.active{
-        display:block;
-    }
-
-    .main{
-        margin-left:0;
-    }
-
-    .mobile-toggle{
-        display:block;
-    }
-
-    .stats{
-        grid-template-columns:1fr;
-    }
+.empty p{
+    color:var(--muted);
+    margin:10px 0 20px;
 }
 
 @media(max-width:700px){
 
-    .order-row{
-        grid-template-columns:1fr 1.5fr 1fr;
+    .order{
+        grid-template-columns:1fr;
     }
 
-    .hide-mobile{
-        display:none;
-    }
-}
-
-@media(max-width:520px){
-
-    .content{
-        padding:20px 14px;
+    .order-price{
+        text-align:left;
     }
 
-    .topbar{
-        padding:0 15px;
+    .detail-grid{
+        grid-template-columns:1fr;
     }
 
-    .page-title p{
-        display:none;
+    .hero{
+        padding:28px 22px;
     }
 
-    .order-row{
-        padding:14px 12px;
-        gap:7px;
-        font-size:11px;
+    .hero h1{
+        font-size:28px;
     }
 }
-
 </style>
 </head>
 
 <body>
 
-<div class="overlay" id="overlay"></div>
+<header>
+    <div class="nav">
 
-<aside class="sidebar" id="sidebar">
-
-    <div class="brand">
-        <h2>WAYNE LOGS</h2>
-        <p>Marketplace</p>
-    </div>
-
-    <div class="menu">
-
-        <div class="menu-title">Menu</div>
-
-        <a href="dashboard.html">
-            <i class="fa-solid fa-house"></i>
-            Dashboard
+        <a href="index.html" class="logo">
+            WAYNE LOGS
         </a>
 
-        <a href="wallet.html">
-            <i class="fa-solid fa-wallet"></i>
-            Wallet
-        </a>
-
-        <a href="airtime.html">
-            <i class="fa-solid fa-phone"></i>
-            Airtime
-        </a>
-
-        <a href="data.html">
-            <i class="fa-solid fa-wifi"></i>
-            Data
-        </a>
-
-        <a href="electricity.html">
-            <i class="fa-solid fa-bolt"></i>
-            Electricity
-        </a>
-
-        <a href="cable.html">
-            <i class="fa-solid fa-tv"></i>
-            Cable TV
-        </a>
-
-        <a href="marketplace.html">
-            <i class="fa-solid fa-store"></i>
-            Marketplace
-        </a>
-
-        <a href="orders.html" class="active">
-            <i class="fa-solid fa-box"></i>
-            My Orders
-        </a>
-
-        <div class="menu-title">Account</div>
-
-        <a href="profile.html">
-            <i class="fa-solid fa-user"></i>
-            Profile
-        </a>
-
-        <a href="referrals.html">
-            <i class="fa-solid fa-users"></i>
-            Referrals
-        </a>
-
-        <a href="notifications.html">
-            <i class="fa-solid fa-bell"></i>
-            Notifications
-        </a>
-
-        <a href="settings.html">
-            <i class="fa-solid fa-gear"></i>
-            Settings
-        </a>
-
-        <a href="login.html">
-            <i class="fa-solid fa-right-from-bracket"></i>
-            Logout
-        </a>
-
-    </div>
-
-</aside>
-
-
-<main class="main">
-
-    <div class="topbar">
-
-        <button class="mobile-toggle" id="mobileToggle">
-            <i class="fa-solid fa-bars"></i>
-        </button>
-
-        <div class="page-title">
-            <h1>My Orders</h1>
-            <p>View your WAYNE LOGS marketplace purchases.</p>
-        </div>
-
-        <div class="top-actions">
-
-            <a href="notifications.html" class="icon-btn">
-                <i class="fa-regular fa-bell"></i>
+        <div class="nav-links">
+            <a href="dashboard.html" class="nav-link">
+                Dashboard
             </a>
 
-            <div class="avatar">W</div>
-
+            <a href="marketplace.html" class="nav-link">
+                Marketplace
+            </a>
         </div>
 
     </div>
+</header>
 
 
-    <section class="content">
+<main>
 
-        <div class="hero">
+    <div class="hero">
+        <h1>My Orders</h1>
+        <p>
+            Track your purchases, payment status and completed digital delivery.
+        </p>
+    </div>
 
-            <h1>
-                <i class="fa-solid fa-box-open"></i>
-                Order History
-            </h1>
+    <div id="message" class="message"></div>
 
-            <p>
-                View and track your marketplace orders.
-            </p>
 
+    <section
+        class="card"
+        id="selectedOrderCard"
+        style="display:none"
+    >
+
+        <h2>Order Details</h2>
+
+        <p class="subtitle">
+            Information about your selected order.
+        </p>
+
+        <div id="selectedOrder"></div>
+
+    </section>
+
+
+    <section class="card">
+
+        <h2>Order History</h2>
+
+        <p class="subtitle">
+            Orders connected to your WAYNE LOGS account.
+        </p>
+
+        <div id="loading" class="loading">
+            Loading your orders...
         </div>
 
-
-        <div class="stats">
-
-            <div class="stat-card">
-
-                <div class="stat-top">
-                    <small>Total Orders</small>
-
-                    <div class="stat-icon">
-                        <i class="fa-solid fa-box"></i>
-                    </div>
-                </div>
-
-                <h2 id="totalOrders">0</h2>
-
-            </div>
-
-
-            <div class="stat-card">
-
-                <div class="stat-top">
-                    <small>Total Spent</small>
-
-                    <div class="stat-icon">
-                        <i class="fa-solid fa-naira-sign"></i>
-                    </div>
-                </div>
-
-                <h2 id="totalSpent">₦0</h2>
-
-            </div>
-
-
-            <div class="stat-card">
-
-                <div class="stat-top">
-                    <small>Pending</small>
-
-                    <div class="stat-icon">
-                        <i class="fa-solid fa-clock"></i>
-                    </div>
-                </div>
-
-                <h2 id="pendingOrders">0</h2>
-
-            </div>
-
-        </div>
-
-
-        <div class="tools">
-
-            <div class="search">
-
-                <i class="fa-solid fa-magnifying-glass"></i>
-
-                <input
-                    type="text"
-                    id="searchInput"
-                    placeholder="Search orders...">
-
-            </div>
-
-
-            <select class="filter" id="statusFilter">
-
-                <option value="all">
-                    All Status
-                </option>
-
-                <option value="Pending">
-                    Pending
-                </option>
-
-                <option value="Completed">
-                    Completed
-                </option>
-
-                <option value="Failed">
-                    Failed
-                </option>
-
-            </select>
-
-        </div>
-
-
-        <div class="orders-card">
-
-            <div class="orders-head">
-                <h2>Orders</h2>
-            </div>
-
-
-            <div class="order-row order-header">
-
-                <div>Order ID</div>
-
-                <div>Product</div>
-
-                <div>Amount</div>
-
-                <div class="hide-mobile">
-                    Payment
-                </div>
-
-                <div class="hide-mobile">
-                    Status
-                </div>
-
-            </div>
-
-
-            <div id="ordersContainer"></div>
-
-
-            <div class="empty" id="emptyState">
-
-                <i class="fa-solid fa-box-open"></i>
-
-                <h3>No orders yet</h3>
-
-                <p>
-                    Your marketplace orders will appear here.
-                </p>
-
-                <a href="marketplace.html">
-                    Browse Marketplace
-                </a>
-
-            </div>
-
-        </div>
+        <div id="orders" class="orders"></div>
 
     </section>
 
@@ -707,242 +411,510 @@ a{
 
 <script>
 
-/* MOBILE SIDEBAR */
+const API_URL =
+    "https://wayne-logs.onrender.com";
 
-const sidebar =
-    document.getElementById("sidebar");
+const token =
+    localStorage.getItem("wayneToken");
 
-const mobileToggle =
-    document.getElementById("mobileToggle");
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
 
-const overlay =
-    document.getElementById("overlay");
-
-
-mobileToggle.addEventListener("click", function(){
-
-    sidebar.classList.add("active");
-    overlay.classList.add("active");
-
-});
+const selectedOrderId =
+    params.get("order");
 
 
-overlay.addEventListener("click", function(){
+function money(value){
 
-    sidebar.classList.remove("active");
-    overlay.classList.remove("active");
-
-});
-
-
-/* LOAD ORDERS */
-
-let orders =
-    JSON.parse(
-        localStorage.getItem("wayneOrders")
-    ) || [];
-
-
-const ordersContainer =
-    document.getElementById("ordersContainer");
-
-const emptyState =
-    document.getElementById("emptyState");
-
-const totalOrders =
-    document.getElementById("totalOrders");
-
-const totalSpent =
-    document.getElementById("totalSpent");
-
-const pendingOrders =
-    document.getElementById("pendingOrders");
-
-const searchInput =
-    document.getElementById("searchInput");
-
-const statusFilter =
-    document.getElementById("statusFilter");
-
-
-function updateStats(){
-
-    totalOrders.textContent =
-        orders.length;
-
-
-    const spent =
-        orders.reduce(
-            function(total, order){
-
-                return total +
-                    Number(order.price || 0);
-
-            },
-            0
-        );
-
-
-    totalSpent.textContent =
-        "₦" + spent.toLocaleString();
-
-
-    const pending =
-        orders.filter(
-            function(order){
-
-                return order.status === "Pending";
-
-            }
-        ).length;
-
-
-    pendingOrders.textContent =
-        pending;
+    return "₦" +
+        Number(value || 0)
+        .toLocaleString("en-NG");
 
 }
 
 
-function renderOrders(){
+function safeText(value){
 
-    const search =
-        searchInput.value
-        .toLowerCase()
-        .trim();
+    return value === undefined ||
+           value === null
+        ? ""
+        : String(value);
 
-
-    const filter =
-        statusFilter.value;
+}
 
 
-    const filteredOrders =
-        orders.filter(
-            function(order){
+function escapeHtml(value){
 
-                const product =
-                    String(order.product || "")
-                    .toLowerCase();
+    const div =
+        document.createElement("div");
 
+    div.textContent =
+        safeText(value);
 
-                const id =
-                    String(order.id || "")
-                    .toLowerCase();
+    return div.innerHTML;
 
-
-                const matchesSearch =
-                    product.includes(search) ||
-                    id.includes(search);
+}
 
 
-                const matchesStatus =
-                    filter === "all" ||
-                    order.status === filter;
+function showMessage(
+    text,
+    type = "error"
+){
+
+    const box =
+        document.getElementById(
+            "message"
+        );
+
+    box.textContent = text;
+
+    box.className =
+        "message " + type;
+
+}
 
 
-                return (
-                    matchesSearch &&
-                    matchesStatus
-                );
+function formatDate(value){
 
-            }
+    if(!value){
+        return "—";
+    }
+
+    return new Date(value)
+        .toLocaleString();
+}
+
+
+function badgeClass(value){
+
+    const allowed = [
+        "pending",
+        "paid",
+        "completed",
+        "processing",
+        "failed",
+        "cancelled"
+    ];
+
+    return allowed.includes(value)
+        ? value
+        : "pending";
+}
+
+
+async function loadOrders(){
+
+    if(!token){
+
+        window.location.replace(
+            "login.html"
+        );
+
+        return;
+    }
+
+
+    try{
+
+        const response =
+            await fetch(
+                API_URL +
+                "/api/orders/my",
+                {
+                    headers:{
+                        Authorization:
+                            "Bearer " + token
+                    }
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if(
+            !response.ok ||
+            !data.success
+        ){
+
+            throw new Error(
+                data.message ||
+                "Could not load orders."
+            );
+        }
+
+
+        renderOrders(
+            data.orders || []
         );
 
 
-    ordersContainer.innerHTML = "";
+        if(selectedOrderId){
+
+            await loadSelectedOrder(
+                selectedOrderId
+            );
+
+        }
 
 
-    if(filteredOrders.length === 0){
+    }catch(error){
 
-        emptyState.style.display =
-            "block";
+        showMessage(
+            error.message
+        );
+
+    }finally{
+
+        document.getElementById(
+            "loading"
+        ).style.display =
+            "none";
+
+    }
+
+}
+
+
+function renderOrders(orders){
+
+    const container =
+        document.getElementById(
+            "orders"
+        );
+
+
+    container.innerHTML = "";
+
+
+    if(orders.length === 0){
+
+        container.innerHTML =
+            `
+            <div class="empty">
+
+                <div class="empty-icon">
+                    🛒
+                </div>
+
+                <h3>No orders yet</h3>
+
+                <p>
+                    Products you order will appear here.
+                </p>
+
+                <a
+                    href="marketplace.html"
+                    class="btn"
+                >
+                    Browse Marketplace
+                </a>
+
+            </div>
+            `;
 
         return;
 
     }
 
 
-    emptyState.style.display =
-        "none";
-
-
-    filteredOrders
-    .slice()
-    .reverse()
-    .forEach(function(order){
-
-        let statusClass =
-            "pending";
-
-
-        if(order.status === "Completed"){
-            statusClass = "success";
-        }
-
-
-        if(order.status === "Failed"){
-            statusClass = "failed";
-        }
-
+    orders.forEach(order => {
 
         const row =
-            document.createElement("div");
-
+            document.createElement(
+                "div"
+            );
 
         row.className =
-            "order-row";
+            "order";
 
 
-        row.innerHTML = `
+        let imageHtml;
 
-            <div class="order-id">
-                ${order.id}
+
+        if(order.productImage){
+
+            imageHtml =
+                `
+                <img
+                    src="${order.productImage}"
+                    class="order-image"
+                    alt=""
+                >
+                `;
+
+        }else{
+
+            imageHtml =
+                `
+                <div class="order-placeholder">
+                    📦
+                </div>
+                `;
+
+        }
+
+
+        row.innerHTML =
+            `
+            <div class="order-main">
+
+                ${imageHtml}
+
+                <div>
+
+                    <div class="order-name">
+                        ${escapeHtml(order.productName)}
+                    </div>
+
+                    <div class="order-meta">
+
+                        ${
+                            escapeHtml(
+                                order.platform ||
+                                "Digital Product"
+                            )
+                        }
+
+                        <br>
+
+                        Order:
+                        ${escapeHtml(order._id)}
+
+                        <br>
+
+                        ${formatDate(order.createdAt)}
+
+                    </div>
+
+                    <div class="badges">
+
+                        <span
+                            class="badge ${badgeClass(order.paymentStatus)}"
+                        >
+                            Payment:
+                            ${escapeHtml(order.paymentStatus)}
+                        </span>
+
+                        <span
+                            class="badge ${badgeClass(order.status)}"
+                        >
+                            Order:
+                            ${escapeHtml(order.status)}
+                        </span>
+
+                    </div>
+
+                </div>
+
             </div>
 
             <div>
-                ${order.product}
-            </div>
 
-            <div class="price">
-                ₦${Number(order.price).toLocaleString()}
-            </div>
+                <div class="order-price">
+                    ${money(order.totalAmount)}
+                </div>
 
-            <div class="hide-mobile">
-                ${order.payment || "Wallet"}
-            </div>
-
-            <div class="hide-mobile">
-
-                <span class="status ${statusClass}">
-                    ${order.status || "Pending"}
-                </span>
+                <button
+                    class="btn"
+                    onclick="viewOrder('${order._id}')"
+                >
+                    View Order
+                </button>
 
             </div>
+            `;
 
-        `;
 
-
-        ordersContainer.appendChild(row);
+        container.appendChild(
+            row
+        );
 
     });
 
 }
 
 
-searchInput.addEventListener(
-    "input",
-    renderOrders
-);
+window.viewOrder =
+function(id){
+
+    window.location.href =
+        "orders.html?order=" +
+        encodeURIComponent(id);
+
+};
 
 
-statusFilter.addEventListener(
-    "change",
-    renderOrders
-);
+async function loadSelectedOrder(id){
+
+    try{
+
+        const response =
+            await fetch(
+                API_URL +
+                "/api/orders/" +
+                encodeURIComponent(id),
+                {
+                    headers:{
+                        Authorization:
+                            "Bearer " + token
+                    }
+                }
+            );
 
 
-updateStats();
+        const data =
+            await response.json();
 
-renderOrders();
+
+        if(
+            !response.ok ||
+            !data.success
+        ){
+
+            throw new Error(
+                data.message ||
+                "Could not load order."
+            );
+        }
+
+
+        renderSelectedOrder(
+            data.order
+        );
+
+
+    }catch(error){
+
+        showMessage(
+            error.message
+        );
+
+    }
+
+}
+
+
+function renderSelectedOrder(order){
+
+    const card =
+        document.getElementById(
+            "selectedOrderCard"
+        );
+
+    const box =
+        document.getElementById(
+            "selectedOrder"
+        );
+
+
+    card.style.display =
+        "block";
+
+
+    let deliveryHtml;
+
+
+    if(order.deliveryContent){
+
+        deliveryHtml =
+            `
+            <div class="delivery">
+
+                <h3>
+                    🔓 Your Delivery
+                </h3>
+
+                <div class="delivery-content">
+                    ${escapeHtml(order.deliveryContent)}
+                </div>
+
+            </div>
+            `;
+
+    }else{
+
+        deliveryHtml =
+            `
+            <div class="locked">
+
+                🔒 Private fulfillment is locked.
+
+                <br><br>
+
+                It becomes available only after the server
+                confirms payment and the order is completed.
+
+            </div>
+            `;
+
+    }
+
+
+    box.innerHTML =
+        `
+        <div class="detail-grid">
+
+            <div class="detail">
+                <span>Product</span>
+                <strong>
+                    ${escapeHtml(order.productName)}
+                </strong>
+            </div>
+
+            <div class="detail">
+                <span>Total</span>
+                <strong>
+                    ${money(order.totalAmount)}
+                </strong>
+            </div>
+
+            <div class="detail">
+                <span>Payment Status</span>
+                <strong>
+                    ${escapeHtml(order.paymentStatus)}
+                </strong>
+            </div>
+
+            <div class="detail">
+                <span>Order Status</span>
+                <strong>
+                    ${escapeHtml(order.status)}
+                </strong>
+            </div>
+
+            <div class="detail">
+                <span>Payment Method</span>
+                <strong>
+                    ${escapeHtml(order.paymentMethod)}
+                </strong>
+            </div>
+
+            <div class="detail">
+                <span>Order Date</span>
+                <strong>
+                    ${formatDate(order.createdAt)}
+                </strong>
+            </div>
+
+        </div>
+
+        ${deliveryHtml}
+        `;
+
+
+    card.scrollIntoView({
+        behavior:"smooth",
+        block:"start"
+    });
+
+}
+
+
+loadOrders();
 
 </script>
 
