@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Checkout | WAYNE LOGS</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+:root{
+    --blue:#3486df;
+    --dark:#10213f;
+    --bg:#f4f7fb;
+    --text:#172033;
+    --muted:#8792a5;
+    --border:#e3eaf2;
+    --danger:#c53030;
+    --success:#198754;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+}
+
+a{
+    text-decoration:none;
+}
+
+header{
+    background:white;
+    border-bottom:1px solid var(--border);
+    padding:18px 24px;
+}
+
+.nav{
+    max-width:1150px;
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+}
+
+.logo{
+    color:var(--blue);
+    font-size:25px;
+    font-weight:bold;
+}
+
+.back{
+    color:var(--blue);
+    font-weight:bold;
+}
+
+main{
+    max-width:1100px;
+    margin:auto;
+    padding:35px 20px;
+}
+
+.checkout-grid{
+    display:grid;
+    grid-template-columns:1.3fr .7fr;
+    gap:25px;
+}
+
+.card{
+    background:white;
+    border:1px solid var(--border);
+    border-radius:24px;
+    padding:28px;
+}
+
+.card h2{
+    font-size:25px;
+    margin-bottom:8px;
+}
+
+.subtitle{
+    color:var(--muted);
+    line-height:1.6;
+    margin-bottom:25px;
+}
+
+.product{
+    display:flex;
+    gap:20px;
+    align-items:flex-start;
+}
+
+.product-image{
+    width:150px;
+    height:150px;
+    border-radius:18px;
+    object-fit:cover;
+    background:#edf3f9;
+    flex-shrink:0;
+}
+
+.image-placeholder{
+    width:150px;
+    height:150px;
+    border-radius:18px;
+    background:#edf3f9;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:45px;
+    flex-shrink:0;
+}
+
+.product-name{
+    font-size:24px;
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+.product-platform{
+    color:var(--blue);
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+.product-description{
+    color:var(--muted);
+    line-height:1.7;
+}
+
+.stock{
+    display:inline-block;
+    margin-top:15px;
+    background:#edf7ff;
+    color:var(--blue);
+    padding:8px 12px;
+    border-radius:20px;
+    font-size:14px;
+    font-weight:bold;
+}
+
+.summary-row{
+    display:flex;
+    justify-content:space-between;
+    gap:20px;
+    padding:15px 0;
+    border-bottom:1px solid var(--border);
+}
+
+.summary-row span{
+    color:var(--muted);
+}
+
+.summary-total{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    padding:22px 0;
+}
+
+.summary-total strong{
+    font-size:27px;
+    color:var(--blue);
+}
+
+.btn{
+    width:100%;
+    border:0;
+    background:var(--blue);
+    color:white;
+    padding:16px;
+    border-radius:14px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.btn:disabled{
+    opacity:.6;
+    cursor:not-allowed;
+}
+
+.notice{
+    margin-top:18px;
+    background:#f4f9ff;
+    border:1px solid #d9ebff;
+    color:#506781;
+    padding:15px;
+    border-radius:13px;
+    line-height:1.6;
+    font-size:14px;
+}
+
+.message{
+    display:none;
+    padding:16px;
+    border-radius:13px;
+    margin-bottom:22px;
+}
+
+.message.error{
+    display:block;
+    background:#fff0f0;
+    color:var(--danger);
+}
+
+.message.success{
+    display:block;
+    background:#edfff2;
+    color:var(--success);
+}
+
+.loading{
+    text-align:center;
+    background:white;
+    padding:60px 20px;
+    border-radius:24px;
+    border:1px solid var(--border);
+    color:var(--muted);
+}
+
+.hidden{
+    display:none;
+}
+
+@media(max-width:800px){
+
+    .checkout-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+@media(max-width:550px){
+
+    main{
+        padding:20px 14px;
+    }
+
+    .card{
+        padding:20px;
+    }
+
+    .product{
+        flex-direction:column;
+    }
+
+    .product-image,
+    .image-placeholder{
+        width:100%;
+        height:230px;
+    }
+
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="nav">
+
+        <a href="index.html" class="logo">
+            WAYNE LOGS
+        </a>
+
+        <a href="marketplace.html" class="back">
+            ← Marketplace
+        </a>
+
+    </div>
+
+</header>
+
+
+<main>
+
+    <div id="message" class="message"></div>
+
+    <div id="loading" class="loading">
+        Loading product...
+    </div>
+
+
+    <div
+        id="checkoutContent"
+        class="checkout-grid hidden"
+    >
+
+        <!-- PRODUCT -->
+
+        <section class="card">
+
+            <h2>Review Product</h2>
+
+            <p class="subtitle">
+                Confirm the product before creating your order.
+            </p>
+
+
+            <div class="product">
+
+                <div id="productImageBox"></div>
+
+
+                <div>
+
+                    <div
+                        class="product-name"
+                        id="productName"
+                    ></div>
+
+
+                    <div
+                        class="product-platform"
+                        id="productPlatform"
+                    ></div>
+
+
+                    <div
+                        class="product-description"
+                        id="productDescription"
+                    ></div>
+
+
+                    <span
+                        class="stock"
+                        id="productStock"
+                    ></span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ORDER SUMMARY -->
+
+        <aside class="card">
+
+            <h2>Order Summary</h2>
+
+            <p class="subtitle">
+                Your price comes directly from the WAYNE LOGS server.
+            </p>
+
+
+            <div class="summary-row">
+
+                <span>Product Price</span>
+
+                <strong id="summaryPrice">
+                    ₦0
+                </strong>
+
+            </div>
+
+
+            <div class="summary-row">
+
+                <span>Quantity</span>
+
+                <strong>1</strong>
+
+            </div>
+
+
+            <div class="summary-row">
+
+                <span>Payment</span>
+
+                <strong>Paystack</strong>
+
+            </div>
+
+
+            <div class="summary-total">
+
+                <span>Total</span>
+
+                <strong id="summaryTotal">
+                    ₦0
+                </strong>
+
+            </div>
+
+
+            <button
+                class="btn"
+                id="createOrderButton"
+            >
+                Create Order
+            </button>
+
+
+            <div class="notice">
+
+                🔒 Private fulfillment remains locked until
+                payment has been successfully verified.
+
+            </div>
+
+        </aside>
+
+    </div>
+
+</main>
+
+
+<script>
+
+const API_URL =
+    "https://wayne-logs.onrender.com";
+
+const token =
+    localStorage.getItem("wayneToken");
+
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+const productId =
+    params.get("product");
+
+let product = null;
+
+
+function money(value){
+
+    return "₦" +
+        Number(value || 0)
+        .toLocaleString("en-NG");
+
+}
+
+
+function showMessage(
+    text,
+    type = "error"
+){
+
+    const box =
+        document.getElementById(
+            "message"
+        );
+
+    box.textContent = text;
+
+    box.className =
+        "message " + type;
+
+}
+
+
+async function loadProduct(){
+
+    if(!productId){
+
+        document.getElementById(
+            "loading"
+        ).style.display = "none";
+
+        showMessage(
+            "No product was selected."
+        );
+
+        return;
+
+    }
+
+
+    try{
+
+        const response =
+            await fetch(
+                API_URL +
+                "/api/products/" +
+                encodeURIComponent(
+                    productId
+                )
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if(
+            !response.ok ||
+            !data.success
+        ){
+
+            throw new Error(
+                data.message ||
+                "Could not load product."
+            );
+
+        }
+
+
+        product =
+            data.product;
+
+
+        if(
+            product.status !== "active"
+        ){
+
+            throw new Error(
+                "This product is not currently available."
+            );
+
+        }
+
+
+        renderProduct();
+
+
+    }catch(error){
+
+        document.getElementById(
+            "loading"
+        ).style.display =
+            "none";
+
+
+        showMessage(
+            error.message
+        );
+
+    }
+
+}
+
+
+function renderProduct(){
+
+    document.getElementById(
+        "productName"
+    ).textContent =
+        product.name || "Product";
+
+
+    document.getElementById(
+        "productPlatform"
+    ).textContent =
+        product.platform ||
+        product.category ||
+        "";
+
+
+    document.getElementById(
+        "productDescription"
+    ).textContent =
+        product.description ||
+        "No product description available.";
+
+
+    document.getElementById(
+        "productStock"
+    ).textContent =
+        Number(product.stock || 0) +
+        " in stock";
+
+
+    document.getElementById(
+        "summaryPrice"
+    ).textContent =
+        money(product.price);
+
+
+    document.getElementById(
+        "summaryTotal"
+    ).textContent =
+        money(product.price);
+
+
+    const imageBox =
+        document.getElementById(
+            "productImageBox"
+        );
+
+
+    imageBox.innerHTML = "";
+
+
+    if(product.imageUrl){
+
+        const image =
+            document.createElement(
+                "img"
+            );
+
+        image.src =
+            product.imageUrl;
+
+        image.alt =
+            product.name || "";
+
+        image.className =
+            "product-image";
+
+        imageBox.appendChild(
+            image
+        );
+
+
+    }else{
+
+        const placeholder =
+            document.createElement(
+                "div"
+            );
+
+        placeholder.className =
+            "image-placeholder";
+
+        placeholder.textContent =
+            "📦";
+
+        imageBox.appendChild(
+            placeholder
+        );
+
+    }
+
+
+    const button =
+        document.getElementById(
+            "createOrderButton"
+        );
+
+
+    if(
+        Number(product.stock || 0) < 1
+    ){
+
+        button.disabled = true;
+
+        button.textContent =
+            "Out of Stock";
+
+    }
+
+
+    document.getElementById(
+        "loading"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "checkoutContent"
+    ).classList.remove(
+        "hidden"
+    );
+
+}
+
+
+async function createOrder(){
+
+    if(!token){
+
+        alert(
+            "Please login before placing an order."
+        );
+
+        window.location.href =
+            "login.html";
+
+        return;
+
+    }
+
+
+    if(!product){
+
+        showMessage(
+            "Product is not ready."
+        );
+
+        return;
+
+    }
+
+
+    const button =
+        document.getElementById(
+            "createOrderButton"
+        );
+
+
+    button.disabled = true;
+
+    button.textContent =
+        "Creating Order...";
+
+
+    try{
+
+        const response =
+            await fetch(
+                API_URL +
+                "/api/orders",
+                {
+                    method:
+                        "POST",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json",
+
+                        Authorization:
+                            "Bearer " + token
+                    },
+
+                    body:
+                        JSON.stringify({
+                            productId:
+                                product._id,
+
+                            quantity:
+                                1
+                        })
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if(
+            !response.ok ||
+            !data.success
+        ){
+
+            throw new Error(
+                data.message ||
+                "Could not create order."
+            );
+
+        }
+
+
+        showMessage(
+            "Order created successfully.",
+            "success"
+        );
+
+
+        window.location.href =
+            "orders.html?order=" +
+            encodeURIComponent(
+                data.order._id
+            );
+
+
+    }catch(error){
+
+        showMessage(
+            error.message
+        );
+
+
+        button.disabled =
+            false;
+
+
+        button.textContent =
+            "Create Order";
+
+    }
+
+}
+
+
+document.getElementById(
+    "createOrderButton"
+)
+.addEventListener(
+    "click",
+    createOrder
+);
+
+
+loadProduct();
+
+</script>
+
+</body>
+</html>
